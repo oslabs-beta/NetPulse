@@ -1,10 +1,32 @@
 .main {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  padding: 6rem;
+  align-items: center; */
+  padding: 1rem; 
   min-height: 100vh;
+  background-color: white;
+}
+
+.sidebar {
+  background-color: lightblue;
+  width: 20%;
+}
+
+.networkContainer {
+  background-color: lightpink;
+  width: 80%;
+  padding: 1rem;
+}
+
+.mainWaterfall {
+  background-color: grey;
+  height: 30%;
+}
+
+.detailList {
+  background-color: lightseagreen;
+  height: 70%;
 }
 
 .description {
