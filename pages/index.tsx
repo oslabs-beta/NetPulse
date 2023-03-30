@@ -7,6 +7,15 @@ import { useMemo } from 'react'
 import MaterialReactTable from 'material-react-table';
 // Type import
 import type { MRT_ColumnDef } from 'material-react-table'; 
+//Material-UI Imports
+import {
+  Box,
+  // Button,
+  // ListItemIcon,
+  // MenuItem,
+  // Typography,
+  // TextField,
+} from '@mui/material';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,6 +30,7 @@ export default function Home() {
     'status-code': number;
     endpoint: string;
     'request-type': string;
+    'waterfall': any;
   }
   
   // Create sample data (but later on, format imported data)
@@ -32,7 +42,8 @@ export default function Home() {
       'package-size': 10,
       'status-code': 200,
       endpoint: '/test',
-      'request-type': 'GET'
+      'request-type': 'GET',
+      waterfall: 1,
     },
     {
       'start-time': 23456,
@@ -40,8 +51,9 @@ export default function Home() {
       duration: 3000,
       'package-size': 20,
       'status-code': 200,
-      endpoint: '/test',
-      'request-type': 'GET'
+      endpoint: '/test2',
+      'request-type': 'GET',
+      waterfall: 2,
     },
     {
       'start-time': 34567,
@@ -50,7 +62,8 @@ export default function Home() {
       'package-size': 30,
       'status-code': 200,
       endpoint: '/test3',
-      'request-type': 'GET'
+      'request-type': 'GET',
+      waterfall: 3
     },
     {
       'start-time': 45678,
@@ -59,7 +72,8 @@ export default function Home() {
       'package-size': 40,
       'status-code': 200,
       endpoint: '/test4',
-      'request-type': 'GET'
+      'request-type': 'GET',
+      waterfall: 4
     },
     {
       'start-time': 56789,
@@ -68,7 +82,8 @@ export default function Home() {
       'package-size': 50,
       'status-code': 200,
       endpoint: '/test5',
-      'request-type': 'GET'
+      'request-type': 'GET',
+      waterfall: 5
     },
     {
       'start-time': 67890,
@@ -77,7 +92,128 @@ export default function Home() {
       'package-size': 60,
       'status-code': 200,
       endpoint: '/test6',
-      'request-type': 'GET'
+      'request-type': 'GET',
+      waterfall: 6
+    },
+    {
+      'start-time': 12345,
+      'source': 'codesmith',
+      duration: 2000,
+      'package-size': 10,
+      'status-code': 200,
+      endpoint: '/test',
+      'request-type': 'GET',
+      waterfall: 7,
+    },
+    {
+      'start-time': 23456,
+      'source': 'austin',
+      duration: 3000,
+      'package-size': 20,
+      'status-code': 200,
+      endpoint: '/test2',
+      'request-type': 'GET',
+      waterfall: 1,
+    },
+    {
+      'start-time': 34567,
+      'source': 'thomas',
+      duration: 4000,
+      'package-size': 30,
+      'status-code': 200,
+      endpoint: '/test3',
+      'request-type': 'GET',
+      waterfall: 1
+    },
+    {
+      'start-time': 45678,
+      'source': 'michael',
+      duration: 5000,
+      'package-size': 40,
+      'status-code': 200,
+      endpoint: '/test4',
+      'request-type': 'GET',
+      waterfall: 1
+    },
+    {
+      'start-time': 56789,
+      'source': 'ben',
+      duration: 6000,
+      'package-size': 50,
+      'status-code': 200,
+      endpoint: '/test5',
+      'request-type': 'GET',
+      waterfall: 1
+    },
+    {
+      'start-time': 67890,
+      'source': 'giles',
+      duration: 7000,
+      'package-size': 60,
+      'status-code': 200,
+      endpoint: '/test6',
+      'request-type': 'GET',
+      waterfall: 1
+    },
+    {
+      'start-time': 12345,
+      'source': 'codesmith',
+      duration: 2000,
+      'package-size': 10,
+      'status-code': 200,
+      endpoint: '/test',
+      'request-type': 'GET',
+      waterfall: 1,
+    },
+    {
+      'start-time': 23456,
+      'source': 'austin',
+      duration: 3000,
+      'package-size': 20,
+      'status-code': 200,
+      endpoint: '/test2',
+      'request-type': 'GET',
+      waterfall: 1,
+    },
+    {
+      'start-time': 34567,
+      'source': 'thomas',
+      duration: 4000,
+      'package-size': 30,
+      'status-code': 200,
+      endpoint: '/test3',
+      'request-type': 'GET',
+      waterfall: 1
+    },
+    {
+      'start-time': 45678,
+      'source': 'michael',
+      duration: 5000,
+      'package-size': 40,
+      'status-code': 200,
+      endpoint: '/test4',
+      'request-type': 'GET',
+      waterfall: 1
+    },
+    {
+      'start-time': 56789,
+      'source': 'ben',
+      duration: 6000,
+      'package-size': 50,
+      'status-code': 200,
+      endpoint: '/test5',
+      'request-type': 'GET',
+      waterfall: 1
+    },
+    {
+      'start-time': 67890,
+      'source': 'giles',
+      duration: 7000,
+      'package-size': 60,
+      'status-code': 200,
+      endpoint: '/test6',
+      'request-type': 'GET',
+      waterfall: 1
     },
   ];
 
@@ -91,7 +227,7 @@ export default function Home() {
   const columns = useMemo<MRT_ColumnDef<DATATYPE>[]>(
     () => [
       {
-        header: 'Start Time',
+        header: 'Start',
         accessorKey: 'start-time',
       },
       {
@@ -103,11 +239,11 @@ export default function Home() {
         accessorKey: 'duration',
       },
       {
-        header: 'Package Size',
+        header: 'Size',
         accessorKey: 'package-size',
       },
       {
-        header: 'Status Code',
+        header: 'Status',
         accessorKey: 'status-code',
       },
       {
@@ -115,9 +251,32 @@ export default function Home() {
         accessorKey: 'endpoint',
       },
       {
-        header: 'Request Type',
+        header: 'Request',
         accessorKey: 'request-type',
       },
+      {
+        header: 'Waterfall',
+        accessorKey: 'waterfall',
+        minSize: 200, //min size enforced during resizing
+        maxSize: 1000, //max size enforced during resizing
+        size: 200, //medium column
+            //custom conditional format and styling
+            Cell: ({ cell }) => (
+              <Box
+                component="span"
+                sx={(theme) => ({
+                  backgroundColor:'green',
+                  borderRadius: '0.2rem',
+                  color: '#fff',
+                  width: `${cell.getValue<number>()*10}px`,
+                  // maxWidth: '9ch',
+                  // p: '0.25rem',
+                })}
+              >
+                {cell.getValue<number>().toLocaleString()}
+              </Box>
+            ),
+      }
     ],
     [],
   );
@@ -146,12 +305,25 @@ export default function Home() {
               data={data}
               defaultColumn={{
                 minSize: 50, //allow columns to get smaller than default
-                maxSize: 200, //allow columns to get larger than default
+                maxSize: 300, //allow columns to get larger than default
                 size: 150, //make columns wider by default
               }}
-              enableRowSelection
+              // enableRowSelection
+              enablePagination={false} 
               enableGlobalFilter={false}
               enableColumnResizing
+              columnResizeMode='onEnd'
+              layoutMode='grid'
+              muiTableHeadCellProps={{
+                sx: {
+                  flex: '0 0 auto',
+                },
+              }}
+              muiTableBodyCellProps={{
+                sx: {
+                  flex: '0 0 auto',
+                },
+              }}
             />
           </div>
         </div>
