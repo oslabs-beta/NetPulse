@@ -2,26 +2,25 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 // For resizing & auto sorting columns - Move to detail
 import MaterialReactTable from 'material-react-table';
 // Type import
-import type { MRT_ColumnDef } from 'material-react-table'; 
+import type { MRT_ColumnDef, MRT_Virtualizer } from 'material-react-table'; 
 //Material-UI Imports
 import {
   Box,
-  // Button,
-  // ListItemIcon,
-  // MenuItem,
-  // Typography,
-  // TextField,
 } from '@mui/material';
+import { CellTower } from '@mui/icons-material'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  // Hook for updating overall time and tying it to state
+  // Time is determined by the difference between the final index's start+duration minus the initial index's start
+  const [time, setTime] = useState(0);
+  
   // Declare interface for typescript data type
-
   interface DATATYPE {
     'start-time': number;
     source: string;
@@ -36,7 +35,17 @@ export default function Home() {
   // Create sample data (but later on, format imported data)
   const data: DATATYPE[] = [
     {
-      'start-time': 12345,
+      'start-time': 0,
+      'source': 'codesmith',
+      duration: 5000,
+      'package-size': 10,
+      'status-code': 200,
+      endpoint: '/test',
+      'request-type': 'GET',
+      waterfall: 0,
+    },
+    {
+      'start-time': 5000,
       'source': 'codesmith',
       duration: 2000,
       'package-size': 10,
@@ -46,7 +55,7 @@ export default function Home() {
       waterfall: 1,
     },
     {
-      'start-time': 23456,
+      'start-time': 7000,
       'source': 'austin',
       duration: 3000,
       'package-size': 20,
@@ -56,47 +65,47 @@ export default function Home() {
       waterfall: 2,
     },
     {
-      'start-time': 34567,
+      'start-time': 10000,
       'source': 'thomas',
       duration: 4000,
       'package-size': 30,
       'status-code': 200,
       endpoint: '/test3',
       'request-type': 'GET',
-      waterfall: 3
+      waterfall: 3,
     },
     {
-      'start-time': 45678,
+      'start-time': 14000,
       'source': 'michael',
-      duration: 5000,
+      duration: 1000,
       'package-size': 40,
       'status-code': 200,
       endpoint: '/test4',
       'request-type': 'GET',
-      waterfall: 4
+      waterfall: 4,
     },
     {
-      'start-time': 56789,
+      'start-time': 15000,
       'source': 'ben',
       duration: 6000,
       'package-size': 50,
       'status-code': 200,
       endpoint: '/test5',
       'request-type': 'GET',
-      waterfall: 5
+      waterfall: 5,
     },
     {
-      'start-time': 67890,
+      'start-time': 21000,
       'source': 'giles',
       duration: 7000,
       'package-size': 60,
       'status-code': 200,
       endpoint: '/test6',
       'request-type': 'GET',
-      waterfall: 6
+      waterfall: 6,
     },
     {
-      'start-time': 12345,
+      'start-time': 28000,
       'source': 'codesmith',
       duration: 2000,
       'package-size': 10,
@@ -106,114 +115,114 @@ export default function Home() {
       waterfall: 7,
     },
     {
-      'start-time': 23456,
+      'start-time': 30000,
       'source': 'austin',
       duration: 3000,
       'package-size': 20,
       'status-code': 200,
       endpoint: '/test2',
       'request-type': 'GET',
-      waterfall: 1,
+      waterfall: 8,
     },
     {
-      'start-time': 34567,
+      'start-time': 33000,
       'source': 'thomas',
-      duration: 4000,
+      duration: 2000,
       'package-size': 30,
       'status-code': 200,
       endpoint: '/test3',
       'request-type': 'GET',
-      waterfall: 1
+      waterfall: 9,
     },
     {
-      'start-time': 45678,
+      'start-time': 35000,
       'source': 'michael',
       duration: 5000,
       'package-size': 40,
       'status-code': 200,
       endpoint: '/test4',
       'request-type': 'GET',
-      waterfall: 1
+      waterfall: 10,
     },
     {
-      'start-time': 56789,
+      'start-time': 40000,
       'source': 'ben',
       duration: 6000,
       'package-size': 50,
       'status-code': 200,
       endpoint: '/test5',
       'request-type': 'GET',
-      waterfall: 1
+      waterfall: 11,
     },
     {
-      'start-time': 67890,
+      'start-time': 46000,
       'source': 'giles',
-      duration: 7000,
+      duration: 1000,
       'package-size': 60,
       'status-code': 200,
       endpoint: '/test6',
       'request-type': 'GET',
-      waterfall: 1
+      waterfall: 12,
     },
     {
-      'start-time': 12345,
+      'start-time': 47000,
       'source': 'codesmith',
       duration: 2000,
       'package-size': 10,
       'status-code': 200,
       endpoint: '/test',
       'request-type': 'GET',
-      waterfall: 1,
+      waterfall: 13,
     },
     {
-      'start-time': 23456,
+      'start-time': 49000,
       'source': 'austin',
-      duration: 3000,
+      duration: 5000,
       'package-size': 20,
       'status-code': 200,
       endpoint: '/test2',
       'request-type': 'GET',
-      waterfall: 1,
+      waterfall: 14,
     },
     {
-      'start-time': 34567,
+      'start-time': 54000,
       'source': 'thomas',
-      duration: 4000,
+      duration: 1000,
       'package-size': 30,
       'status-code': 200,
       endpoint: '/test3',
       'request-type': 'GET',
-      waterfall: 1
+      waterfall: 15,
     },
     {
-      'start-time': 45678,
+      'start-time': 55000,
       'source': 'michael',
       duration: 5000,
       'package-size': 40,
       'status-code': 200,
       endpoint: '/test4',
       'request-type': 'GET',
-      waterfall: 1
+      waterfall: 16,
     },
     {
-      'start-time': 56789,
+      'start-time': 60000,
       'source': 'ben',
       duration: 6000,
       'package-size': 50,
       'status-code': 200,
       endpoint: '/test5',
       'request-type': 'GET',
-      waterfall: 1
+      waterfall: 17,
     },
     {
-      'start-time': 67890,
+      'start-time': 66000,
       'source': 'giles',
-      duration: 7000,
+      duration: 2000,
       'package-size': 60,
       'status-code': 200,
       endpoint: '/test6',
       'request-type': 'GET',
-      waterfall: 1
+      waterfall: 18,
     },
   ];
 
@@ -257,27 +266,31 @@ export default function Home() {
       {
         header: 'Waterfall',
         accessorKey: 'waterfall',
+        enablePinning: true,
         minSize: 200, //min size enforced during resizing
         maxSize: 1000, //max size enforced during resizing
-        size: 200, //medium column
+        size: 300, //medium column
             //custom conditional format and styling
             Cell: ({ cell }) => (
               <Box
                 component="span"
                 sx={(theme) => ({
-                  backgroundColor:'green',
+                  backgroundColor: 'green',
                   borderRadius: '0.2rem',
                   color: '#fff',
-                  width: `${cell.getValue<number>()*10}px`,
-                  // maxWidth: '9ch',
-                  // p: '0.25rem',
+                  // Proof of concept for the displays - these still must be tied to state.  We first select the 
+                  // cell, then determine the left and right portions and make it a percentage
+                  marginLeft: `${data[cell.getValue<number>()]['start-time']/(data[data.length - 1]['start-time'] + data[data.length - 1]['duration'])*100}%`,
+                  width: `${data[cell.getValue<number>()]['duration']/(data[data.length - 1]['start-time'] + data[data.length - 1]['duration'])*100}%`,
                 })}
               >
-                {cell.getValue<number>().toLocaleString()}
+                {/* below is the duration in seconds displayed as text in the waterfall bar */}
+                {data[cell.getValue<number>()]['duration']/1000} 
               </Box>
             ),
       }
     ],
+    // WE ADDED DATA HERE, IF EVERYTHING IS BROKEN TRY DELETING THIS TO FIX IT?  
     [],
   );
 
@@ -292,39 +305,48 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div className = {styles.sidebar}>
-          hello
+          sidebar
         </div>
         <div className = {styles.networkContainer}>
           <div className = {styles.mainWaterfall}>
+            main waterfall
           </div>
           {/* Check if we can directly assign CSS to component names */}
-          <div className = {styles.detailList}>
-            {/* Data is passed via data, column info passed via columns */}
-            <MaterialReactTable
-              columns={columns}
-              data={data}
-              defaultColumn={{
-                minSize: 50, //allow columns to get smaller than default
-                maxSize: 300, //allow columns to get larger than default
-                size: 150, //make columns wider by default
-              }}
-              // enableRowSelection
-              enablePagination={false} 
-              enableGlobalFilter={false}
-              enableColumnResizing
-              columnResizeMode='onEnd'
-              layoutMode='grid'
-              muiTableHeadCellProps={{
-                sx: {
-                  flex: '0 0 auto',
-                },
-              }}
-              muiTableBodyCellProps={{
-                sx: {
-                  flex: '0 0 auto',
-                },
-              }}
-            />
+            <div className = {styles.detailList}>
+              {/* Data is passed via data, column info passed via columns */}
+              <MaterialReactTable
+                columns={columns}
+                data={data}
+                defaultColumn={{
+                  minSize: 100, //allow columns to get smaller than default
+                  maxSize: 300, //allow columns to get larger than default
+                  size: 150, //make columns wider by default
+                }}
+                // enableRowSelection
+                // enablePinning
+                // initialState={{columnPinning:{right:['waterfall']}}}
+                enablePagination={false} 
+                enableGlobalFilter={false}
+                enableColumnResizing
+                columnResizeMode='onEnd'
+                layoutMode='grid'
+                // enableRowVirtualization
+                // onSortingChange={setSorting}
+                // state={{ isLoading, sorting }}
+                // rowVirtualizerInstanceRef={rowVirtualizerInstanceRef} //optional
+                // rowVirtualizerProps={{ overscan: 5 }} //optionally customize the row virtualizer
+                // columnVirtualizerProps={{ overscan: 2 }}
+                // muiTableHeadCellProps={{
+                //   sx: {
+                //     flex: '0 0 auto',
+                //   },
+                // }}
+                // muiTableBodyCellProps={{
+                //   sx: {
+                //     flex: '0 0 auto',
+                //   },
+                // }}
+              />
           </div>
         </div>
       </main>
