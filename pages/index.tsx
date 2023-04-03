@@ -412,7 +412,57 @@ export default function Home() {
           </div>
           <div className={styles.networkContainer}>
             <div className={styles.mainWaterfall}>
-              main waterfall
+              {/* Bar component from react-chartjs with all options/plugins */}
+            <Bar
+              data={barData}
+              // width={400}
+              // height={200}
+              options={{
+                maintainAspectRatio: false,
+                aspectRatio: 1,
+                indexAxis: 'y',
+                borderSkipped: false,
+                borderWidth: 1,
+                barPercentage: 0.1,
+                categoryPercentage: 1,
+                scales: {
+                  x: {
+                    position: 'top',
+                    type: 'time',
+                    // stacked: true,
+                    grid: {
+                      // display: false,
+                      // drawBorder: false,
+                      drawTicks: false,
+                    },
+                    ticks: {
+                      // autoSkip: true,
+                      maxTicksLimit: 10,
+                      callback: (value, index, values) => {
+                        return `${value} ms`;
+                      }
+                    }
+                  },
+                  y: {
+                    // beginAtZero: true,
+                    stacked: true,
+                    grid: {
+                      display: false,
+                      // drawBorder: false,
+                      // drawTicks: false,
+                    },
+                    ticks: {
+                      display: false,
+                    }
+                  }
+                },
+                plugins: {
+                  legend: {
+                    display: false,
+                  }
+                },
+              }}
+            />
             </div>
             {/* Check if we can directly assign CSS to component names */}
             <div className={styles.detailList}>
