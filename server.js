@@ -71,7 +71,7 @@ const server = app.listen(4000, () => {
 //create socket running on top of express server (port 4000) + enable cors 
 io = require('socket.io')(server, {
   cors: {
-    origin: 'http://localhost:3001',
+    origin: 'http://localhost:3000',
     credentials: true
   }
 });
