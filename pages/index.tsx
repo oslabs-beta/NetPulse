@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { DATATYPE } from '../types'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
@@ -19,18 +20,6 @@ export default function Home() {
   // Hook for updating overall time and tying it to state
   // Time is determined by the difference between the final index's start+duration minus the initial index's start
   const [time, setTime] = useState(0);
-  
-  // Declare interface for typescript data type
-  interface DATATYPE {
-    'start-time': number;
-    source: string;
-    duration: number;
-    'package-size': number;
-    'status-code': number;
-    endpoint: string;
-    'request-type': string;
-    'waterfall': any;
-  }
   
   // Create sample data (but later on, format imported data)
   const data: DATATYPE[] = [
@@ -279,7 +268,8 @@ export default function Home() {
                   borderRadius: '0.2rem',
                   color: '#fff',
                   // Proof of concept for the displays - these still must be tied to state.  We first select the 
-                  // cell, then determine the left and right portions and make it a percentage
+                  // cell, then determine the left and right portions and make it a percentage        data.length-1 is calling the final element of the data array to determine
+                  // the max length of the waterfall cell
                   marginLeft: `${data[cell.getValue<number>()]['start-time']/(data[data.length - 1]['start-time'] + data[data.length - 1]['duration'])*100}%`,
                   width: `${data[cell.getValue<number>()]['duration']/(data[data.length - 1]['start-time'] + data[data.length - 1]['duration'])*100}%`,
                 })}
@@ -303,7 +293,7 @@ export default function Home() {
         {/* REMEMBER TO CHANGE ICON AND FAVICON LTER */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
+      <main className ={styles.main}>
         <div className = {styles.sidebar}>
           sidebar
         </div>
