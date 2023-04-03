@@ -1,20 +1,14 @@
 .main {
   display: flex;
   height: 100vh;
-  /* max-height: 1400px;
-  min-height: 700px; */
-  /* flex-direction: column;
-  justify-content: space-between;
-  align-items: center; */
   padding: 1rem;
-  /* max-height: 100%; */
-  background-color: white;
+  background-color: black;
 }
 
 .sidebar {
   background-color: lightblue;
   width: 10%;
-  /* display: flex; */
+  min-width: 120px;
 }
 
 .sbLogo {
@@ -70,7 +64,12 @@
 .detailList {
   background-color: grey;
   height: 85%;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
+}
+
+.MuiBox-root {
+  background-color: black;
+  color: yellow;
 }
 
 /* .description {
