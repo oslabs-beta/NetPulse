@@ -325,16 +325,6 @@ export default function Home() {
         {/* REMEMBER TO CHANGE ICON AND FAVICON LTER */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className ={styles.main}>
-        <div className = {styles.sidebar}>
-          sidebar
-        </div>
-        <div className = {styles.networkContainer}>
-          <div className = {styles.mainWaterfall}>
-            main waterfall
-          </div>
-          {/* Check if we can directly assign CSS to component names */}
-            <div className = {styles.detailList}>
         <main className={styles.main}>
           <div className={styles.sidebar}>
             <Image src={"/Goblins.png"} className={styles.sbLogo} alt="DataTrace Logo" width="190" height="190" />
