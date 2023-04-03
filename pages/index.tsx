@@ -16,6 +16,7 @@ import { CellTower } from '@mui/icons-material'
 import { Chart, ChartType, registerables } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
 import 'chartjs-adapter-date-fns';
+import { io } from 'socket.io-client';
 // register chart.js elements due to webpack tree-shaking, else error
 Chart.register(...registerables);
 
@@ -232,6 +233,29 @@ export default function Home() {
     },
   ];
 
+  //intialize socket connection 
+  //when data recieved update state here
+  async function socketInitializer(){
+    let socket = await io('http://localhost:4000/'); //make socket connection
+    socket.on('connect', () => {
+      console.log('connected'); //print out when socket is connected
+    })
+    socket.on('message', msg => { //when data recieved concat messages state with inbound traces
+      const serverTraces = JSON.parse(msg);
+      console.log(serverTraces);
+      // serverTraces.forEach(el=>{
+      //   setMessages(messages=>[...messages,JSON.stringify(el)]);
+      // });
+
+      //TODO: write code to update state here
+    })
+  }
+
+  //when component mounts initialize socket
+  useEffect(() => {
+    socketInitializer()
+  },[]);
+
   // interface BARDATATYPE {
   //   label: string,
   //   data: number[],
@@ -274,6 +298,7 @@ export default function Home() {
   //   }
   // ];
 
+  // an empty array that collects barData objects in the below for loop
   const barDataSet = [
     // {
     //   label: '10',
@@ -295,7 +320,8 @@ export default function Home() {
     // }
   ];
 
-
+  // generates barData object for each sample data from data array with label being the endpoint
+  // data takes in the exact start-time and total time
   for (let i = 0; i < data.length; i++) {
     barDataSet.push({
       label: [data[i]['endpoint']],
@@ -310,7 +336,7 @@ export default function Home() {
     })
   }
 
-  // data for Bar chartjs component
+  // final data for Bar chartjs component
   const barData = {
     labels: ['trace1'],
     datasets: barDataSet
