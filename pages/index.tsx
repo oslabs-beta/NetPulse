@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { CellTower } from '@mui/icons-material'
 // import chart.js & react-chartjs components
-import { Chart, registerables } from 'chart.js'
+import { Chart, ChartType, registerables } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
 import 'chartjs-adapter-date-fns';
 // register chart.js elements due to webpack tree-shaking, else error
@@ -54,7 +54,7 @@ export default function Home() {
       'start-time': 5000,
       'source': 'codesmith',
       duration: 2000,
-      'package-size': 10,
+      'package-size': 20,
       'status-code': 200,
       endpoint: '/test1',
       'request-type': 'GET',
@@ -64,7 +64,7 @@ export default function Home() {
       'start-time': 7000,
       'source': 'austin',
       duration: 3000,
-      'package-size': 20,
+      'package-size': 30,
       'status-code': 200,
       endpoint: '/test2',
       'request-type': 'GET',
@@ -74,7 +74,7 @@ export default function Home() {
       'start-time': 10000,
       'source': 'thomas',
       duration: 4000,
-      'package-size': 30,
+      'package-size': 10,
       'status-code': 200,
       endpoint: '/test3',
       'request-type': 'GET',
@@ -240,15 +240,69 @@ export default function Home() {
   // }
 
   // const barDataSet: BARDATATYPE[] = [];
-  const barDataSet = [];
+
+  // const innerData = [
+  //   {
+  //     x: [0, 5000],
+  //     y: 1
+  //   },
+  //   {
+  //     x: [0, 3000],
+  //     y: 1
+  //   }
+  // ];
+
+  // const innerData2 = [
+  //   {
+  //     x: [6000, 10000],
+  //     y: 1
+  //   },
+  //   {
+  //     x: [6000, 7000],
+  //     y: 1
+  //   }
+  // ];
+
+  // const innerData3 = [
+  //   {
+  //     x: [11000, 12000],
+  //     y: 1
+  //   },
+  //   {
+  //     x: [11000, 14000],
+  //     y: 1
+  //   }
+  // ];
+
+  const barDataSet = [
+    // {
+    //   label: '10',
+    //   data: innerData,
+    //   backgroundColor: ['green'],
+    //   borderColor: ['limegreen']
+    // },
+    // {
+    //   label: '20',
+    //   data: innerData2,
+    //   backgroundColor: ['green'],
+    //   borderColor: ['limegreen']
+    // },
+    // {
+    //   label: '/endpoint3',
+    //   data: innerData3,
+    //   backgroundColor: ['green'],
+    //   borderColor: ['limegreen']
+    // }
+  ];
+
 
   for (let i = 0; i < data.length; i++) {
     barDataSet.push({
-      label: data[i]['endpoint'],
+      label: [data[i]['endpoint']],
       data: [
         {
           x: [data[i]['start-time'], data[i]['start-time'] + data[i]['duration']],
-          y: data[i]['duration']
+          y: 1
         }
       ],
       backgroundColor: ['green'],
@@ -258,9 +312,14 @@ export default function Home() {
 
   // data for Bar chartjs component
   const barData = {
-    labels: ['timeline'],
+    labels: ['trace1'],
     datasets: barDataSet
   }
+
+  // const barData = {
+  //   labels: ['trace1', 'trace2', 'trace3'],
+  //   datasets: barDataSet
+  // }
 
   // Create columns -> later on, we can dynamically declare this based 
   // on user options using a config file or object or state and only
@@ -348,23 +407,20 @@ export default function Home() {
             {/* Bar component from react-chartjs with all options/plugins */}
             <Bar
               data={barData}
-              width={400}
-              height={200}
+              // width={400}
+              // height={200}
               options={{
                 maintainAspectRatio: false,
-                // aspectRatio: 1,
+                aspectRatio: 1,
                 indexAxis: 'y',
-                // borderSkipped: false,
+                borderSkipped: false,
                 borderWidth: 1,
                 barPercentage: 0.1,
-                // categoryPercentage: 1,
+                categoryPercentage: 1,
                 scales: {
                   x: {
                     position: 'top',
                     type: 'time',
-                    // time: {
-                    //   unit: 'millisecond'
-                    // },
                     // stacked: true,
                     grid: {
                       // display: false,
