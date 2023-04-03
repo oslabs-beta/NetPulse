@@ -1,13 +1,14 @@
 import Head from 'next/head'
 import { DATATYPE } from '../types'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import { useMemo, useState, useEffect } from 'react'
 // For resizing & auto sorting columns - Move to detail
 import MaterialReactTable from 'material-react-table';
 // Type import
-import type { MRT_ColumnDef, MRT_Virtualizer } from 'material-react-table'; 
+import type { MRT_ColumnDef, MRT_Virtualizer } from 'material-react-table';
 //Material-UI Imports
 import {
   Box,
@@ -21,6 +22,19 @@ export default function Home() {
   // Time is determined by the difference between the final index's start+duration minus the initial index's start
   const [time, setTime] = useState(0);
   
+
+  // Declare interface for typescript data type
+  interface DATATYPE {
+    'start-time': number;
+    source: string;
+    duration: number;
+    'package-size': number;
+    'status-code': number;
+    endpoint: string;
+    'request-type': string;
+    'waterfall': any;
+  }
+
   // Create sample data (but later on, format imported data)
   const data: DATATYPE[] = [
     {
@@ -278,6 +292,24 @@ export default function Home() {
                 {data[cell.getValue<number>()]['duration']/1000} 
               </Box>
             ),
+        //custom conditional format and styling
+        Cell: ({ cell }) => (
+          <Box
+            component="span"
+            sx={(theme) => ({
+              backgroundColor: 'green',
+              borderRadius: '0.2rem',
+              color: '#fff',
+              // Proof of concept for the displays - these still must be tied to state.  We first select the 
+              // cell, then determine the left and right portions and make it a percentage
+              marginLeft: `${data[cell.getValue<number>()]['start-time'] / (data[data.length - 1]['start-time'] + data[data.length - 1]['duration']) * 100}%`,
+              width: `${data[cell.getValue<number>()]['duration'] / (data[data.length - 1]['start-time'] + data[data.length - 1]['duration']) * 100}%`,
+            })}
+          >
+            {/* below is the duration in seconds displayed as text in the waterfall bar */}
+            {data[cell.getValue<number>()]['duration'] / 1000}
+          </Box>
+        ),
       }
     ],
     // WE ADDED DATA HERE, IF EVERYTHING IS BROKEN TRY DELETING THIS TO FIX IT?  
@@ -289,7 +321,7 @@ export default function Home() {
       <Head>
         <title>DataTrace Dashboard</title>
         <meta name="description" content="DataTrace Dashboard" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         {/* REMEMBER TO CHANGE ICON AND FAVICON LTER */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -303,43 +335,63 @@ export default function Home() {
           </div>
           {/* Check if we can directly assign CSS to component names */}
             <div className = {styles.detailList}>
+        <main className={styles.main}>
+          <div className={styles.sidebar}>
+            <Image src={"/Goblins.png"} className={styles.sbLogo} alt="DataTrace Logo" width="190" height="190" />
+            <div className={styles.sbContent}>
+              <button className={styles.splashButton}>SplashPage</button>
+              <button className={styles.secondButton}>SecondButton</button>
+              <button className={styles.thirdButton}>ThirdButton</button>
+              <Link href="/datatrace-splash" className={styles.sbLinks}>DataTrace Splash Page</Link>
+              <Link href="/about" className={styles.sbLinks}>About Us</Link>
+              <Link href="/blog/hello-world" className={styles.sbLinks}>Blog Post</Link>
+            </div>
+          </div>
+          <div className={styles.networkContainer}>
+            <div className={styles.mainWaterfall}>
+              main waterfall
+            </div>
+            {/* Check if we can directly assign CSS to component names */}
+            <div className={styles.detailList}>
               {/* Data is passed via data, column info passed via columns */}
               <MaterialReactTable
                 columns={columns}
                 data={data}
                 defaultColumn={{
-                  minSize: 100, //allow columns to get smaller than default
+                  minSize: 50, //allow columns to get smaller than default
                   maxSize: 300, //allow columns to get larger than default
-                  size: 150, //make columns wider by default
+                  size: 70, //make columns wider by default
                 }}
                 // enableRowSelection
                 // enablePinning
                 // initialState={{columnPinning:{right:['waterfall']}}}
-                enablePagination={false} 
+                enablePagination={false}
                 enableGlobalFilter={false}
                 enableColumnResizing
                 columnResizeMode='onEnd'
                 layoutMode='grid'
-                // enableRowVirtualization
-                // onSortingChange={setSorting}
-                // state={{ isLoading, sorting }}
-                // rowVirtualizerInstanceRef={rowVirtualizerInstanceRef} //optional
-                // rowVirtualizerProps={{ overscan: 5 }} //optionally customize the row virtualizer
-                // columnVirtualizerProps={{ overscan: 2 }}
-                // muiTableHeadCellProps={{
-                //   sx: {
-                //     flex: '0 0 auto',
-                //   },
-                // }}
-                // muiTableBodyCellProps={{
-                //   sx: {
-                //     flex: '0 0 auto',
-                //   },
-                // }}
+                enableStickyHeader={true}
+
+              // enableRowVirtualization
+              // onSortingChange={setSorting}
+              // state={{ isLoading, sorting }}
+              // rowVirtualizerInstanceRef={rowVirtualizerInstanceRef} //optional
+              // rowVirtualizerProps={{ overscan: 5 }} //optionally customize the row virtualizer
+              // columnVirtualizerProps={{ overscan: 2 }}
+              // muiTableHeadCellProps={{
+              //   sx: {
+              //     flex: '0 0 auto',
+              //   },
+              // }}
+              // muiTableBodyCellProps={{
+              //   sx: {
+              //     flex: '0 0 auto',
+              //   },
+              // }}
               />
+            </div>
           </div>
-        </div>
-      </main>
-    </>
-  )
+        </main>
+      </>
+      )
 }

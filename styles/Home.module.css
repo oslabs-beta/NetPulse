@@ -1,16 +1,53 @@
 .main {
   display: flex;
-  /* flex-direction: column;
-  justify-content: space-between;
-  align-items: center; */
-  padding: 1rem; 
-  min-height: 100vh;
-  background-color: white;
+  height: 100vh;
+  padding: 1rem;
+  background-color: black;
 }
 
 .sidebar {
   background-color: lightblue;
   width: 10%;
+  min-width: 120px;
+}
+
+.sbLogo {
+  width: 100%;
+  padding: 2%;
+  height: auto
+}
+
+.sbContent {
+  height: 70%;
+  margin: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.splashButton {
+  background-color: gray;
+  border-color: rgba(128, 128, 128, 0.748);
+  margin: 5%;
+}
+
+.secondButton {
+  background-color: gray;
+  border-color: rgba(128, 128, 128, 0.748);
+  margin: 5%;
+}
+
+.thirdButton {
+  background-color: gray;
+  border-color: rgba(128, 128, 128, 0.748);
+  margin: 5%;
+}
+
+.sbLinks {
+  margin: 10%;
+  display: block;
+  font-size: 100%;
+
 }
 
 .networkContainer {
@@ -27,9 +64,15 @@
 .detailList {
   background-color: grey;
   height: 85%;
+  /* overflow-y: scroll; */
 }
 
-.description {
+.MuiBox-root {
+  background-color: black;
+  color: yellow;
+}
+
+/* .description {
   display: inherit;
   justify-content: inherit;
   align-items: inherit;
@@ -153,7 +196,7 @@
 }
 
 /* Conic Gradient Animation */
-.thirteen::before {
+/* .thirteen::before {
   animation: 6s rotate linear infinite;
   width: 200%;
   height: 200%;
@@ -161,7 +204,7 @@
 }
 
 /* Inner Square */
-.thirteen::after {
+/* .thirteen::after {
   inset: 0;
   padding: 1px;
   border-radius: var(--border-radius);
@@ -174,7 +217,7 @@
 }
 
 /* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
+/* @media (hover: hover) and (pointer: fine) {
   .card:hover {
     background: rgba(var(--card-rgb), 0.1);
     border: 1px solid rgba(var(--card-border-rgb), 0.15);
@@ -183,9 +226,9 @@
   .card:hover span {
     transform: translateX(4px);
   }
-}
+} */
 
-@media (prefers-reduced-motion) {
+/* @media (prefers-reduced-motion) {
   .thirteen::before {
     animation: none;
   }
@@ -196,7 +239,7 @@
 }
 
 /* Mobile */
-@media (max-width: 700px) {
+/* @media (max-width: 700px) {
   .content {
     padding: 4rem;
   }
@@ -273,7 +316,7 @@
 }
 
 /* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {
+/* @media (min-width: 701px) and (max-width: 1120px) {
   .grid {
     grid-template-columns: repeat(2, 50%);
   }
@@ -297,4 +340,4 @@
   to {
     transform: rotate(0deg);
   }
-}
+} */
