@@ -1,12 +1,12 @@
-export interface DATATYPE {
-    'start-time': number;
-    source: string;
+export interface DataType { 
+    spanId: string;
+    traceId: string;
+    startTime: number;
     duration: number;
-    'package-size': number;
-    'status-code': number;
-    endpoint: string;
-    'request-type': string;
-    'waterfall': any;
+    packageSize: number | null;
+    statusCode: number;
+    endPoint: string;
+    requestType: string;
 }
 
 

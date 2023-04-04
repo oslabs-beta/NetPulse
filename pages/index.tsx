@@ -1,237 +1,65 @@
+'use client';
 import Head from 'next/head'
-import { DATATYPE } from '../types'
+import { DataType } from '../types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import { useMemo, useState, useEffect } from 'react'
-// For resizing & auto sorting columns - Move to detail
-import MaterialReactTable from 'material-react-table';
+import React from 'react'
+import { useMemo, useState, useEffect, useRef } from 'react'
+import MaterialReactTable from 'material-react-table'; // For resizing & auto sorting columns - Move to detail
+
 // Type import
 import type { MRT_ColumnDef, MRT_Virtualizer } from 'material-react-table';
+
 //Material-UI Imports
 import { Box } from '@mui/material';
 import { CellTower } from '@mui/icons-material'
-// import chart.js & react-chartjs components
-import { Chart, ChartType, registerables } from 'chart.js'
+import { Chart, ChartType, registerables } from 'chart.js' // import chart.js & react-chartjs components
 import { Bar } from 'react-chartjs-2'
 import 'chartjs-adapter-date-fns';
 import { io } from 'socket.io-client';
-// register chart.js elements due to webpack tree-shaking, else error
-Chart.register(...registerables);
+Chart.register(...registerables); // register chart.js elements due to webpack tree-shaking, else error
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  
   // Hook for updating overall time and tying it to state
   // Time is determined by the difference between the final index's start+duration minus the initial index's start
+  let initialStartTime: number;
   const [time, setTime] = useState(0);
+  const [data, setData] = useState<DataType[]>([
 
-  // Declare interface for typescript data type
-  interface DATATYPE {
-    'start-time': number;
-    source: string;
-    duration: number;
-    'package-size': number;
-    'status-code': number;
-    endpoint: string;
-    'request-type': string;
-    'waterfall': any;
-  }
+  {
+    spanId: "spannyId baby",
+    traceId: 'traceID',
+    startTime: 200,
+    duration: 873,
+    packageSize: 420,
+    statusCode: 690,
+    endPoint: 'Ben where u @',
+    requestType: 'At yo mommas house',
+  }, /*
+  {
+    spanId: "spanny2.0",
+    traceId: 'traceer2',
+    startTime: 8000,
+    duration: 2000,
+    packageSize: 100,
+    statusCode: 200,
+    endPoint: 'swappi baby',
+    requestType: 'POST office',
+  } */
+]);
+const dataRef = useRef(data);
 
-  // Create sample data (but later on, format imported data)
-  const data: DATATYPE[] = [
-    {
-      'start-time': 0,
-      'source': 'codesmith',
-      duration: 5000,
-      'package-size': 10,
-      'status-code': 200,
-      endpoint: '/test0',
-      'request-type': 'GET',
-      waterfall: 0,
-    },
-    {
-      'start-time': 5000,
-      'source': 'codesmith',
-      duration: 2000,
-      'package-size': 20,
-      'status-code': 200,
-      endpoint: '/test1',
-      'request-type': 'GET',
-      waterfall: 1,
-    },
-    {
-      'start-time': 7000,
-      'source': 'austin',
-      duration: 3000,
-      'package-size': 30,
-      'status-code': 200,
-      endpoint: '/test2',
-      'request-type': 'GET',
-      waterfall: 2,
-    },
-    {
-      'start-time': 10000,
-      'source': 'thomas',
-      duration: 4000,
-      'package-size': 10,
-      'status-code': 200,
-      endpoint: '/test3',
-      'request-type': 'GET',
-      waterfall: 3,
-    },
-    {
-      'start-time': 14000,
-      'source': 'michael',
-      duration: 1000,
-      'package-size': 40,
-      'status-code': 200,
-      endpoint: '/test4',
-      'request-type': 'GET',
-      waterfall: 4,
-    },
-    {
-      'start-time': 15000,
-      'source': 'ben',
-      duration: 6000,
-      'package-size': 50,
-      'status-code': 200,
-      endpoint: '/test5',
-      'request-type': 'GET',
-      waterfall: 5,
-    },
-    {
-      'start-time': 21000,
-      'source': 'giles',
-      duration: 7000,
-      'package-size': 60,
-      'status-code': 200,
-      endpoint: '/test6',
-      'request-type': 'GET',
-      waterfall: 6,
-    },
-    {
-      'start-time': 28000,
-      'source': 'codesmith',
-      duration: 2000,
-      'package-size': 10,
-      'status-code': 200,
-      endpoint: '/test7',
-      'request-type': 'GET',
-      waterfall: 7,
-    },
-    {
-      'start-time': 30000,
-      'source': 'austin',
-      duration: 3000,
-      'package-size': 20,
-      'status-code': 200,
-      endpoint: '/test8',
-      'request-type': 'GET',
-      waterfall: 8,
-    },
-    {
-      'start-time': 33000,
-      'source': 'thomas',
-      duration: 2000,
-      'package-size': 30,
-      'status-code': 200,
-      endpoint: '/test9',
-      'request-type': 'GET',
-      waterfall: 9,
-    },
-    {
-      'start-time': 35000,
-      'source': 'michael',
-      duration: 5000,
-      'package-size': 40,
-      'status-code': 200,
-      endpoint: '/test10',
-      'request-type': 'GET',
-      waterfall: 10,
-    },
-    {
-      'start-time': 40000,
-      'source': 'ben',
-      duration: 6000,
-      'package-size': 50,
-      'status-code': 200,
-      endpoint: '/test11',
-      'request-type': 'GET',
-      waterfall: 11,
-    },
-    {
-      'start-time': 46000,
-      'source': 'giles',
-      duration: 1000,
-      'package-size': 60,
-      'status-code': 200,
-      endpoint: '/test12',
-      'request-type': 'GET',
-      waterfall: 12,
-    },
-    {
-      'start-time': 47000,
-      'source': 'codesmith',
-      duration: 2000,
-      'package-size': 10,
-      'status-code': 200,
-      endpoint: '/test13',
-      'request-type': 'GET',
-      waterfall: 13,
-    },
-    {
-      'start-time': 49000,
-      'source': 'austin',
-      duration: 5000,
-      'package-size': 20,
-      'status-code': 200,
-      endpoint: '/test14',
-      'request-type': 'GET',
-      waterfall: 14,
-    },
-    {
-      'start-time': 54000,
-      'source': 'thomas',
-      duration: 1000,
-      'package-size': 30,
-      'status-code': 200,
-      endpoint: '/test15',
-      'request-type': 'GET',
-      waterfall: 15,
-    },
-    {
-      'start-time': 55000,
-      'source': 'michael',
-      duration: 5000,
-      'package-size': 40,
-      'status-code': 200,
-      endpoint: '/test16',
-      'request-type': 'GET',
-      waterfall: 16,
-    },
-    {
-      'start-time': 65000,
-      'source': 'ben',
-      duration: 1000,
-      'package-size': 50,
-      'status-code': 200,
-      endpoint: '/test17',
-      'request-type': 'GET',
-      waterfall: 17,
-    },
-    {
-      'start-time': 66000,
-      'source': 'giles',
-      duration: 2000,
-      'package-size': 60,
-      'status-code': 200,
-      endpoint: '/test18',
-      'request-type': 'GET',
-      waterfall: 18,
-    },
-  ];
+//useEffect so that anytime data updates our reference updates too
+useEffect(() => {
+  dataRef.current = data;
+}, [data]);
+
+
 
   //intialize socket connection 
   //when data recieved update state here
@@ -241,13 +69,17 @@ export default function Home() {
       console.log('connected'); //print out when socket is connected
     })
     socket.on('message', msg => { //when data recieved concat messages state with inbound traces
-      const serverTraces = JSON.parse(msg);
-      console.log(serverTraces);
-      // serverTraces.forEach(el=>{
-      //   setMessages(messages=>[...messages,JSON.stringify(el)]);
-      // });
-
-      //TODO: write code to update state here
+      const serverTraces: DataType[] = JSON.parse(msg);
+      serverTraces.forEach((el: DataType) => {
+        // TODO: change the below to check for equal to 0 when we get rid of starter data
+        if (initialStartTime === undefined) { 
+          initialStartTime = el.startTime;
+          console.log("initial start time reset: ", initialStartTime);
+        }
+        if (el.packageSize === null) el.packageSize = -1;
+        el.startTime -= initialStartTime;
+        setData((data: DataType[]) => [...data, el]);
+      });
     })
   }
 
@@ -324,10 +156,10 @@ export default function Home() {
   // data takes in the exact start-time and total time
   for (let i = 0; i < data.length; i++) {
     barDataSet.push({
-      label: [data[i]['endpoint']],
+      label: [data[i]['endPoint']],
       data: [
         {
-          x: [data[i]['start-time'], data[i]['start-time'] + data[i]['duration']],
+          x: [data[i]['startTime'], data[i]['startTime'] + data[i]['duration']],
           y: 1
         }
       ],
@@ -342,6 +174,7 @@ export default function Home() {
     datasets: barDataSet
   }
 
+
   // const barData = {
   //   labels: ['trace1', 'trace2', 'trace3'],
   //   datasets: barDataSet
@@ -354,15 +187,15 @@ export default function Home() {
   //Column declaration requires a flat array of objects with a header
   // which is the column's title, and an accessorKey, which is the
   // key in the data object. 
-  const columns = useMemo<MRT_ColumnDef<DATATYPE>[]>(
+  const columns = useMemo<MRT_ColumnDef<DataType>[]>(
     () => [
       {
         header: 'Start',
-        accessorKey: 'start-time',
+        accessorKey: 'startTime',
       },
       {
-        header: 'Source',
-        accessorKey: 'source',
+        header: 'TraceID',
+        accessorKey: 'traceId',
       },
       {
         header: 'Duration',
@@ -370,45 +203,46 @@ export default function Home() {
       },
       {
         header: 'Size',
-        accessorKey: 'package-size',
+        accessorKey: 'packageSize',
       },
       {
         header: 'Status',
-        accessorKey: 'status-code',
+        accessorKey: 'statusCode',
       },
       {
         header: 'Endpoint',
-        accessorKey: 'endpoint',
+        accessorKey: 'endPoint',
       },
       {
         header: 'Request',
-        accessorKey: 'request-type',
+        accessorKey: 'requestType',
       },
       {
-        header: 'Waterfall',
-        accessorKey: 'waterfall',
+        header: 'Span ID',
+        accessorKey: 'spanId',
         enablePinning: true,
         minSize: 200, //min size enforced during resizing
         maxSize: 1000, //max size enforced during resizing
         size: 300, //medium column
         //custom conditional format and styling
-        Cell: ({ cell }) => (
-          <Box
-            component="span"
-            sx={(theme) => ({
-              backgroundColor: 'green',
-              borderRadius: '0.2rem',
-              color: '#fff',
-              // Proof of concept for the displays - these still must be tied to state.  We first select the 
-              // cell, then determine the left and right portions and make it a percentage
-              marginLeft: `${data[cell.getValue<number>()]['start-time'] / (data[data.length - 1]['start-time'] + data[data.length - 1]['duration']) * 100}%`,
-              width: `${data[cell.getValue<number>()]['duration'] / (data[data.length - 1]['start-time'] + data[data.length - 1]['duration']) * 100}%`,
-            })}
-          >
-            {/* below is the duration in seconds displayed as text in the waterfall bar */}
-            {data[cell.getValue<number>()]['duration'] / 1000}
-          </Box>
-        ),
+        Cell: ({ cell, row }) => {
+          return (
+            <Box
+              component="span"
+              sx={(theme) => ({
+                backgroundColor: 'green',
+                borderRadius: '0.2rem',
+                color: '#fff',
+                // Proof of concept for the displays - these still must be tied to state.  We first select the 
+                // cell, then determine the left and right portions and make it a percentage
+                marginLeft: `${row.original['startTime'] / (dataRef.current[dataRef.current.length - 1]['startTime'] + dataRef.current[dataRef.current.length - 1]['duration']) * 100}%`,
+                width: `${row.original['duration'] / (dataRef.current[dataRef.current.length - 1]['startTime'] + dataRef.current[dataRef.current.length - 1]['duration']) * 100}%`,
+              })}
+            >
+              {/* below is the duration in seconds displayed as text in the waterfall bar */}
+              {row.original['duration'] / 1000}
+            </Box>)
+        },
       }
     ],
     // WE ADDED DATA HERE, IF EVERYTHING IS BROKEN TRY DELETING THIS TO FIX IT?  

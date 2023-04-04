@@ -17,7 +17,8 @@
 .sbLogo {
   width: 100%;
   padding: 2%;
-  height: auto
+  height: auto;
+  border-radius: 1rem;
 }
 
 .sbContent {
@@ -32,6 +33,7 @@
   background-color: gray;
   border-color: rgba(128, 128, 128, 0.748);
   margin: 5%;
+  border-radius: .3rem;
 }
 
 .secondButton {

@@ -62,8 +62,8 @@ app.use('/',(req,res)=>{
     const clientObj = {
       spanId: el.spanId,
       traceId: el.traceId,
-      startTime: el.startTimeUnixNano,
-      endTime: el.endTimeUnixNano,
+      startTime: el.startTimeUnixNano/(Math.pow(10,6)), //[ms]
+      duration: (el.endTimeUnixNano - el.startTimeUnixNano)/(Math.pow(10,6)), //[ms]
       packageSize: el.attributes.find(attr=>attr.key === 'http.request_content_length_uncompressed') ? el.attributes.find(attr=>attr.key === 'http.request_content_length_uncompressed').value.intValue : null,
       statusCode: el.attributes.find(attr=>attr.key === 'http.status_code') ? el.attributes.find(attr=>attr.key === 'http.status_code').value.intValue : null,
       endPoint: el.attributes.find(attr=>attr.key === 'http.url') ? el.attributes.find(attr=>attr.key === 'http.url').value.stringValue : null,
