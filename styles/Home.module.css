@@ -1,10 +1,84 @@
 .main {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  padding: 6rem;
+  align-items: center; */
+  padding: 1rem;
   min-height: 100vh;
+  background-color: white;
+}
+
+.sidebar {
+  background-color: lightblue;
+  width: 10%;
+  min-width: 120px;
+}
+
+.sbLogo {
+  width: 100%;
+  padding: 2%;
+  height: auto;
+  border-radius: 1rem;
+}
+
+.sbContent {
+  height: 70%;
+  margin: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.splashButton {
+  background-color: gray;
+  border-color: rgba(128, 128, 128, 0.748);
+  margin: 5%;
+  border-radius: .3rem;
+}
+
+.secondButton {
+  background-color: gray;
+  border-color: rgba(128, 128, 128, 0.748);
+  margin: 5%;
+}
+
+.thirdButton {
+  background-color: gray;
+  border-color: rgba(128, 128, 128, 0.748);
+  margin: 5%;
+}
+
+.sbLinks {
+  margin: 10%;
+  display: block;
+  font-size: 100%;
+
+}
+
+.networkContainer {
+  /* background-color: lightpink; */
+  width: 90%;
+  padding: 1rem;
+  border: solid 1px grey;
+}
+
+.mainWaterfall {
+  /* background-color: lightseagreen; */
+  border: solid 1px grey;
+  height: 15%;
+}
+
+.detailList {
+  background-color: grey;
+  border: solid 1px grey;
+  border-top: none;
+  height: 85%;
+  /* overflow-y: scroll; */
+}
+
+.MuiBox-root {
+  background-color: black;
+  color: yellow;
 }
 
 .description {
@@ -143,11 +217,9 @@
   inset: 0;
   padding: 1px;
   border-radius: var(--border-radius);
-  background: linear-gradient(
-    to bottom right,
-    rgba(var(--tile-start-rgb), 1),
-    rgba(var(--tile-end-rgb), 1)
-  );
+  background: linear-gradient(to bottom right,
+      rgba(var(--tile-start-rgb), 1),
+      rgba(var(--tile-end-rgb), 1));
   background-clip: content-box;
 }
 
@@ -226,11 +298,9 @@
     border-radius: 0;
     border: none;
     border-bottom: 1px solid rgba(var(--callout-border-rgb), 0.25);
-    background: linear-gradient(
-      to bottom,
-      rgba(var(--background-start-rgb), 1),
-      rgba(var(--callout-rgb), 0.5)
-    );
+    background: linear-gradient(to bottom,
+        rgba(var(--background-start-rgb), 1),
+        rgba(var(--callout-rgb), 0.5));
     background-clip: padding-box;
     backdrop-filter: blur(24px);
   }
@@ -241,11 +311,9 @@
     inset: auto 0 0;
     padding: 2rem;
     height: 200px;
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgb(var(--background-end-rgb)) 40%
-    );
+    background: linear-gradient(to bottom,
+        transparent 0%,
+        rgb(var(--background-end-rgb)) 40%);
     z-index: 1;
   }
 }
@@ -272,6 +340,7 @@
   from {
     transform: rotate(360deg);
   }
+
   to {
     transform: rotate(0deg);
   }
