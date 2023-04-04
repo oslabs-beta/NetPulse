@@ -1,0 +1,19 @@
+name: NextJS CI
+
+on:
+  push:
+    branches: [ cicdtest ]
+  pull_request:
+    branches: [ cicdtest ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm test
