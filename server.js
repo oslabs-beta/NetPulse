@@ -46,6 +46,7 @@ const includesAny = (array, string) => {
 }
 
 //custom express server running on port 4000 to send data to front end
+//otelEndpointHandler
 app.use('/',(req,res)=>{
 
   const clientData = [];
