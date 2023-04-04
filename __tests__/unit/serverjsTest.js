@@ -1,6 +1,6 @@
 const { type } = require("os");
 
-//helper function to detect string/array overlap
+//identifies strings with substrings that match array elements
 const includesAny = (array, string) => {
     for (let i = 0; i<array.length; i++){
       if(string.includes(array[i])) return true;
@@ -8,9 +8,8 @@ const includesAny = (array, string) => {
     return false
   }
 
-//define mock function of custom express server handling otel exports
+//define mock function of custom express server endpoint handling otel exports
 const otelEndpointHandler = (req) =>{
-
     const clientData = [];
     const spans = req.body.resourceSpans[0].scopeSpans[0].spans; 
     const ignoreEndpoints = ['localhost','socket','nextjs']; //endpoints to ignore
@@ -33,18 +32,17 @@ const otelEndpointHandler = (req) =>{
         requestType: el.name
       };
   
-      //if the endpoint is an external api add it to client data arrat
+      //if the endpoint is an external api add it to client data array
       if(clientObj.endPoint){
         if(!includesAny(ignoreEndpoints,clientObj.endPoint)){
           clientData.push(clientObj); 
         }
       }
     });
-
     return clientData;
 };
 
-//create mock request body representing otel export data
+//create mock request body representing typical otel export data
 const fakeReq = {
     body: {
         resourceSpans: [
@@ -55,8 +53,8 @@ const fakeReq = {
                             {
                                 spanId: '9asdv922as2',
                                 traceId: '5c263067fe3',
-                                startTimeUnixNano: null,
-                                endTimeUnixNano: 2323112231,
+                                startTimeUnixNano: 3323112231,
+                                endTimeUnixNano: 5323112231,
                                 name: 'GET',
                                 attributes: [
                                     { key: 'http.request_content_length_uncompressed', value: { intValue: 53 }},
@@ -74,9 +72,20 @@ const fakeReq = {
     }
 }
 
+//testing overlapping string / array helper function
+describe('Testing includesAny helper function.', ()=>{
+    test('Identifies overlapping substrings and array elements.',()=>{
+        const ignoreEndpoints = ['localhost','socket','nextjs'];
+        const testOne = "https://swapi.dev/api/people/4";
+        const testTwo = "https://localhost:4000";
+        expect(includesAny(ignoreEndpoints,testOne)).toEqual(false);
+        expect(includesAny(ignoreEndpoints,testTwo)).toEqual(true);
+    });
+});
+
 //testing otelEndpointHandler handler
-describe('Testing otelEndpointHandler output', ()=>{
-    test('OTEL request body should be deconstructed correctly', ()=>{
+describe('Testing otelEndpointHandler output.', ()=>{
+    test('Request body is deconstructed correctly.', ()=>{
         const clientObj = otelEndpointHandler(fakeReq)[0];
         expect(clientObj.spanId).not.toBe(undefined);
         expect(clientObj.traceId).not.toBe(undefined);
@@ -86,9 +95,9 @@ describe('Testing otelEndpointHandler output', ()=>{
         expect(clientObj.statusCode).not.toBe(undefined);
         expect(clientObj.endPoint).not.toBe(undefined);
         expect(clientObj.requestType).not.toBe(undefined);
-    })
+    });
 
-    test('Data should be of the correct type', ()=>{
+    test('Data is of the correct type.', ()=>{
         const clientObj = otelEndpointHandler(fakeReq)[0];
         expect(typeof clientObj.spanId).toEqual('string');
         expect(typeof clientObj.traceId).toEqual('string');
@@ -98,5 +107,17 @@ describe('Testing otelEndpointHandler output', ()=>{
         expect(typeof clientObj.statusCode).toEqual('number');
         expect(typeof clientObj.endPoint).toEqual('string');
         expect(typeof clientObj.requestType).toEqual('string');
-    })
-})
+    });
+
+    test('Data has correct values.', ()=>{
+        const clientObj = otelEndpointHandler(fakeReq)[0];
+        expect(clientObj.spanId).toEqual('9asdv922as2');
+        expect(clientObj.traceId).toEqual('5c263067fe3');
+        expect(clientObj.startTime).toEqual(3323.112231);
+        expect(clientObj.duration).toEqual(2000);
+        expect(clientObj.packageSize).toEqual(53);
+        expect(clientObj.statusCode).toEqual(200);
+        expect(clientObj.endPoint).toEqual('https://swapi.dev/api/people/4');
+        expect(clientObj.requestType).toEqual('GET');
+    });
+});
