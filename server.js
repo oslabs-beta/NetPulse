@@ -37,7 +37,7 @@ process.on('SIGTERM', () => {
 
 // --- EXPRESS SERVER / SOCKET SETUP --- //
 
-//helper function to detect string/array overlap
+//identifies strings with substrings that match array elements
 const includesAny = (array, string) => {
   for (let i = 0; i<array.length; i++){
     if(string.includes(array[i])) return true;
@@ -71,7 +71,7 @@ app.use('/',(req,res)=>{
       requestType: el.name
     };
 
-    //if the endpoint is an external api add it to client data arrat
+    //if the endpoint is an external api add it to client data array
     if(clientObj.endPoint){
       if(!includesAny(ignoreEndpoints,clientObj.endPoint)){
         clientData.push(clientObj); 
