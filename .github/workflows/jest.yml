@@ -2,9 +2,9 @@ name: NextJS CI
 
 on:
   push:
-    branches: [cicdtest]
+    branches: [dev]
   pull_request:
-    branches: [cicdtest]
+    branches: [dev]
 
 jobs:
   build:
@@ -16,6 +16,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+
       - name: install packages
         run: npm install
       - run: npm test
