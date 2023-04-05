@@ -52,7 +52,6 @@ export default function Home() {
         // TODO: change the below to check for equal to 0 when we get rid of starter data
         if (initialStartTime === undefined) {
           initialStartTime = el.startTime;
-          console.log("initial start time reset: ", initialStartTime);
         }
         if (el.packageSize === null) el.packageSize = 1;
         el.startTime -= initialStartTime;
@@ -98,7 +97,6 @@ export default function Home() {
   //Column declaration requires a flat array of objects with a header
   // which is the column's title, and an accessorKey, which is the
   // key in the data object.
-  console.log("columns");
   const columns = useMemo<MRT_ColumnDef<DataType>[]>(
     () => [
       {
@@ -148,13 +146,11 @@ export default function Home() {
                 // Proof of concept for the displays - these still must be tied to state.  We first select the
                 // cell, then determine the left and right portions and make it a percentage
                 marginLeft: (() => {
-                  console.log(Date.now(), "row org", row.original.spanId, row.original.startTime);
                   const cellStartTime = row.original["startTime"];
                   const totalTime = data.length
                     ? data[data.length - 1]["startTime"] + data[data.length - 1]["duration"]
                     : cellStartTime;
                   const pCellTotal = (cellStartTime / totalTime) * 100;
-                  console.log("cst", cellStartTime, "tT", totalTime, "pCT", pCellTotal);
                   return `${pCellTotal}%`;
                 })(),
                 width: (() => {
