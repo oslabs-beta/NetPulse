@@ -1,0 +1,46 @@
+.sidebar {
+    background-color: lightblue;
+    width: 10%;
+    min-width: 120px;
+  }
+  
+  .sbLogo {
+    width: 100%;
+    padding: 2%;
+    height: auto;
+    border-radius: 1rem;
+  }
+  
+  .sbContent {
+    height: 70%;
+    margin: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .splashButton {
+    background-color: gray;
+    border-color: rgba(128, 128, 128, 0.748);
+    margin: 5%;
+    border-radius: .3rem;
+  }
+  
+  .secondButton {
+    background-color: gray;
+    border-color: rgba(128, 128, 128, 0.748);
+    margin: 5%;
+  }
+  
+  .thirdButton {
+    background-color: gray;
+    border-color: rgba(128, 128, 128, 0.748);
+    margin: 5%;
+  }
+  
+  .sbLinks {
+    margin: 10%;
+    display: block;
+    font-size: 100%;
+  
+  }
