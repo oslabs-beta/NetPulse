@@ -76,7 +76,6 @@ app.use("/", (req, res) => {
   //el.attributes.find finds the array element with a matching key desired and returns the unnested value if
   //exists or null if doesn't exist
   spans.forEach((el) => {
-    // console.log(el);
     const clientObj = {
       spanId: el.spanId,
       traceId: el.traceId,
