@@ -53,7 +53,7 @@ process.on("SIGTERM", () => {
 
 // --- EXPRESS SERVER / SOCKET SETUP --- //
 
-//helper function to detect string/array overlap
+//identifies strings with substrings that match array elements
 const includesAny = (array, string) => {
   for (let i = 0; i < array.length; i++) {
     if (string.includes(array[i])) return true;
@@ -62,6 +62,7 @@ const includesAny = (array, string) => {
 };
 
 //custom express server running on port 4000 to send data to front end
+//otelEndpointHandler
 app.use("/", (req, res) => {
   const clientData = [];
   console.log("START SPAN");
