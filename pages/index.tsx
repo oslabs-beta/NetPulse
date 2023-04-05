@@ -1,29 +1,37 @@
 "use client";
+
+//import react and nextjs packages
+import styles from "@/styles/Home.module.css";
 import Head from "next/head";
 import { DataType } from "../types";
-import Image from "next/image";
-import Link from "next/link";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
 import React, { useCallback } from "react";
 import { useMemo, useState, useEffect, useRef } from "react";
-import MaterialReactTable from "material-react-table"; // For resizing & auto sorting columns - Move to detail
 
-// Type import
+//import types
 import type { MRT_ColumnDef, MRT_Virtualizer } from "material-react-table";
 
 //Material-UI Imports
-import { Box } from "@mui/material";
 import { CellTower } from "@mui/icons-material";
+import { Box } from "@mui/material";
 import { Chart, ChartType, registerables } from "chart.js"; // import chart.js & react-chartjs components
-import { Bar } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
-import { io } from "socket.io-client";
 Chart.register(...registerables); // register chart.js elements due to webpack tree-shaking, else error
 
+//import socket client
+import { io } from "socket.io-client";
+
+//import child components
+import Sidebar from './Sidebar';
+import MainWaterfall from './MainWaterfall';
+import DetailList from "./DetailList";
+
+//import fonts
+import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
+//Main Component - Home
 export default function Home() {
+
   // Hook for updating overall time and tying it to state
   // Time is determined by the difference between the final index's start+duration minus the initial index's start
   let initialStartTime: number;
@@ -35,7 +43,7 @@ export default function Home() {
   const socketInitializer = useCallback(async () => {
     let socket = await io("http://localhost:4000/");
     socket.on("connect", () => {
-      console.log("connected");
+      console.log("socket connected.");
     });
     socket.on("message", (msg) => {
       // when data recieved concat messages state with inbound traces
@@ -44,7 +52,6 @@ export default function Home() {
         // TODO: change the below to check for equal to 0 when we get rid of starter data
         if (initialStartTime === undefined) {
           initialStartTime = el.startTime;
-          console.log("initial start time reset: ", initialStartTime);
         }
         if (el.packageSize === null) el.packageSize = 1;
         el.startTime -= initialStartTime;
@@ -53,7 +60,7 @@ export default function Home() {
     });
   }, [setData]);
 
-  //when component mounts initialize socket
+  //when home component mounts initialize socket connection
   useEffect(() => {
     socketInitializer();
   }, []);
@@ -83,11 +90,6 @@ export default function Home() {
     datasets: barDataSet,
   };
 
-  // const barData = {
-  //   labels: ['trace1', 'trace2', 'trace3'],
-  //   datasets: barDataSet
-  // }
-
   // Create columns -> later on, we can dynamically declare this based
   // on user options using a config file or object or state and only
   // rendering the things that are requested
@@ -95,7 +97,6 @@ export default function Home() {
   //Column declaration requires a flat array of objects with a header
   // which is the column's title, and an accessorKey, which is the
   // key in the data object.
-  console.log("columns");
   const columns = useMemo<MRT_ColumnDef<DataType>[]>(
     () => [
       {
@@ -145,13 +146,11 @@ export default function Home() {
                 // Proof of concept for the displays - these still must be tied to state.  We first select the
                 // cell, then determine the left and right portions and make it a percentage
                 marginLeft: (() => {
-                  console.log(Date.now(), "row org", row.original.spanId, row.original.startTime);
                   const cellStartTime = row.original["startTime"];
                   const totalTime = data.length
                     ? data[data.length - 1]["startTime"] + data[data.length - 1]["duration"]
                     : cellStartTime;
                   const pCellTotal = (cellStartTime / totalTime) * 100;
-                  console.log("cst", cellStartTime, "tT", totalTime, "pCT", pCellTotal);
                   return `${pCellTotal}%`;
                 })(),
                 width: (() => {
@@ -171,8 +170,7 @@ export default function Home() {
         },
       },
     ],
-    // WE ADDED DATA HERE, IF EVERYTHING IS BROKEN TRY DELETING THIS TO FIX IT?
-    [data]
+    [data] //dependency array
   );
 
   return (
@@ -184,123 +182,12 @@ export default function Home() {
         {/* REMEMBER TO CHANGE ICON AND FAVICON LTER */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={styles.sidebar}>
-          <Image
-            src={"/Goblins.png"}
-            className={styles.sbLogo}
-            alt="DataTrace Logo"
-            width="190"
-            height="190"
-          />
-          <div className={styles.sbContent}>
-            <button className={styles.splashButton}>SplashPage</button>
-            <button className={styles.secondButton}>SecondButton</button>
-            <button className={styles.thirdButton}>ThirdButton</button>
-            <Link href="/datatrace-splash" className={styles.sbLinks}>
-              DataTrace Splash Page
-            </Link>
-            <Link href="/about" className={styles.sbLinks}>
-              About Us
-            </Link>
-            <Link href="/blog/hello-world" className={styles.sbLinks}>
-              Blog Post
-            </Link>
-          </div>
-        </div>
-        <div className={styles.networkContainer}>
-          <div className={styles.mainWaterfall}>
-            {/* Bar component from react-chartjs with all options/plugins */}
-            <Bar
-              data={barData}
-              // width={400}
-              // height={200}
-              options={{
-                maintainAspectRatio: false,
-                aspectRatio: 1,
-                indexAxis: "y",
-                borderSkipped: false,
-                borderWidth: 1,
-                barPercentage: 0.1,
-                categoryPercentage: 1,
-                scales: {
-                  x: {
-                    position: "top",
-                    type: "time",
-                    // stacked: true,
-                    grid: {
-                      // display: false,
-                      // drawBorder: false,
-                      drawTicks: false,
-                    },
-                    ticks: {
-                      // autoSkip: true,
-                      maxTicksLimit: 10,
-                      callback: (value, index, values) => {
-                        return `${value} ms`;
-                      },
-                    },
-                  },
-                  y: {
-                    // beginAtZero: true,
-                    stacked: true,
-                    grid: {
-                      display: false,
-                      // drawBorder: false,
-                      // drawTicks: false,
-                    },
-                    ticks: {
-                      display: false,
-                    },
-                  },
-                },
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
-                },
-              }}
-            />
-          </div>
-          {/* Check if we can directly assign CSS to component names */}
-          <div className={styles.detailList}>
-            {/* Data is passed via data, column info passed via columns */}
-            <MaterialReactTable
-              columns={columns}
-              data={data}
-              defaultColumn={{
-                minSize: 50, //allow columns to get smaller than default
-                maxSize: 300, //allow columns to get larger than default
-                size: 70, //make columns wider by default
-              }}
-              // enableRowSelection
-              // enablePinning
-              // initialState={{columnPinning:{right:['waterfall']}}}
-              enablePagination={false}
-              enableGlobalFilter={false}
-              enableColumnResizing
-              columnResizeMode="onEnd"
-              layoutMode="grid"
-              enableStickyHeader={true}
 
-              // enableRowVirtualization
-              // onSortingChange={setSorting}
-              // state={{ isLoading, sorting }}
-              // rowVirtualizerInstanceRef={rowVirtualizerInstanceRef} //optional
-              // rowVirtualizerProps={{ overscan: 5 }} //optionally customize the row virtualizer
-              // columnVirtualizerProps={{ overscan: 2 }}
-              // muiTableHeadCellProps={{
-              //   sx: {
-              //     flex: '0 0 auto',
-              //   },
-              // }}
-              // muiTableBodyCellProps={{
-              //   sx: {
-              //     flex: '0 0 auto',
-              //   },
-              // }}
-            />
-          </div>
+      <main className={styles.main}>
+        <Sidebar />
+        <div className={styles.networkContainer}>
+          <MainWaterfall barData={barData} />
+          <DetailList data={data} columns={columns} />
         </div>
       </main>
     </>
