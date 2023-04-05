@@ -1,5 +1,5 @@
 "use client";
-import styles from "@/styles/Home.module.css";
+import styles from "@/styles/Sidebar.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import { Inter } from "next/font/google";

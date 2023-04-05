@@ -1,0 +1,7 @@
+.detailList {
+    background-color: grey;
+    border: solid 1px grey;
+    border-top: none;
+    height: 85%;
+    /* overflow-y: scroll; */
+}

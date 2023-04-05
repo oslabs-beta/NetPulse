@@ -1,5 +1,5 @@
 "use client";
-import styles from "@/styles/Home.module.css";
+import styles from "@/styles/DetailList.module.css";
 import MaterialReactTable from "material-react-table"; // For resizing & auto sorting columns - Move to detail
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });

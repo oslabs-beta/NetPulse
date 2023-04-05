@@ -1,5 +1,5 @@
 "use client";
-import styles from "@/styles/Home.module.css";
+import styles from "@/styles/MainWaterfall.module.css";
 import { Bar } from "react-chartjs-2";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });

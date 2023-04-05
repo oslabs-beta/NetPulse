@@ -1,34 +1,37 @@
 "use client";
+
+//import react and nextjs packages
+import styles from "@/styles/Home.module.css";
 import Head from "next/head";
 import { DataType } from "../types";
-import Image from "next/image";
-import Link from "next/link";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
 import React, { useCallback } from "react";
 import { useMemo, useState, useEffect, useRef } from "react";
-import MaterialReactTable from "material-react-table"; // For resizing & auto sorting columns - Move to detail
 
-// Type import
+//import types
 import type { MRT_ColumnDef, MRT_Virtualizer } from "material-react-table";
 
 //Material-UI Imports
-import { Box } from "@mui/material";
 import { CellTower } from "@mui/icons-material";
+import { Box } from "@mui/material";
 import { Chart, ChartType, registerables } from "chart.js"; // import chart.js & react-chartjs components
-import { Bar } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
-import { io } from "socket.io-client";
 Chart.register(...registerables); // register chart.js elements due to webpack tree-shaking, else error
+
+//import socket client
+import { io } from "socket.io-client";
 
 //import child components
 import Sidebar from './Sidebar';
 import MainWaterfall from './MainWaterfall';
 import DetailList from "./DetailList";
 
+//import fonts
+import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
+//Main Component - Home
 export default function Home() {
+
   // Hook for updating overall time and tying it to state
   // Time is determined by the difference between the final index's start+duration minus the initial index's start
   let initialStartTime: number;
@@ -40,7 +43,7 @@ export default function Home() {
   const socketInitializer = useCallback(async () => {
     let socket = await io("http://localhost:4000/");
     socket.on("connect", () => {
-      console.log("connected");
+      console.log("socket connected.");
     });
     socket.on("message", (msg) => {
       // when data recieved concat messages state with inbound traces
@@ -58,7 +61,7 @@ export default function Home() {
     });
   }, [setData]);
 
-  //when component mounts initialize socket
+  //when home component mounts initialize socket connection
   useEffect(() => {
     socketInitializer();
   }, []);
@@ -171,8 +174,7 @@ export default function Home() {
         },
       },
     ],
-    // WE ADDED DATA HERE, IF EVERYTHING IS BROKEN TRY DELETING THIS TO FIX IT?
-    [data]
+    [data] //dependency array
   );
 
   return (
