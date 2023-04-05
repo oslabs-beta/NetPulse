@@ -21,6 +21,11 @@ import "chartjs-adapter-date-fns";
 import { io } from "socket.io-client";
 Chart.register(...registerables); // register chart.js elements due to webpack tree-shaking, else error
 
+//import child components
+import Sidebar from './Sidebar';
+import MainWaterfall from './MainWaterfall';
+import DetailList from "./DetailList";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
@@ -82,11 +87,6 @@ export default function Home() {
     labels: ["trace1"],
     datasets: barDataSet,
   };
-
-  // const barData = {
-  //   labels: ['trace1', 'trace2', 'trace3'],
-  //   datasets: barDataSet
-  // }
 
   // Create columns -> later on, we can dynamically declare this based
   // on user options using a config file or object or state and only
@@ -184,123 +184,12 @@ export default function Home() {
         {/* REMEMBER TO CHANGE ICON AND FAVICON LTER */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={styles.sidebar}>
-          <Image
-            src={"/Goblins.png"}
-            className={styles.sbLogo}
-            alt="DataTrace Logo"
-            width="190"
-            height="190"
-          />
-          <div className={styles.sbContent}>
-            <button className={styles.splashButton}>SplashPage</button>
-            <button className={styles.secondButton}>SecondButton</button>
-            <button className={styles.thirdButton}>ThirdButton</button>
-            <Link href="/datatrace-splash" className={styles.sbLinks}>
-              DataTrace Splash Page
-            </Link>
-            <Link href="/about" className={styles.sbLinks}>
-              About Us
-            </Link>
-            <Link href="/blog/hello-world" className={styles.sbLinks}>
-              Blog Post
-            </Link>
-          </div>
-        </div>
-        <div className={styles.networkContainer}>
-          <div className={styles.mainWaterfall}>
-            {/* Bar component from react-chartjs with all options/plugins */}
-            <Bar
-              data={barData}
-              // width={400}
-              // height={200}
-              options={{
-                maintainAspectRatio: false,
-                aspectRatio: 1,
-                indexAxis: "y",
-                borderSkipped: false,
-                borderWidth: 1,
-                barPercentage: 0.1,
-                categoryPercentage: 1,
-                scales: {
-                  x: {
-                    position: "top",
-                    type: "time",
-                    // stacked: true,
-                    grid: {
-                      // display: false,
-                      // drawBorder: false,
-                      drawTicks: false,
-                    },
-                    ticks: {
-                      // autoSkip: true,
-                      maxTicksLimit: 10,
-                      callback: (value, index, values) => {
-                        return `${value} ms`;
-                      },
-                    },
-                  },
-                  y: {
-                    // beginAtZero: true,
-                    stacked: true,
-                    grid: {
-                      display: false,
-                      // drawBorder: false,
-                      // drawTicks: false,
-                    },
-                    ticks: {
-                      display: false,
-                    },
-                  },
-                },
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
-                },
-              }}
-            />
-          </div>
-          {/* Check if we can directly assign CSS to component names */}
-          <div className={styles.detailList}>
-            {/* Data is passed via data, column info passed via columns */}
-            <MaterialReactTable
-              columns={columns}
-              data={data}
-              defaultColumn={{
-                minSize: 50, //allow columns to get smaller than default
-                maxSize: 300, //allow columns to get larger than default
-                size: 70, //make columns wider by default
-              }}
-              // enableRowSelection
-              // enablePinning
-              // initialState={{columnPinning:{right:['waterfall']}}}
-              enablePagination={false}
-              enableGlobalFilter={false}
-              enableColumnResizing
-              columnResizeMode="onEnd"
-              layoutMode="grid"
-              enableStickyHeader={true}
 
-              // enableRowVirtualization
-              // onSortingChange={setSorting}
-              // state={{ isLoading, sorting }}
-              // rowVirtualizerInstanceRef={rowVirtualizerInstanceRef} //optional
-              // rowVirtualizerProps={{ overscan: 5 }} //optionally customize the row virtualizer
-              // columnVirtualizerProps={{ overscan: 2 }}
-              // muiTableHeadCellProps={{
-              //   sx: {
-              //     flex: '0 0 auto',
-              //   },
-              // }}
-              // muiTableBodyCellProps={{
-              //   sx: {
-              //     flex: '0 0 auto',
-              //   },
-              // }}
-            />
-          </div>
+      <main className={styles.main}>
+        <Sidebar />
+        <div className={styles.networkContainer}>
+          <MainWaterfall barData={barData} />
+          <DetailList data={data} columns={columns} />
         </div>
       </main>
     </>
