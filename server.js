@@ -1,4 +1,4 @@
-//import telemetry packages
+// import telemetry packages
 const process = require("process");
 const opentelemetry = require("@opentelemetry/sdk-node");
 const { HttpInstrumentation } = require("@opentelemetry/instrumentation-http");
