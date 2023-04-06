@@ -175,6 +175,7 @@ export default function Home() {
 
   return (
     <>
+      <button className={styles.darkmode}> Dark Mode </button>
       <Head>
         <title>DataTrace Dashboard</title>
         <meta name="description" content="DataTrace Dashboard" />

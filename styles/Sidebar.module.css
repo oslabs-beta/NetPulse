@@ -1,46 +1,78 @@
 .sidebar {
-    background-color: lightblue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(180, 142, 241);
     width: 10%;
     min-width: 120px;
+    border-radius: 1rem;
+  }
+
+  .showMenu {
+    color: black;
+    font-weight: bold;
+    display: none;
+    width: 2rem;
+    height: 2rem;
   }
   
   .sbLogo {
-    width: 100%;
+    margin-top: .5rem;
+    width: 80%;
     padding: 2%;
-    height: auto;
+    height: 18%;
     border-radius: 1rem;
   }
+
+  .engineeredByHeader {
+    font-weight: bold;
+    color: rgb(32, 32, 32);
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: .5rem; 
+    font-size: 1.2rem;
+    width: 90%;
+  }
   
+  .authorList { 
+    color: rgb(16, 16, 16);
+    text-align: center;
+    padding-top: .2rem;
+  }
+
+  .mediumLogo {
+    display: flex;
+    width: 4rem;
+    height: 4rem;
+    margin-top: .5rem;
+    margin-bottom: 1rem;
+  }
+
+  .hideMenu{
+    align-self: flex-end;
+    justify-self: start;
+    margin-right: .5rem;
+    margin-top: .5rem;
+    font-weight: bold;
+    color: rgb(5, 5, 5);
+  }
+
   .sbContent {
     height: 70%;
     margin: 10%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
   }
   
-  .splashButton {
-    background-color: gray;
-    border-color: rgba(128, 128, 128, 0.748);
-    margin: 5%;
+  .sidebarButtons {
+    background-color: rgb(13, 24, 144);
     border-radius: .3rem;
+    width: 90%;
+    padding-bottom: 1rem;
   }
   
-  .secondButton {
-    background-color: gray;
-    border-color: rgba(128, 128, 128, 0.748);
-    margin: 5%;
-  }
-  
-  .thirdButton {
-    background-color: gray;
-    border-color: rgba(128, 128, 128, 0.748);
-    margin: 5%;
-  }
   
   .sbLinks {
     margin: 10%;
     display: block;
-    font-size: 100%;
-  
+    font-size: 1rem;
+    
   }

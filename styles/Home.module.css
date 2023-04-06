@@ -5,14 +5,25 @@
   align-items: center; */
   padding: 1rem;
   min-height: 100vh;
-  background-color: white;
+  background-color: rgb(171, 173, 184);
 }
 
 .networkContainer {
   /* background-color: lightpink; */
-  width: 90%;
+  width: 100%;
   padding: 1rem;
-  border: solid 1px grey;
+  border-radius: 1rem;
+}
+
+.darkmode {
+  position: fixed;
+  width: 5rem;
+  height: 1.5rem;
+  top: .2rem;
+  right: 10px;
+  background-color: rgb(65, 89, 229);
+  color: black;
+  border-radius: .3rem;
 }
 
 .MuiBox-root {

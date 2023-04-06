@@ -7,12 +7,12 @@ const { OTLPTraceExporter } = require("@opentelemetry/exporter-trace-otlp-http")
 //import express packages
 const express = require('express');
 const app = express();
-const cors = require('cors');
+// const cors = require('cors');
 
 //express configuration
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+// app.use(cors());
 
 // --- OPEN TELEMETRY SETUP --- //
 
