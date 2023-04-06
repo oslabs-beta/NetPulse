@@ -80,8 +80,8 @@ app.use("/", (req, res) => {
     const clientObj = {
       spanId: el.spanId,
       traceId: el.traceId,
-      startTime: el.startTimeUnixNano / Math.pow(10, 6), //[ms]
-      duration: (el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6), //[ms]
+      startTime: Math.floor(el.startTimeUnixNano / Math.pow(10, 6)), //[ms]
+      duration: Math.floor((el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6)), //[ms]
       contentLength: (() => {
         const packageObj = el.attributes.find((attr) => attr.key === "content_length");
         const size = packageObj ? packageObj.value.intValue : 0;
