@@ -21,8 +21,8 @@ Chart.register(...registerables); // register chart.js elements due to webpack t
 import { io } from "socket.io-client";
 
 //import child components
-import Sidebar from './Sidebar';
-import MainWaterfall from './MainWaterfall';
+import Sidebar from "./Sidebar";
+import MainWaterfall from "./MainWaterfall";
 import DetailList from "./DetailList";
 
 //import fonts
@@ -31,7 +31,6 @@ const inter = Inter({ subsets: ["latin"] });
 
 //Main Component - Home
 export default function Home() {
-
   // Hook for updating overall time and tying it to state
   // Time is determined by the difference between the final index's start+duration minus the initial index's start
   let initialStartTime: number;
@@ -148,7 +147,8 @@ export default function Home() {
                 marginLeft: (() => {
                   const cellStartTime = row.original["startTime"];
                   const totalTime = data.length
-                    ? data[data.length - 1]["startTime"] + data[data.length - 1]["duration"]
+                    ? data[data.length - 1]["startTime"] +
+                      data[data.length - 1]["duration"]
                     : cellStartTime;
                   const pCellTotal = (cellStartTime / totalTime) * 100;
                   return `${pCellTotal}%`;
@@ -156,7 +156,8 @@ export default function Home() {
                 width: (() => {
                   const cellDuration = row.original["duration"];
                   const totalTime = data.length
-                    ? data[data.length - 1]["startTime"] + data[data.length - 1]["duration"]
+                    ? data[data.length - 1]["startTime"] +
+                      data[data.length - 1]["duration"]
                     : cellDuration;
                   const pCellDuration = (cellDuration / totalTime) * 100;
                   return `${pCellDuration}%`;

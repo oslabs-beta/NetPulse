@@ -1,8 +1,8 @@
 .mainWaterfall {
-    background-color: #212529;
-    border: solid 1px #495057;
-    height: 15%;
-    /* border-radius: .5rem;
+  background-color: #212529;
+  border: solid 1px #495057;
+  height: 15%;
+  /* border-radius: .5rem;
     margin-bottom: 1rem; */
-    margin-top: .5rem; 
-  }
+  border-left: none;
+}

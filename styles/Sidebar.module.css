@@ -1,95 +1,111 @@
 .sidebar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #212529;
-    width: 10%;
-    min-width: 120px;
-    padding-left: 1rem;
-  }
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: space-around; */
+  background-color: #212529;
+  width: 10%;
+  min-width: 120px;
+  border: solid 1px #495057;
+  color: #ced4da;
+}
 
-  .showMenu {
-    color: #6c757d;
-    font-weight: bold;
-    display: none;
-    width: 2rem;
-    height: 2rem;
-  }
-  
-  .sbLogo {
-    margin-top: .5rem;
-    width: 90%;
-    padding: 2%;
-    height: auto;
-    /* border-radius: 1rem; */
-  }
+.Data {
+  color: teal;
+}
 
-  .engineeredByHeader {
-    font-weight: bold;
-    color: #6c757d;
-    text-align: center;
-    margin-top: 1rem;
-    margin-bottom: .5rem; 
-    font-size: 1.2rem;
-    width: 90%;
-  }
-  
-  .authorList { 
-    color: #6c757d;
-    text-align: center;
-    padding-top: .2rem;
-  }
+.mainLogo {
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .sbContent {
+/* .showMenu {
+  color: #396087;
+  font-weight: bold;
+  display: none;
+  width: 2rem;
+  height: 2rem;
+} */
 
-  }
+.textLinks {
+}
 
-  .mediumLogo {
-    display: flex;
-    width: 3rem;
-    margin-top: 18rem;
-    margin-bottom: 1rem;
-  }
+.sbLogo {
+  margin-top: 0.5rem;
+  width: 90%;
+  padding: 2%;
+  height: auto;
+  /* border-radius: 1rem; */
+  /* margin-bottom: 10rem; */
+}
 
-  .npmLogo {
-    display: flex;
-    width: 3rem;
-    margin-top: .5rem;
-    margin-bottom: 1rem;
-  }
+.sbContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
 
-  .githubLogo {
-    display: flex;
-    width: 3rem;
-    margin-top: .5rem;
-    margin-bottom: 1rem;
-  }
+.mediumLogo {
+  display: flex;
+  width: 3rem;
+  /* margin-top: 10rem; */
+  margin-bottom: 1rem;
+}
 
-  .hideMenu{
-    align-self: flex-end;
-    justify-self: start;
-    margin-right: .5rem;
-    margin-top: .5rem;
-    font-weight: bold;
-    color: rgb(5, 5, 5);
-  }
+.npmLogo {
+  display: flex;
+  width: 3rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
 
-  .sbContent {
-    height: 70%;
-    margin: 10%;
-  }
-  
-  .sidebarButtons {
-    background-color: rgb(13, 24, 144);
-    border-radius: .3rem;
-    width: 90%;
-    padding-bottom: 1rem;
-  }
-  
-  
-  .sbLinks {
-    margin: 10%;
-    display: block;
-    font-size: 1rem;
-    
-  }
+.githubLogo {
+  display: flex;
+  width: 3rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.hideMenu {
+  align-self: flex-end;
+  justify-self: start;
+  font-weight: bold;
+  color: #495057;
+  margin: 0.4rem;
+}
+
+.sbContent {
+  height: 100%;
+  margin: 10%;
+}
+
+.sidebarButtons {
+  background-color: rgb(13, 24, 144);
+  border-radius: 0.3rem;
+  width: 90%;
+  padding-bottom: 1rem;
+}
+
+.textLinks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -250%;
+}
+
+.sbLinks {
+  margin: 30% 10%;
+  display: block;
+  font-size: 1rem;
+  color: #ced4da;
+}
+
+.logoLinks {
+  display: flex;
+  flex-direction: column;
+  justify-self: end;
+}
