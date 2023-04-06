@@ -85,7 +85,7 @@ app.use("/", (req, res) => {
       duration: (el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6), //[ms]
       packageSize: el.attributes.find(
         (attr) => attr.key === "http.request_content_length_uncompressed"
-      )
+      ) // Package size should be content length
         ? el.attributes.find((attr) => attr.key === "http.request_content_length_uncompressed")
             .value.intValue
         : null,
