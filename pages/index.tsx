@@ -1,4 +1,3 @@
-///arst
 "use client";
 
 //import react and nextjs packages
@@ -47,7 +46,6 @@ export default function Home() {
     });
     socket.on("message", (msg) => {
       // when data recieved concat messages state with inbound traces
-      console.log(msg);
       const serverTraces: DataType[] = JSON.parse(msg);
       serverTraces.forEach((el: DataType) => {
         // TODO: change the below to check for equal to 0 when we get rid of starter data

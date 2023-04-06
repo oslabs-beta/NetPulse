@@ -1,22 +1,22 @@
-// arstrat
 //import telemetry packages
 const process = require("process");
 const opentelemetry = require("@opentelemetry/sdk-node");
 const { HttpInstrumentation } = require("@opentelemetry/instrumentation-http");
 const { OTLPTraceExporter } = require("@opentelemetry/exporter-trace-otlp-http");
-const { ServerResponse } = require("http");
 
-//express configuration
+//import express packages
 const express = require("express");
 const app = express();
 const cors = require("cors");
 
+//express configuration
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // --- OPEN TELEMETRY SETUP --- //
 
+//define sdk
 const sdk = new opentelemetry.NodeSDK({
   traceExporter: new OTLPTraceExporter({
     url: "http://localhost:4000/", //export traces as http req to custom express server on port 400
@@ -42,6 +42,7 @@ const sdk = new opentelemetry.NodeSDK({
   // TODO: add database instrumentation
 });
 
+//start sdk
 sdk.start();
 
 //gracefully shut down SDK on process exit
@@ -83,13 +84,18 @@ app.use("/", (req, res) => {
       traceId: el.traceId,
       startTime: el.startTimeUnixNano / Math.pow(10, 6), //[ms]
       duration: (el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6), //[ms]
-      contentLength: (() => {
-        const packageObj = el.attributes.find((attr) => attr.key === "content_length");
-        const size = packageObj ? packageObj.value.intValue : 0;
-        return size;
-      })(),
-      statusCode: el.attributes.find((attr) => attr.key === "http.status_code")?.value?.intValue,
-      endPoint: el.attributes.find((attr) => attr.key === "http.url")?.value?.stringValue,
+      packageSize: el.attributes.find(
+        (attr) => attr.key === "http.request_content_length_uncompressed"
+      )
+        ? el.attributes.find((attr) => attr.key === "http.request_content_length_uncompressed")
+            .value.intValue
+        : null,
+      statusCode: el.attributes.find((attr) => attr.key === "http.status_code")
+        ? el.attributes.find((attr) => attr.key === "http.status_code").value.intValue
+        : null,
+      endPoint: el.attributes.find((attr) => attr.key === "http.url")
+        ? el.attributes.find((attr) => attr.key === "http.url").value.stringValue
+        : null,
       requestType: el.name,
     };
 
@@ -100,9 +106,8 @@ app.use("/", (req, res) => {
       }
     }
   });
-  console.log(clientData);
-  if (clientData.length > 0) io.emit("message", JSON.stringify(clientData));
-  res.status(200).end();
+  if (clientData.length > 0) io.emit("message", JSON.stringify(clientData)); //send clientData to frontend through socket
+  res.status(200).end(); //end request response cycle
 });
 
 //start custom express server on port 4000
