@@ -21,8 +21,8 @@ Chart.register(...registerables); // register chart.js elements due to webpack t
 import { io } from "socket.io-client";
 
 //import child components
-import Sidebar from './Sidebar';
-import MainWaterfall from './MainWaterfall';
+import Sidebar from "./Sidebar";
+import MainWaterfall from "./MainWaterfall";
 import DetailList from "./DetailList";
 
 //import fonts
@@ -31,7 +31,6 @@ const inter = Inter({ subsets: ["latin"] });
 
 //Main Component - Home
 export default function Home() {
-
   // Hook for updating overall time and tying it to state
   // Time is determined by the difference between the final index's start+duration minus the initial index's start
   let initialStartTime: number;
@@ -114,7 +113,7 @@ export default function Home() {
       },
       {
         header: "Size",
-        accessorKey: "packageSize",
+        accessorKey: "contentLength",
       },
       {
         header: "Status",
@@ -171,7 +170,7 @@ export default function Home() {
         },
       },
     ],
-    [data] //dependency array
+    [data]
   );
 
   return (

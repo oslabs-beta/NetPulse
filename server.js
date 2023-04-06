@@ -26,6 +26,7 @@ const sdk = new opentelemetry.NodeSDK({
        * res: @type ServerReponse from "http"
        */
       responseHook: (span, res) => {
+        // Get the length of the 8-bit byte array. Size indicated the number of bytes of data
         let size = 0;
         res.on("data", (chunk) => {
           size += chunk.length;
@@ -65,7 +66,6 @@ const includesAny = (array, string) => {
 //otelEndpointHandler
 app.use("/", (req, res) => {
   const clientData = [];
-  console.log("START SPAN");
   // console.dir(req.body.resourceSpans[0].scopeSpans[0].spans, { depth: null });
   const spans = req.body.resourceSpans[0].scopeSpans[0].spans;
   const ignoreEndpoints = ["localhost", "socket", "nextjs"]; //endpoints to ignore
