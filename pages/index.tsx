@@ -112,7 +112,7 @@ export default function Home() {
       },
       {
         header: "Size",
-        accessorKey: "packageSize",
+        accessorKey: "contentLength",
       },
       {
         header: "Status",
@@ -171,7 +171,7 @@ export default function Home() {
         },
       },
     ],
-    [data] //dependency array
+    [data]
   );
 
   return (
