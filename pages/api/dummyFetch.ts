@@ -6,7 +6,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-      //make a node fetch request to external api to test open telemetry
+      //make many fetches at once
       const response = await fetch(`https://swapi.dev/api/people/4`);
       const response2 = await fetch(`https://zenquotes.io/api/today`);
       const response3 = await fetch(`https://api.adviceslip.com/advice`);

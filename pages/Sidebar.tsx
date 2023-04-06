@@ -10,7 +10,7 @@ export default function Sidebar() {
   //   document.querySelector("#sidebar").style.display = "none";
   //   document.querySelector("#showMenu").style.display = "initial";
   // }
-
+  // SHRINKING CODE -> Eventually needs to be converted from queryselector
   // function showSidebar() {
   //   document.querySelector("#sidebar").style.display = "initial";
   //   document.querySelector("#showMenu").style.display = "none";
