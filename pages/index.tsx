@@ -127,7 +127,7 @@ export default function Home() {
         accessorKey: "requestType",
       },
       {
-        header: "Span ID",
+        header: "Waterfall",
         accessorKey: "spanId",
         enablePinning: true,
         minSize: 200, //min size enforced during resizing
@@ -140,14 +140,15 @@ export default function Home() {
               component="span"
               sx={(theme) => ({
                 backgroundColor: "green",
-                borderRadius: "0.2rem",
-                color: "#fff",
+                borderRadius: "0.1rem",
+                color: "green",
                 // Proof of concept for the displays - these still must be tied to state.  We first select the
                 // cell, then determine the left and right portions and make it a percentage
                 marginLeft: (() => {
                   const cellStartTime = row.original["startTime"];
                   const totalTime = data.length
-                    ? data[data.length - 1]["startTime"] + data[data.length - 1]["duration"]
+                    ? data[data.length - 1]["startTime"] +
+                      data[data.length - 1]["duration"]
                     : cellStartTime;
                   const pCellTotal = (cellStartTime / totalTime) * 100;
                   return `${pCellTotal}%`;
@@ -155,7 +156,8 @@ export default function Home() {
                 width: (() => {
                   const cellDuration = row.original["duration"];
                   const totalTime = data.length
-                    ? data[data.length - 1]["startTime"] + data[data.length - 1]["duration"]
+                    ? data[data.length - 1]["startTime"] +
+                      data[data.length - 1]["duration"]
                     : cellDuration;
                   const pCellDuration = (cellDuration / totalTime) * 100;
                   return `${pCellDuration}%`;
@@ -163,7 +165,8 @@ export default function Home() {
               })}
             >
               {/* below is the duration in seconds displayed as text in the waterfall bar */}
-              {row.original["duration"] / 1000}
+              {/* {row.original["duration"] / 1000} */}
+              |
             </Box>
           );
         },

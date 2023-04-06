@@ -8,19 +8,20 @@ export default function App({ Component, pageProps }: AppProps) {
     palette: {
       mode: 'dark',
       primary: {
-        main: '#5a667e',
+        main: '#212529',
       },
       secondary: {
-        main: '#7e715a',
+        main: '#212529',
       },
       background: {
-        default: '#322c35',
-        paper: 'rgba(41,36,36,0.94)',
+        default: '#212529',
+        paper: '#212529',
       },
       success: {
-        main: '#5a797e',
+        main: '#212529',
       },
-    },})
+    },
+    })
 
   return (<ThemeProvider theme = {theme}><Component {...pageProps} /></ThemeProvider>)
 }
