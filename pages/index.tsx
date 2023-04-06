@@ -139,9 +139,10 @@ export default function Home() {
             <Box
               component="span"
               sx={(theme) => ({
-                backgroundColor: "green",
+                backgroundColor:
+                  row.original["duration"] < 40000 ? "green" : "red",
                 borderRadius: "0.1rem",
-                color: "green",
+                color: row.original["duration"] < 40000 ? "green" : "red",
                 // Proof of concept for the displays - these still must be tied to state.  We first select the
                 // cell, then determine the left and right portions and make it a percentage
                 marginLeft: (() => {
@@ -165,8 +166,7 @@ export default function Home() {
               })}
             >
               {/* below is the duration in seconds displayed as text in the waterfall bar */}
-              {/* {row.original["duration"] / 1000} */}
-              |
+              {/* {row.original["duration"] / 1000} */}|
             </Box>
           );
         },
