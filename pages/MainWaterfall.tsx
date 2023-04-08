@@ -4,7 +4,7 @@ import { Bar } from "react-chartjs-2";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Sidebar(props: any) {
+export default function MainWaterfall(props: any) {
   return (
     <div className={styles.mainWaterfall}>
       {/* Bar component from react-chartjs with all options/plugins */}
