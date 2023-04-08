@@ -198,7 +198,7 @@ export default function Home() {
       <main className={styles.main}>
         <Sidebar />
         <div className={styles.networkContainer}>
-          <MainWaterfall barData={barData} />
+          <MainWaterfall data={data} />
           <DetailList data={data} columns={columns} />
         </div>
       </main>
