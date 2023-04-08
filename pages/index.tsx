@@ -139,9 +139,10 @@ export default function Home() {
             <Box
               component="span"
               sx={(theme) => ({
-                backgroundColor: "green",
+                backgroundColor:
+                  errColor(row.original["contentLength"]!, row.original['statusCode']),
                 borderRadius: "0.1rem",
-                color: "green",
+                color: 'white',
                 // Proof of concept for the displays - these still must be tied to state.  We first select the
                 // cell, then determine the left and right portions and make it a percentage
                 marginLeft: (() => {
@@ -165,8 +166,7 @@ export default function Home() {
               })}
             >
               {/* below is the duration in seconds displayed as text in the waterfall bar */}
-              {/* {row.original["duration"] / 1000} */}
-              |
+              {/* {row.original["duration"] / 1000} */}|
             </Box>
           );
         },
@@ -174,6 +174,17 @@ export default function Home() {
     ],
     [data]
   );
+
+  function errColor ( contentLength: number, statusCode: number ): string  {
+    if (!statusCode) return 'red'; 
+    const strStatus: string = statusCode.toString();
+    console.log(strStatus[0]);
+    if (contentLength > 1 && strStatus[0] === '2') return 'green';
+    if (strStatus[0] === '3' ) return '#34dbeb'
+    if (strStatus[0] === '4' ) return 'red';
+    if (strStatus[0] === '5' ) return 'red';
+    else return 'red'; 
+  }
 
   return (
     <>
@@ -184,7 +195,6 @@ export default function Home() {
         {/* REMEMBER TO CHANGE ICON AND FAVICON LTER */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <main className={styles.main}>
         <Sidebar />
         <div className={styles.networkContainer}>

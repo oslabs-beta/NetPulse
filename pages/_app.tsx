@@ -1,9 +1,10 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { createTheme, ThemeProvider, useTheme } from '@mui/material';
+import { useState, useEffect } from 'react';
 
 export default function App({ Component, pageProps }: AppProps) {
-  
+
   const theme = createTheme({
     palette: {
       mode: 'dark',
