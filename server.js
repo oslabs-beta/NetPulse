@@ -1,4 +1,5 @@
 //open telemetry packages
+require('dotenv').config();
 const { NodeTracerProvider, SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-node');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
@@ -11,7 +12,6 @@ const mongoose = require('mongoose');
 //pg instrumentation
 const { PgInstrumentation } = require('@opentelemetry/instrumentation-pg');
 const { Pool } = require('pg');
-
 
 // --- OPEN TELEMETRY SETUP --- //
 
