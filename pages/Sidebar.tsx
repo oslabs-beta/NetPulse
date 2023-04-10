@@ -1,9 +1,11 @@
-"use client";
-import styles from "@/styles/Sidebar.module.css";
-import Image from "next/image";
-import Link from "next/link";
-import { Inter } from "next/font/google";
-const inter = Inter({ subsets: ["latin"] });
+'use client';
+
+import styles from '@/styles/Sidebar.module.css';
+import Image from 'next/image';
+import Link from 'next/link';
+// import { Inter } from "next/font/google";
+
+// const inter = Inter({ subsets: ["latin"] });
 
 export default function Sidebar() {
   // function hideSidebar() {
@@ -36,7 +38,7 @@ export default function Sidebar() {
               <span>Trace</span>
             </div>
             <Image
-              src={"/images/black.png"}
+              src="/images/black.png"
               className={styles.sbLogo}
               alt="DataTrace Logo"
               width="190"

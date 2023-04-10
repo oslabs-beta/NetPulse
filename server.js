@@ -29,7 +29,7 @@ registerInstrumentations({
 
         // Get the length of the 8-bit byte array. Size indicated the number of bytes of data
         let size = 0;
-        res.on("data", (chunk) => {
+        res.on('data', (chunk) => {
           size += chunk.length;
         });
 
@@ -84,20 +84,20 @@ const server = app
   .listen(4000, () => {
     console.log(`Custom trace listening server on port 4000`);
   })
-  .on("error", function (err) {
-    process.once("SIGUSR2", function () {
-      process.kill(process.pid, "SIGUSR2");
+  .on('error', function (err) {
+    process.once('SIGUSR2', function () {
+      process.kill(process.pid, 'SIGUSR2');
     });
-    process.on("SIGINT", function () {
+    process.on('SIGINT', function () {
       // this is only called on ctrl+c, not restart
-      process.kill(process.pid, "SIGINT");
+      process.kill(process.pid, 'SIGINT');
     });
   });
 
 //create socket running on top of express server + enable cors
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: 'http://localhost:3000',
     credentials: true,
   },
 });
