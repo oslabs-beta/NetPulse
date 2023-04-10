@@ -1,17 +1,13 @@
 // import telemetry packages
-const process = require("process");
-// const opentelemetry = require("@opentelemetry/sdk-node");
 const { NodeTracerProvider, SimpleSpanProcessor } = require("@opentelemetry/sdk-trace-node");
-const { AlwaysOffSampler } = require('@opentelemetry/core');
-const { diag } = require("@opentelemetry/api");
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 const { HttpInstrumentation } = require("@opentelemetry/instrumentation-http");
 const { OTLPTraceExporter } = require("@opentelemetry/exporter-trace-otlp-http");
 // mongoose instrumentation
 const { MongooseInstrumentation } = require("@opentelemetry/instrumentation-mongoose");
 const mongoose = require("mongoose");
+require('dotenv').config();
 //server response
-const { ServerReponse } = require("http");
 
 // --- OPEN TELEMETRY SETUP --- //
 
@@ -65,17 +61,14 @@ provider.register();
 //express configuration
 const express = require("express");
 const app = express();
-const cors = require("cors");
 //import middleware
 const otelController = require("./otelController");
 
-// express parsing
+// // express parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(cors());
 
-//custom express server running on port 4000 to send data to front end
-//otelEndpointHandler
+// //custom express server running on port 4000 to send data to front end otel 
 app.use("/", otelController.parseTrace, (req, res) => {
   if (res.locals.clientData.length > 0)
     io.emit("message", JSON.stringify(res.locals.clientData));
@@ -88,6 +81,7 @@ app.use("/", otelController.parseTrace, (req, res) => {
 const server = app
   .listen(4000, () => {
     console.log(`Custom trace listening server on port 4000`);
+    console.log("Express Server Ready");
   })
   .on("error", function (err) {
     process.once("SIGUSR2", function () {
@@ -99,7 +93,7 @@ const server = app
     });
   });
 
-//create socket running on top of express server (port 4000) + enable cors
+// //create socket running on top of express server (port 4000) + enable cors
 const io = require("socket.io")(server, {
   cors: {
     origin: "http://localhost:3000",
@@ -107,11 +101,11 @@ const io = require("socket.io")(server, {
   },
 });
 
-// --- MONGOOSE SETUP (FOR TESTING) --- //
 
-// v-- REPLACE THE EMPTY STRING WITH YOUR LOCAL/MLAB/ELEPHANTSQL URI
-const myURI =
-  "mongodb+srv://austinhoang14:austin95@cluster0.7adpryn.mongodb.net/test";
+// // --- MONGOOSE SETUP (FOR TESTING) --- //
+
+// // v-- REPLACE THE EMPTY STRING WITH YOUR LOCAL/MLAB/ELEPHANTSQL URI
+const myURI = process.env.mongoURI;
 
 // using older version of mongoose, so need to set strictQuery or else get warning
 mongoose.set("strictQuery", true);
@@ -122,7 +116,7 @@ mongoose
   .connect(myURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    dbName: "movies",
+    dbName: "Movies",
   })
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.log("Error connecting to DB: ", err));
@@ -140,11 +134,14 @@ const movieSchema = new Schema({
   },
   watched: {
     type: Boolean,
-    default: false,
-  },
+    required: true,
+  }
 });
 
 // model for movies using movieSchema
-const Movie = model("movie", movieSchema);
+const Movie = model("Movies", movieSchema, "Movies");
+
+console.log("database configured");
 
 module.exports = Movie;
+

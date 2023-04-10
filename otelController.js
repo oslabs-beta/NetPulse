@@ -1,5 +1,3 @@
-const { LegendToggle } = require("@mui/icons-material");
-
 const otelController = {};
 
 //middleware to handle parsing mongoose requests
