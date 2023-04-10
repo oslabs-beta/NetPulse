@@ -125,17 +125,13 @@ const parsePg = (clientData, spans) => {
 otelController.parseTrace = (req, res, next) => {
   let clientData = [];
   const spans = req.body.resourceSpans[0].scopeSpans[0].spans;
-  // console.log("in middleware");
-  // console.log("DB SPAN ATTRIBUTES:", spans.attributes);
 
   const instrumentationLibrary = spans[0].attributes.find(
     (attr) => attr.key === "instrumentationLibrary"
   )?.value?.stringValue;
 
-  // console.log("instrumentation library", instrumentationLibrary);
-
-  //deconstruct OTLP body based on instrumentation library span was instrumented with
-  // console.log("Instrumentation library: ",instrumentationLibrary);
+  //invoke different middleware function based on instrument used to collect incoming trace
+  //middleware functions will deconstruct request body and built out clientData array
   switch (instrumentationLibrary) {
     case "@opentelemetry/instrumentation-mongoose":
       clientData = parseMongoose(clientData, spans);
@@ -145,10 +141,8 @@ otelController.parseTrace = (req, res, next) => {
       break;
     case "@opentelemetry/instrumentation-pg":
       clientData = parsePg(clientData, spans);
-      // console.dir(spans[0], {depth: null});
       break;
     default:
-      // console.log("otelController parseTrace middleware hit default switch case","    ", instrumentationLibrary);
       break;
   }
 
