@@ -12,7 +12,6 @@ const mongoose = require('mongoose');
 const { PgInstrumentation } = require('@opentelemetry/instrumentation-pg');
 const { Pool } = require('pg');
 
-require('dotenv').config();
 
 // --- OPEN TELEMETRY SETUP --- //
 
