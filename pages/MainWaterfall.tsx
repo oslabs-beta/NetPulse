@@ -32,16 +32,20 @@ export default function MainWaterfall(props: any) {
         width: svgWidth,
         height: svgHeight,
         marks: [
+          Plot.axisX({color: '#ced4da', anchor: 'top'}),
           Plot.barX(data, {
-            x1: "startTime",
+            x1: data => data.startTime,
             x2: data => data.startTime + data.duration,
-            y: "traceId",
+            y: data => data.traceId,
             rx: 1,
-            fill: data => errColor(data.contentLength, data.statusCode)
+            fill: data => errColor(data.contentLength, data.statusCode),
           }),
-        ], 
+          Plot.gridX({ stroke: '#ced4da', strokeOpacity: .2})
+        ],
+        x: { label: null },
+        y: { axis: null },
       });
-
+  
   d3.select(svgRef.current).selectAll("*").remove();
 
   if (p){
