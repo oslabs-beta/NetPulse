@@ -41,7 +41,9 @@ export default function MainWaterfall(props: any) {
           }),
         ], 
       });
-    
+
+  d3.select(svgRef.current).selectAll("*").remove();
+
   if (p){
    d3.select(svgRef.current).append(() => p);
   }
