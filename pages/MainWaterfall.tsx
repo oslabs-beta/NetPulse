@@ -3,53 +3,49 @@ import styles from "@/styles/MainWaterfall.module.css";
 import { Inter } from "next/font/google";
 import * as d3 from 'd3';
 import * as Plot from "@observablehq/plot";
+import { DataType } from "../types";
+import { errColor } from "../errColor";
+import { useEffect, useRef } from 'react';
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function MainWaterfall(props: any) {
+
+  const svgRef: any = useRef(); 
+
+  useEffect(() => {
+    make_gantt_chart(props.data); 
+  }, [props.data])
+
+  function make_gantt_chart(data: any) {
+    console.log('in gantt chart');
+    
+    if (data.length === 0) {console.log('cant find data');return};
+    console.log(data[0].endTime);
+    let p: any = Plot.plot({
+        marks: [
+          Plot.barX(data, {
+            x1: "startTime",
+            x2: "endTime",
+            y: "spanId",
+            rx: 5,
+            fill: errColor("contentLength", "statusCode")
+          }),
+        ]
+      });
+    
+  if (p){
+   d3.select(p)
+      .select('g[aria-label="rule"]')
+      .attr("transform", `translate(0,${p.scale("y").bandwidth})`);    
+   d3.select('svg').append(() => p);
+  }
+}
+
+
   return (
-    <div className={styles.mainWaterfall}>
-      
-    </div>
+    <svg ref = {svgRef} width = "900"></svg>
   );
 }
 
-function make_gantt_chart(data) {
-  // Unpack data here
-
-  let p = Plot.plot({
-      width: 900,
-      height: 500,
-      y: { domain: [traceIds|TraceNames] },
-      marks: [
-        Plot.barX(UnpackedDataArray, {
-          x1: "Start Time",
-          x2: "End Time",
-          y: "TraceID",
-          rx: 5,
-          // Swap the fill functions...Use color picker function? 
-          fill: function (d) {
-            if (d.status == "RUNNING") {
-              return "#669900";
-            } else if (d.status == "FAILED") {
-              return "#CC0000";
-            } else if (d.status == "KILLED") {
-              return "#ffbb33";
-            } else if (d.status == "SUCCEEDED") {
-              return "#33b5e5";
-            } else {
-              return "#33b5e5";
-            }
-          }
-        }),
-        Plot.ruleY(["FINAL TRACE ID"]),
-        Plot.ruleX([d3.min(DATADURATIONARRAY.map((t) => t.startDate))])
-      ]
-    });
-
-    d3.select(p)
-      .select('g[aria-label="rule"]')
-      .attr("transform", `translate(0,${p.scale("y").bandwidth})`);    
-   d3.select('#container').append(() => p)
-}
 

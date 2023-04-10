@@ -3,6 +3,7 @@ export interface DataType {
   traceId: string;
   startTime: number;
   duration: number;
+  endTime: number;
   contentLength: number | null;
   statusCode: number;
   endPoint: string;

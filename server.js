@@ -77,11 +77,17 @@ app.use("/", (req, res) => {
   //el.attributes.find finds the array element with a matching key desired and returns the unnested value if
   //exists or null if doesn't exist
   spans.forEach((el) => {
+    // Why is this so fucking big?
+    const start = Math.floor(el.startTimeUnixNano / Math.pow(10, 6));
+    const duration = Math.floor((el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6));
+    const end = Math.floor((el.endTimeUnixNano) / Math.pow(10,6));
+
     const clientObj = {
       spanId: el.spanId,
       traceId: el.traceId,
-      startTime: Math.floor(el.startTimeUnixNano / Math.pow(10, 6)), //[ms]
-      duration: Math.floor((el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6)), //[ms]
+      startTime: start, //[ms]
+      duration: duration,
+      endTime:  end,//[ms]
       contentLength: (() => {
         const packageObj = el.attributes.find((attr) => attr.key === "content_length");
         const size = packageObj ? packageObj.value.intValue : 0;
