@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-const { Movie } = require("../../server.js");
+
+const { Movie } = require("../../server");
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,9 +9,7 @@ export default async function handler(
 ) {
   await Movie
     .find({})
-    .then((data: any) => {
-      return res.status(200).json(data[0]);
-    })
+    .then((data: any) => res.status(200).json(data[0]))
     .catch((err: any) => {
       console.log("error:", err);
       return res.status(404).json("fuck");
