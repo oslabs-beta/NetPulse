@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npm run fix:tsc && \
+npm run fix:lint && \
+npm run fix:format && \
+npm test
