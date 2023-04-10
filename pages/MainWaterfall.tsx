@@ -6,45 +6,50 @@ import * as Plot from "@observablehq/plot";
 import { DataType } from "../types";
 import { errColor } from "../errColor";
 import { useEffect, useRef } from 'react';
+import { width } from "@mui/system";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function MainWaterfall(props: any) {
 
-  const svgRef: any = useRef(); 
+  const svgRef: any = useRef(null); 
+  let svgWidth: any, svgHeight: any;
 
   useEffect(() => {
+    if (svgRef.current) {
+      const dimensions = svgRef.current.getBoundingClientRect();
+      svgWidth = dimensions.width;
+      svgHeight = dimensions.height
+    }
     make_gantt_chart(props.data); 
   }, [props.data])
 
   function make_gantt_chart(data: any) {
-    console.log('in gantt chart');
-    
-    if (data.length === 0) {console.log('cant find data');return};
-    console.log(data[0].endTime);
+
+    if (data.length === 0) {return};
+
     let p: any = Plot.plot({
+        width: svgWidth,
+        height: svgHeight,
         marks: [
           Plot.barX(data, {
             x1: "startTime",
-            x2: "endTime",
-            y: "spanId",
-            rx: 5,
-            fill: errColor("contentLength", "statusCode")
+            x2: data => data.startTime + data.duration,
+            y: "traceId",
+            rx: 1,
+            fill: data => errColor(data.contentLength, data.statusCode)
           }),
-        ]
+        ], 
       });
     
   if (p){
-   d3.select(p)
-      .select('g[aria-label="rule"]')
-      .attr("transform", `translate(0,${p.scale("y").bandwidth})`);    
-   d3.select('svg').append(() => p);
+   d3.select(svgRef.current).append(() => p);
   }
 }
 
 
   return (
-    <svg ref = {svgRef} width = "900"></svg>
+    <svg className = {styles.chart} ref = {svgRef} ></svg>
   );
 }
 

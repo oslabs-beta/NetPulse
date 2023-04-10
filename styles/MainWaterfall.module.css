@@ -1,10 +1,6 @@
-.mainWaterfall {
-  background-color: #212529;
-  border: solid 1px #495057;
+.chart {
+  width: 100%;
   height: 15%;
-  /* border-radius: .5rem;
-    margin-bottom: 1rem; */
-  border-left: none;
 }
 
 

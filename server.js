@@ -80,14 +80,12 @@ app.use("/", (req, res) => {
     // Why is this so fucking big?
     const start = Math.floor(el.startTimeUnixNano / Math.pow(10, 6));
     const duration = Math.floor((el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6));
-    const end = Math.floor((el.endTimeUnixNano) / Math.pow(10,6));
-
+    
     const clientObj = {
       spanId: el.spanId,
       traceId: el.traceId,
       startTime: start, //[ms]
-      duration: duration,
-      endTime:  end,//[ms]
+      duration: duration,//[ms]
       contentLength: (() => {
         const packageObj = el.attributes.find((attr) => attr.key === "content_length");
         const size = packageObj ? packageObj.value.intValue : 0;

@@ -11,7 +11,6 @@ import { useMemo, useState, useEffect, useRef } from "react";
 import type { MRT_ColumnDef, MRT_Virtualizer } from "material-react-table";
 
 //Material-UI Imports
-import { CellTower } from "@mui/icons-material";
 import { Box } from "@mui/material";
 import { Chart, ChartType, registerables } from "chart.js"; // import chart.js & react-chartjs components
 import "chartjs-adapter-date-fns";
@@ -198,7 +197,7 @@ export default function Home() {
       <main className={styles.main}>
         <Sidebar />
         <div className={styles.networkContainer}>
-          <MainWaterfall data={data} />
+          <MainWaterfall data={data}/>
           <DetailList data={data} columns={columns} />
         </div>
       </main>
