@@ -99,6 +99,15 @@ export default function Home() {
   const columns = useMemo<MRT_ColumnDef<DataType>[]>(
     () => [
       {
+        header: "Endpoint",
+        accessorKey: "endPoint",
+      },
+      {
+        header: "Request",
+        accessorKey: "requestType",
+      },
+      
+      {
         header: "Start",
         accessorKey: "startTime",
       },
@@ -117,14 +126,6 @@ export default function Home() {
       {
         header: "Status",
         accessorKey: "statusCode",
-      },
-      {
-        header: "Endpoint",
-        accessorKey: "endPoint",
-      },
-      {
-        header: "Request",
-        accessorKey: "requestType",
       },
       {
         header: "Waterfall",
