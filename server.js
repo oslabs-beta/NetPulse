@@ -1,39 +1,23 @@
 // import telemetry packages
 const process = require("process");
-const opentelemetry = require("@opentelemetry/sdk-node");
+// const opentelemetry = require("@opentelemetry/sdk-node");
+const { NodeTracerProvider, SimpleSpanProcessor } = require("@opentelemetry/sdk-trace-node");
+const { AlwaysOffSampler } = require('@opentelemetry/core');
 const { diag } = require("@opentelemetry/api");
+const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 const { HttpInstrumentation } = require("@opentelemetry/instrumentation-http");
-const {
-  OTLPTraceExporter,
-} = require("@opentelemetry/exporter-trace-otlp-http");
+const { OTLPTraceExporter } = require("@opentelemetry/exporter-trace-otlp-http");
 // mongoose instrumentation
-const {
-  MongooseInstrumentation,
-} = require("@opentelemetry/instrumentation-mongoose");
+const { MongooseInstrumentation } = require("@opentelemetry/instrumentation-mongoose");
 const mongoose = require("mongoose");
-mongoose.set("debug", true);
-
-//express configuration
-const express = require("express");
-const app = express();
-const cors = require("cors");
-
 //server response
 const { ServerReponse } = require("http");
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-// app.use(cors());
-
-//import middleware
-const otelController = require("./otelController");
-
 // --- OPEN TELEMETRY SETUP --- //
 
-const sdk = new opentelemetry.NodeSDK({
-  traceExporter: new OTLPTraceExporter({
-    url: "http://localhost:4000/", //export traces as http req to custom express server on port 400
-  }),
+const provider = new NodeTracerProvider();
+
+registerInstrumentations({
   instrumentations: [
     new HttpInstrumentation({
       // res: @type ServerReponse from "http"
@@ -67,21 +51,28 @@ const sdk = new opentelemetry.NodeSDK({
       },
     }),
   ],
-  // TODO: add database instrumentation
 });
 
-sdk.start();
-
-//gracefully shut down SDK on process exit
-process.on("SIGTERM", () => {
-  sdk
-    .shutdown()
-    .then(() => console.log("Tracing terminated"))
-    .catch((error) => console.log("Error terminating tracing", error))
-    .finally(() => process.exit(0));
+const traceExporter = new OTLPTraceExporter({
+  url: "http://localhost:4000/", //export traces as http req to custom express server on port 400
 });
+provider.addSpanProcessor(new SimpleSpanProcessor(traceExporter));
+provider.register();
+
 
 // --- EXPRESS SERVER / SOCKET SETUP --- //
+
+//express configuration
+const express = require("express");
+const app = express();
+const cors = require("cors");
+//import middleware
+const otelController = require("./otelController");
+
+// express parsing
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+// app.use(cors());
 
 //custom express server running on port 4000 to send data to front end
 //otelEndpointHandler
@@ -122,6 +113,7 @@ const io = require("socket.io")(server, {
 const myURI =
   "mongodb+srv://austinhoang14:austin95@cluster0.7adpryn.mongodb.net/test";
 
+// using older version of mongoose, so need to set strictQuery or else get warning
 mongoose.set("strictQuery", true);
 
 // TO-DO: Remove the below mongoose test code for production build

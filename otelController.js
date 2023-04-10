@@ -99,6 +99,7 @@ otelController.parseTrace = (req, res, next) => {
   // console.log("instrumentation library", instrumentationLibrary);
 
   //deconstruct OTLP body based on instrumentation library span was instrumented with
+  // console.log("Instrumentation library: ",instrumentationLibrary);
   switch (instrumentationLibrary) {
     case "@opentelemetry/instrumentation-mongoose":
       clientData = parseMongoose(clientData, spans);
@@ -107,7 +108,7 @@ otelController.parseTrace = (req, res, next) => {
       clientData = parseHTTP(clientData, spans);
       break;
     default:
-      console.log("otelController parseTrace middleware hit default switch case");
+      // console.log("otelController parseTrace middleware hit default switch case","    ", instrumentationLibrary);
       break;
   }
 
