@@ -1,18 +1,32 @@
 // import telemetry packages
 const process = require("process");
 const opentelemetry = require("@opentelemetry/sdk-node");
+const { diag } = require("@opentelemetry/api");
 const { HttpInstrumentation } = require("@opentelemetry/instrumentation-http");
-const { OTLPTraceExporter } = require("@opentelemetry/exporter-trace-otlp-http");
-const { ServerResponse } = require("http");
+const {
+  OTLPTraceExporter,
+} = require("@opentelemetry/exporter-trace-otlp-http");
+// mongoose instrumentation
+const {
+  MongooseInstrumentation,
+} = require("@opentelemetry/instrumentation-mongoose");
+const mongoose = require("mongoose");
+mongoose.set("debug", true);
 
 //express configuration
 const express = require("express");
 const app = express();
 const cors = require("cors");
 
+//server response
+const { ServerReponse } = require("http");
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // app.use(cors());
+
+//import middleware
+const otelController = require("./otelController");
 
 // --- OPEN TELEMETRY SETUP --- //
 
@@ -22,10 +36,13 @@ const sdk = new opentelemetry.NodeSDK({
   }),
   instrumentations: [
     new HttpInstrumentation({
-      /*
-       * res: @type ServerReponse from "http"
-       */
+      // res: @type ServerReponse from "http"
       responseHook: (span, res) => {
+        span.setAttribute(
+          "instrumentationLibrary",
+          span.instrumentationLibrary.name
+        );
+
         // Get the length of the 8-bit byte array. Size indicated the number of bytes of data
         let size = 0;
         res.on("data", (chunk) => {
@@ -33,8 +50,20 @@ const sdk = new opentelemetry.NodeSDK({
         });
 
         res.on("end", () => {
-          span.setAttribute("content_length", size);
+          span.setAttribute("contentLength", size);
         });
+      },
+    }),
+    new MongooseInstrumentation({
+      responseHook: (span, res) => {
+        span.setAttribute(
+          "contentLength",
+          Buffer.byteLength(JSON.stringify(res.response))
+        );
+        span.setAttribute(
+          "instrumentationLibrary",
+          span.instrumentationLibrary.name
+        );
       },
     }),
   ],
@@ -54,54 +83,14 @@ process.on("SIGTERM", () => {
 
 // --- EXPRESS SERVER / SOCKET SETUP --- //
 
-//identifies strings with substrings that match array elements
-const includesAny = (array, string) => {
-  for (let i = 0; i < array.length; i++) {
-    if (string.includes(array[i])) return true;
-  }
-  return false;
-};
-
 //custom express server running on port 4000 to send data to front end
 //otelEndpointHandler
-app.use("/", (req, res) => {
-  const clientData = [];
-  // console.dir(req.body.resourceSpans[0].scopeSpans[0].spans, { depth: null });
-  const spans = req.body.resourceSpans[0].scopeSpans[0].spans;
-  const ignoreEndpoints = ["localhost", "socket", "nextjs"]; //endpoints to ignore
+app.use("/", otelController.parseTrace, (req, res) => {
+  if (res.locals.clientData.length > 0)
+    io.emit("message", JSON.stringify(res.locals.clientData));
 
-  //add specific span data to clientData array through deconstruction of span elements
-  //spans is an array of span objects
-  //attributes is an array of nested object with one key-value pair per array element
-  //ex: attributes = [{key: 'http.url', value: {stringValue: 'wwww.api.com/'}}...]
-  //el.attributes.find finds the array element with a matching key desired and returns the unnested value if
-  //exists or null if doesn't exist
-  spans.forEach((el) => {
-    const clientObj = {
-      spanId: el.spanId,
-      traceId: el.traceId,
-      startTime: Math.floor(el.startTimeUnixNano / Math.pow(10, 6)), //[ms]
-      duration: Math.floor((el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6)), //[ms]
-      contentLength: (() => {
-        const packageObj = el.attributes.find((attr) => attr.key === "content_length");
-        const size = packageObj ? packageObj.value.intValue : 0;
-        return size;
-      })(),
-      statusCode: el.attributes.find((attr) => attr.key === "http.status_code")?.value?.intValue,
-      endPoint: el.attributes.find((attr) => attr.key === "http.url")?.value?.stringValue,
-      requestType: el.name,
-    };
-
-    //if the endpoint is an external api add it to client data array
-    if (clientObj.endPoint) {
-      if (!includesAny(ignoreEndpoints, clientObj.endPoint)) {
-        clientData.push(clientObj);
-      }
-    }
-  });
-  console.log(clientData);
-  if (clientData.length > 0) io.emit("message", JSON.stringify(clientData));
-  res.status(200).end();
+  // console.log(res.locals.clientData);
+  res.sendStatus(200);
 });
 
 //start custom express server on port 4000
@@ -126,3 +115,44 @@ const io = require("socket.io")(server, {
     credentials: true,
   },
 });
+
+// --- MONGOOSE SETUP (FOR TESTING) --- //
+
+// v-- REPLACE THE EMPTY STRING WITH YOUR LOCAL/MLAB/ELEPHANTSQL URI
+const myURI =
+  "mongodb+srv://austinhoang14:austin95@cluster0.7adpryn.mongodb.net/test";
+
+mongoose.set("strictQuery", true);
+
+// TO-DO: Remove the below mongoose test code for production build
+// connection to mongoDB using mongoose + test schema
+mongoose
+  .connect(myURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    dbName: "movies",
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.log("Error connecting to DB: ", err));
+
+mongoose.models = {};
+
+// deconstructed mongoose.Schema and mongoose.model
+const { Schema, model } = mongoose;
+
+// schema for movies
+const movieSchema = new Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  watched: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+// model for movies using movieSchema
+const Movie = model("movie", movieSchema);
+
+module.exports = Movie;
