@@ -146,7 +146,7 @@ export default function Home() {
                 backgroundColor:
                   row.original["duration"] < 40000 ? "green" : "red",
                 borderRadius: "0.1rem",
-                color: row.original["duration"] < 40000 ? "green" : "red",
+                color: "transparent",
                 // Proof of concept for the displays - these still must be tied to state.  We first select the
                 // cell, then determine the left and right portions and make it a percentage
                 marginLeft: (() => {

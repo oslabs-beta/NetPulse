@@ -1,6 +1,6 @@
 const otelController = {};
 
-//identifies strings with substrings that match array elements
+//helper function - identifies strings with substrings that match array elements
 const includesAny = (array, string) => {
   for (let i = 0; i < array.length; i++) {
     if (string.includes(array[i])) return true;
@@ -38,7 +38,7 @@ const parseHTTP = (clientData, spans) => {
       endPoint: el.attributes.find((attr) => attr.key === "http.url")?.value
         ?.stringValue,
       requestMethod: el.name,
-      requestType: 'HTTP',
+      requestType: 'HTTPS',
     };
 
     //if the endpoint is an external api add it to client data array

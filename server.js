@@ -46,10 +46,6 @@ registerInstrumentations({
     }),
     new PgInstrumentation({
       responseHook: (span, res) => {
-
-        // console.dir(res, { depth: null })
-        // console.log('------------------------------------------')
-        // console.dir(span, { depth: null })
         span.setAttribute("contentLength", Buffer.byteLength(JSON.stringify(res.data.rows)));
         span.setAttribute("instrumentationLibrary", span.instrumentationLibrary.name);
       }
@@ -106,8 +102,7 @@ const io = require("socket.io")(server, {
   },
 });
 
-
-// // --- MONGOOSE SETUP (FOR TESTING) --- //
+// --- MONGOOSE SETUP (FOR TESTING) --- //
 const myURI = process.env.mongoURI;
 
 // using older version of mongoose, so need to set strictQuery or else get warning
@@ -148,7 +143,6 @@ const Movie = model("Movies", movieSchema, "Movies");
 const pool = new Pool({
   connectionString: process.env.pgURI
 });
-
 
 module.exports = { Movie, pool };
 
