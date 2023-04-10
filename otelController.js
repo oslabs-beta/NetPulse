@@ -1,37 +1,11 @@
 const otelController = {};
 
-//middleware to handle parsing mongoose requests
-const parseMongoose = (clientData, spans) => {
-  //iterate through array of OTLP objects pulling desired attri
-  spans.forEach((el) => {
-    //find package size of individual request
-    let tempPackageSize;
-
-    const clientObj = {
-      spanId: el.spanId,
-      traceId: el.traceId,
-      startTime: Math.floor(el.startTimeUnixNano / Math.pow(10, 6)), //[ms]
-      duration: Math.floor(
-        (el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6)
-      ), //[ms]
-      contentLength: (() => {
-        const packageObj = el.attributes.find(
-          (attr) => attr.key === "contentLength"
-        );
-        const size = packageObj ? packageObj.value.intValue : 0;
-        tempPackageSize = size;
-        return size;
-      })(),
-      statusCode: tempPackageSize ? 200 : 404,
-      endPoint: el.attributes.find(
-        (attr) => attr.key === "db.mongodb.collection"
-      )?.value?.stringValue,
-      requestMethod: el.attributes.find((attr) => attr.key === "db.operation")
-        ?.value?.stringValue,
-    };
-    clientData.push(clientObj);
-  });
-  return clientData;
+//identifies strings with substrings that match array elements
+const includesAny = (array, string) => {
+  for (let i = 0; i < array.length; i++) {
+    if (string.includes(array[i])) return true;
+  }
+  return false;
 };
 
 //middleware to handle parsing HTTP requests
@@ -64,6 +38,7 @@ const parseHTTP = (clientData, spans) => {
       endPoint: el.attributes.find((attr) => attr.key === "http.url")?.value
         ?.stringValue,
       requestMethod: el.name,
+      requestType: 'HTTP',
     };
 
     //if the endpoint is an external api add it to client data array
@@ -76,13 +51,76 @@ const parseHTTP = (clientData, spans) => {
   return clientData;
 };
 
-//identifies strings with substrings that match array elements
-const includesAny = (array, string) => {
-  for (let i = 0; i < array.length; i++) {
-    if (string.includes(array[i])) return true;
-  }
-  return false;
+//middleware to handle parsing mongoose requests
+const parseMongoose = (clientData, spans) => {
+  //iterate through array of OTLP objects pulling desired attri
+  spans.forEach((el) => {
+    //find package size of individual request
+    let tempPackageSize;
+
+    const clientObj = {
+      spanId: el.spanId,
+      traceId: el.traceId,
+      startTime: Math.floor(el.startTimeUnixNano / Math.pow(10, 6)), //[ms]
+      duration: Math.floor(
+        (el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6)
+      ), //[ms]
+      contentLength: (() => {
+        const packageObj = el.attributes.find(
+          (attr) => attr.key === "contentLength"
+        );
+        const size = packageObj ? packageObj.value.intValue : 0;
+        tempPackageSize = size;
+        return size;
+      })(),
+      statusCode: tempPackageSize ? 200 : 404,
+      endPoint: el.attributes.find(
+        (attr) => attr.key === "db.mongodb.collection"
+      )?.value?.stringValue,
+      requestMethod: el.attributes.find((attr) => attr.key === "db.operation")
+        ?.value?.stringValue,
+      requestType: 'Mongoose',
+    };
+    clientData.push(clientObj);
+  });
+  return clientData;
 };
+
+//middleware to handle parsing pg requests
+const parsePg = (clientData, spans) => {
+  //iterate through array of OTLP objects pulling desired attri
+  spans.forEach((el) => {
+    //find package size of individual request
+    let tempPackageSize;
+
+    const clientObj = {
+      spanId: el.spanId,
+      traceId: el.traceId,
+      startTime: Math.floor(el.startTimeUnixNano / Math.pow(10, 6)), //[ms]
+      duration: Math.floor(
+        (el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6)
+      ), //[ms]
+      contentLength: (() => {
+        const packageObj = el.attributes.find(
+          (attr) => attr.key === "contentLength"
+        );
+        const size = packageObj ? packageObj.value.intValue : 0;
+        tempPackageSize = size;
+        return size;
+      })(),
+      statusCode: tempPackageSize ? 200 : 404,
+      endPoint: el.attributes.find(
+        (attr) => attr.key === "db.name"
+      )?.value?.stringValue,
+      requestMethod: el.attributes.find((attr) => attr.key === "db.statement")
+        ?.value?.stringValue.split(" ")[0],
+      requestType: 'PostgreSQL',
+    };
+    clientData.push(clientObj);
+  });
+  return clientData;
+};
+
 
 otelController.parseTrace = (req, res, next) => {
   let clientData = [];
@@ -104,6 +142,10 @@ otelController.parseTrace = (req, res, next) => {
       break;
     case "@opentelemetry/instrumentation-http":
       clientData = parseHTTP(clientData, spans);
+      break;
+    case "@opentelemetry/instrumentation-pg":
+      clientData = parsePg(clientData, spans);
+      // console.dir(spans[0], {depth: null});
       break;
     default:
       // console.log("otelController parseTrace middleware hit default switch case","    ", instrumentationLibrary);

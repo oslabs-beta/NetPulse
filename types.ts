@@ -7,4 +7,5 @@ export interface DataType {
   statusCode: number;
   endPoint: string;
   requestType: string;
+  requestMethod: string;
 }

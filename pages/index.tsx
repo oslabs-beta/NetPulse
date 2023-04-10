@@ -115,15 +115,15 @@ export default function Home() {
         accessorKey: "requestMethod",
       },
       {
-        header: "Size",
+        header: "Size (B)",
         accessorKey: "contentLength",
       },
       {
-        header: "Start",
+        header: "Start (ms)",
         accessorKey: "startTime",
       },
       {
-        header: "Duration",
+        header: "Duration (ms)",
         accessorKey: "duration",
       },
       {

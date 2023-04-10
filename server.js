@@ -8,6 +8,10 @@ const { OTLPTraceExporter } = require("@opentelemetry/exporter-trace-otlp-http")
 const { MongooseInstrumentation } = require("@opentelemetry/instrumentation-mongoose");
 const mongoose = require("mongoose");
 
+//pg instrumentation 
+const { PgInstrumentation } = require('@opentelemetry/instrumentation-pg');
+const { Pool } = require('pg');
+
 require('dotenv').config();
 
 // --- OPEN TELEMETRY SETUP --- //
@@ -40,6 +44,16 @@ registerInstrumentations({
         span.setAttribute("instrumentationLibrary", span.instrumentationLibrary.name);
       },
     }),
+    new PgInstrumentation({
+      responseHook: (span, res) => {
+
+        // console.dir(res, { depth: null })
+        // console.log('------------------------------------------')
+        // console.dir(span, { depth: null })
+        span.setAttribute("contentLength", Buffer.byteLength(JSON.stringify(res.data.rows)));
+        span.setAttribute("instrumentationLibrary", span.instrumentationLibrary.name);
+      }
+    })
   ],
 });
 
@@ -130,5 +144,11 @@ const movieSchema = new Schema({
 // model for movies using movieSchema
 const Movie = model("Movies", movieSchema, "Movies");
 
-module.exports = Movie;
+// --- PG SETUP (FOR TESTING) --- //
+const pool = new Pool({
+  connectionString: process.env.pgURI
+});
+
+
+module.exports = { Movie, pool };
 
