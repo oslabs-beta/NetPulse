@@ -10,7 +10,7 @@ const includesAny = (array, string) => {
 
 //middleware to handle parsing HTTP requests
 const parseHTTP = (clientData, spans) => {
-  const ignoreEndpoints = ["localhost", "socket", "nextjs"]; //endpoints to ignore
+  const ignoreEndpoints = ['localhost', 'socket', 'nextjs']; //endpoints to ignore
 
   //add specific span data to clientData array through deconstruction of span elements
   //spans is an array of span objects
@@ -23,20 +23,14 @@ const parseHTTP = (clientData, spans) => {
       spanId: el.spanId,
       traceId: el.traceId,
       startTime: Math.floor(el.startTimeUnixNano / Math.pow(10, 6)), //[ms]
-      duration: Math.floor(
-        (el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6)
-      ), //[ms]
+      duration: Math.floor((el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6)), //[ms]
       contentLength: (() => {
-        const packageObj = el.attributes.find(
-          (attr) => attr.key === "contentLength"
-        );
+        const packageObj = el.attributes.find((attr) => attr.key === 'contentLength');
         const size = packageObj ? packageObj.value.intValue : 0;
         return size;
       })(),
-      statusCode: el.attributes.find((attr) => attr.key === "http.status_code")
-        ?.value?.intValue,
-      endPoint: el.attributes.find((attr) => attr.key === "http.url")?.value
-        ?.stringValue,
+      statusCode: el.attributes.find((attr) => attr.key === 'http.status_code')?.value?.intValue,
+      endPoint: el.attributes.find((attr) => attr.key === 'http.url')?.value?.stringValue,
       requestMethod: el.name,
       requestType: 'HTTPS',
     };
@@ -62,23 +56,17 @@ const parseMongoose = (clientData, spans) => {
       spanId: el.spanId,
       traceId: el.traceId,
       startTime: Math.floor(el.startTimeUnixNano / Math.pow(10, 6)), //[ms]
-      duration: Math.floor(
-        (el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6)
-      ), //[ms]
+      duration: Math.floor((el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6)), //[ms]
       contentLength: (() => {
-        const packageObj = el.attributes.find(
-          (attr) => attr.key === "contentLength"
-        );
+        const packageObj = el.attributes.find((attr) => attr.key === 'contentLength');
         const size = packageObj ? packageObj.value.intValue : 0;
         tempPackageSize = size;
         return size;
       })(),
       statusCode: tempPackageSize ? 200 : 404,
-      endPoint: el.attributes.find(
-        (attr) => attr.key === "db.mongodb.collection"
-      )?.value?.stringValue,
-      requestMethod: el.attributes.find((attr) => attr.key === "db.operation")
-        ?.value?.stringValue,
+      endPoint: el.attributes.find((attr) => attr.key === 'db.mongodb.collection')?.value
+        ?.stringValue,
+      requestMethod: el.attributes.find((attr) => attr.key === 'db.operation')?.value?.stringValue,
       requestType: 'Mongoose',
     };
     clientData.push(clientObj);
@@ -97,23 +85,18 @@ const parsePg = (clientData, spans) => {
       spanId: el.spanId,
       traceId: el.traceId,
       startTime: Math.floor(el.startTimeUnixNano / Math.pow(10, 6)), //[ms]
-      duration: Math.floor(
-        (el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6)
-      ), //[ms]
+      duration: Math.floor((el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6)), //[ms]
       contentLength: (() => {
-        const packageObj = el.attributes.find(
-          (attr) => attr.key === "contentLength"
-        );
+        const packageObj = el.attributes.find((attr) => attr.key === 'contentLength');
         const size = packageObj ? packageObj.value.intValue : 0;
         tempPackageSize = size;
         return size;
       })(),
       statusCode: tempPackageSize ? 200 : 404,
-      endPoint: el.attributes.find(
-        (attr) => attr.key === "db.name"
-      )?.value?.stringValue,
-      requestMethod: el.attributes.find((attr) => attr.key === "db.statement")
-        ?.value?.stringValue.split(" ")[0],
+      endPoint: el.attributes.find((attr) => attr.key === 'db.name')?.value?.stringValue,
+      requestMethod: el.attributes
+        .find((attr) => attr.key === 'db.statement')
+        ?.value?.stringValue.split(' ')[0],
       requestType: 'PostgreSQL',
     };
     clientData.push(clientObj);
@@ -121,25 +104,24 @@ const parsePg = (clientData, spans) => {
   return clientData;
 };
 
-
 otelController.parseTrace = (req, res, next) => {
   let clientData = [];
   const spans = req.body.resourceSpans[0].scopeSpans[0].spans;
 
   const instrumentationLibrary = spans[0].attributes.find(
-    (attr) => attr.key === "instrumentationLibrary"
+    (attr) => attr.key === 'instrumentationLibrary'
   )?.value?.stringValue;
 
   //invoke different middleware function based on instrument used to collect incoming trace
   //middleware functions will deconstruct request body and built out clientData array
   switch (instrumentationLibrary) {
-    case "@opentelemetry/instrumentation-mongoose":
+    case '@opentelemetry/instrumentation-mongoose':
       clientData = parseMongoose(clientData, spans);
       break;
-    case "@opentelemetry/instrumentation-http":
+    case '@opentelemetry/instrumentation-http':
       clientData = parseHTTP(clientData, spans);
       break;
-    case "@opentelemetry/instrumentation-pg":
+    case '@opentelemetry/instrumentation-pg':
       clientData = parsePg(clientData, spans);
       break;
     default:
