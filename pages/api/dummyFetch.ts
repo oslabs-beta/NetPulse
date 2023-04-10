@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const response2 = await fetch(`https://zenquotes.io/api/today`);
   const response3 = await fetch(`https://api.adviceslip.com/advice`);
   const response4 = await fetch(`https://api.adviceslip.com/advice`);
-  const response5 = await fetch(`https://swapi.co/api/films`);
+  // const response5 = await fetch(`https://swapi.co/api/films`);
   // const response6 = await fetch(`https://dog.ceo/api/breeds/image/random`);
   // const response7 = await fetch(`https://randombig.cat/roar.json`);
   // const response8 = await fetch(`https://api.apis.guru/v2/list.json`);
