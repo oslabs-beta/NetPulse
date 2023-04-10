@@ -26,7 +26,7 @@ const parseMongoose = (clientData, spans) => {
       endPoint: el.attributes.find(
         (attr) => attr.key === "db.mongodb.collection"
       )?.value?.stringValue,
-      requestType: el.attributes.find((attr) => attr.key === "db.operation")
+      requestMethod: el.attributes.find((attr) => attr.key === "db.operation")
         ?.value?.stringValue,
     };
     clientData.push(clientObj);
@@ -63,7 +63,7 @@ const parseHTTP = (clientData, spans) => {
         ?.value?.intValue,
       endPoint: el.attributes.find((attr) => attr.key === "http.url")?.value
         ?.stringValue,
-      requestType: el.name,
+      requestMethod: el.name,
     };
 
     //if the endpoint is an external api add it to client data array

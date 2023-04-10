@@ -103,29 +103,32 @@ export default function Home() {
         accessorKey: "endPoint",
       },
       {
-        header: "Request",
+        header: "Status",
+        accessorKey: "statusCode",
+      },
+      {
+        header: "Type",
         accessorKey: "requestType",
       },
-      
       {
-        header: "Start",
-        accessorKey: "startTime",
-      },
-      {
-        header: "TraceID",
-        accessorKey: "traceId",
-      },
-      {
-        header: "Duration",
-        accessorKey: "duration",
+        header: "Method",
+        accessorKey: "requestMethod",
       },
       {
         header: "Size",
         accessorKey: "contentLength",
       },
       {
-        header: "Status",
-        accessorKey: "statusCode",
+        header: "Start",
+        accessorKey: "startTime",
+      },
+      {
+        header: "Duration",
+        accessorKey: "duration",
+      },
+      {
+        header: "TraceID",
+        accessorKey: "traceId",
       },
       {
         header: "Waterfall",

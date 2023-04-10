@@ -1,27 +1,27 @@
-// import telemetry packages
+//open telemetry packages
 const { NodeTracerProvider, SimpleSpanProcessor } = require("@opentelemetry/sdk-trace-node");
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 const { HttpInstrumentation } = require("@opentelemetry/instrumentation-http");
 const { OTLPTraceExporter } = require("@opentelemetry/exporter-trace-otlp-http");
-// mongoose instrumentation
+
+//mongoose instrumentation
 const { MongooseInstrumentation } = require("@opentelemetry/instrumentation-mongoose");
 const mongoose = require("mongoose");
+
 require('dotenv').config();
-//server response
 
 // --- OPEN TELEMETRY SETUP --- //
 
 const provider = new NodeTracerProvider();
 
+//register instruments
+//inject custom custom attributes for package size and instrumentation library used 
+//for use in otleController middlware
 registerInstrumentations({
   instrumentations: [
     new HttpInstrumentation({
-      // res: @type ServerReponse from "http"
       responseHook: (span, res) => {
-        span.setAttribute(
-          "instrumentationLibrary",
-          span.instrumentationLibrary.name
-        );
+        span.setAttribute("instrumentationLibrary", span.instrumentationLibrary.name);
 
         // Get the length of the 8-bit byte array. Size indicated the number of bytes of data
         let size = 0;
@@ -36,22 +36,19 @@ registerInstrumentations({
     }),
     new MongooseInstrumentation({
       responseHook: (span, res) => {
-        span.setAttribute(
-          "contentLength",
-          Buffer.byteLength(JSON.stringify(res.response))
-        );
-        span.setAttribute(
-          "instrumentationLibrary",
-          span.instrumentationLibrary.name
-        );
+        span.setAttribute("contentLength", Buffer.byteLength(JSON.stringify(res.response)));
+        span.setAttribute("instrumentationLibrary", span.instrumentationLibrary.name);
       },
     }),
   ],
 });
 
+//export traces to custom express server running on port 4000
 const traceExporter = new OTLPTraceExporter({
   url: "http://localhost:4000/", //export traces as http req to custom express server on port 400
 });
+
+//add exporter to provider / register provider
 provider.addSpanProcessor(new SimpleSpanProcessor(traceExporter));
 provider.register();
 
@@ -61,19 +58,14 @@ provider.register();
 //express configuration
 const express = require("express");
 const app = express();
-//import middleware
-const otelController = require("./otelController");
-
-// // express parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+ 
+const otelController = require("./otelController"); //import middleware
 
-// //custom express server running on port 4000 to send data to front end otel 
+//custom express server running on port 4000 to send data to front end dashboard 
 app.use("/", otelController.parseTrace, (req, res) => {
-  if (res.locals.clientData.length > 0)
-    io.emit("message", JSON.stringify(res.locals.clientData));
-
-  // console.log(res.locals.clientData);
+  if (res.locals.clientData.length > 0) io.emit("message", JSON.stringify(res.locals.clientData));
   res.sendStatus(200);
 });
 
@@ -81,7 +73,6 @@ app.use("/", otelController.parseTrace, (req, res) => {
 const server = app
   .listen(4000, () => {
     console.log(`Custom trace listening server on port 4000`);
-    console.log("Express Server Ready");
   })
   .on("error", function (err) {
     process.once("SIGUSR2", function () {
@@ -93,7 +84,7 @@ const server = app
     });
   });
 
-// //create socket running on top of express server (port 4000) + enable cors
+//create socket running on top of express server + enable cors
 const io = require("socket.io")(server, {
   cors: {
     origin: "http://localhost:3000",
@@ -103,14 +94,12 @@ const io = require("socket.io")(server, {
 
 
 // // --- MONGOOSE SETUP (FOR TESTING) --- //
-
-// // v-- REPLACE THE EMPTY STRING WITH YOUR LOCAL/MLAB/ELEPHANTSQL URI
 const myURI = process.env.mongoURI;
 
 // using older version of mongoose, so need to set strictQuery or else get warning
 mongoose.set("strictQuery", true);
 
-// TO-DO: Remove the below mongoose test code for production build
+// TODO: Remove the below mongoose test code for production build
 // connection to mongoDB using mongoose + test schema
 mongoose
   .connect(myURI, {
@@ -140,8 +129,6 @@ const movieSchema = new Schema({
 
 // model for movies using movieSchema
 const Movie = model("Movies", movieSchema, "Movies");
-
-console.log("database configured");
 
 module.exports = Movie;
 
