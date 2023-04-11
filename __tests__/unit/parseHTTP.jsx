@@ -8,8 +8,8 @@ const includesAny = (array, string) => {
   return false;
 };
 
-//define mock function of custom express server endpoint handling otel exports
-const otelEndpointHandler = (req) => {
+//mock middleware to handle parsing HTTP requests
+const parseHTTP = (req) => {
   const clientData = [];
   const spans = req.body.resourceSpans[0].scopeSpans[0].spans;
   const ignoreEndpoints = ['localhost', 'socket', 'nextjs']; //endpoints to ignore
@@ -24,21 +24,17 @@ const otelEndpointHandler = (req) => {
     const clientObj = {
       spanId: el.spanId,
       traceId: el.traceId,
-      startTime: el.startTimeUnixNano / Math.pow(10, 6), //[ms]
-      duration: (el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6), //[ms]
-      packageSize: el.attributes.find(
-        (attr) => attr.key === 'http.request_content_length_uncompressed'
-      )
-        ? el.attributes.find((attr) => attr.key === 'http.request_content_length_uncompressed')
-            .value.intValue
-        : null,
-      statusCode: el.attributes.find((attr) => attr.key === 'http.status_code')
-        ? el.attributes.find((attr) => attr.key === 'http.status_code').value.intValue
-        : null,
-      endPoint: el.attributes.find((attr) => attr.key === 'http.url')
-        ? el.attributes.find((attr) => attr.key === 'http.url').value.stringValue
-        : null,
-      requestType: el.name,
+      startTime: Math.floor(el.startTimeUnixNano / Math.pow(10, 6)), //[ms]
+      duration: Math.floor((el.endTimeUnixNano - el.startTimeUnixNano) / Math.pow(10, 6)), //[ms]
+      contentLength: (() => {
+        const packageObj = el.attributes.find((attr) => attr.key === 'contentLength');
+        const size = packageObj ? packageObj.value.intValue : 0;
+        return size;
+      })(),
+      statusCode: el.attributes.find((attr) => attr.key === 'http.status_code')?.value?.intValue,
+      endPoint: el.attributes.find((attr) => attr.key === 'http.url')?.value?.stringValue,
+      requestMethod: el.name,
+      requestType: 'HTTPS',
     };
 
     //if the endpoint is an external api add it to client data array
@@ -69,6 +65,7 @@ const fakeReq = {
                   { key: 'http.request_content_length_uncompressed', value: { intValue: 53 } },
                   { key: 'http.url', value: { stringValue: 'https://swapi.dev/api/people/4' } },
                   { key: 'http.status_code', value: { intValue: 200 } },
+                  { key: 'contentLength', value: { intValue: 57 } },
                 ],
               },
             ],
@@ -90,41 +87,44 @@ describe('Testing includesAny helper function.', () => {
   });
 });
 
-//testing otelEndpointHandler handler
-describe('Testing otelEndpointHandler output.', () => {
+//testing parseHTTP handler
+describe('Testing parseHTTP output.', () => {
   test('Request body is deconstructed correctly.', () => {
-    const clientObj = otelEndpointHandler(fakeReq)[0];
+    const clientObj = parseHTTP(fakeReq)[0];
     expect(clientObj.spanId).not.toBe(undefined);
     expect(clientObj.traceId).not.toBe(undefined);
     expect(clientObj.startTime).not.toBe(undefined);
     expect(clientObj.duration).not.toBe(undefined);
-    expect(clientObj.packageSize).not.toBe(undefined);
+    expect(clientObj.contentLength).not.toBe(undefined);
     expect(clientObj.statusCode).not.toBe(undefined);
     expect(clientObj.endPoint).not.toBe(undefined);
+    expect(clientObj.requestMethod).not.toBe(undefined);
     expect(clientObj.requestType).not.toBe(undefined);
   });
 
   test('Data is of the correct type.', () => {
-    const clientObj = otelEndpointHandler(fakeReq)[0];
+    const clientObj = parseHTTP(fakeReq)[0];
     expect(typeof clientObj.spanId).toEqual('string');
     expect(typeof clientObj.traceId).toEqual('string');
     expect(typeof clientObj.startTime).toEqual('number');
     expect(typeof clientObj.duration).toEqual('number');
-    expect(typeof clientObj.packageSize).toEqual('number');
+    expect(typeof clientObj.contentLength).toEqual('number');
     expect(typeof clientObj.statusCode).toEqual('number');
     expect(typeof clientObj.endPoint).toEqual('string');
+    expect(typeof clientObj.requestMethod).toEqual('string');
     expect(typeof clientObj.requestType).toEqual('string');
   });
 
   test('Data has correct values.', () => {
-    const clientObj = otelEndpointHandler(fakeReq)[0];
+    const clientObj = parseHTTP(fakeReq)[0];
     expect(clientObj.spanId).toEqual('9asdv922as2');
     expect(clientObj.traceId).toEqual('5c263067fe3');
-    expect(clientObj.startTime).toEqual(3323.112231);
+    expect(clientObj.startTime).toEqual(3323);
     expect(clientObj.duration).toEqual(2000);
-    expect(clientObj.packageSize).toEqual(53);
+    expect(clientObj.contentLength).toEqual(57);
     expect(clientObj.statusCode).toEqual(200);
     expect(clientObj.endPoint).toEqual('https://swapi.dev/api/people/4');
-    expect(clientObj.requestType).toEqual('GET');
+    expect(clientObj.requestMethod).toEqual('GET');
+    expect(clientObj.requestType).toEqual('HTTPS');
   });
 });

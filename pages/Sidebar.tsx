@@ -1,8 +1,8 @@
 'use client';
 
-import styles from '@/styles/Sidebar.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
+import styles from '@/styles/Sidebar.module.css';
 // import { Inter } from "next/font/google";
 
 // const inter = Inter({ subsets: ["latin"] });

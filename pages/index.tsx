@@ -1,7 +1,6 @@
 'use client';
 
 // import react and nextjs packages
-import styles from '@/styles/Home.module.css';
 import Head from 'next/head';
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 
@@ -16,6 +15,7 @@ import 'chartjs-adapter-date-fns'; // register chart.js elements due to webpack 
 
 // import socket client
 import { io } from 'socket.io-client';
+import styles from '@/styles/Home.module.css';
 
 // import child components
 // import { Inter } from 'next/font/google';
@@ -99,32 +99,36 @@ export default function Home() {
   const columns = useMemo<MRT_ColumnDef<DataType>[]>(
     () => [
       {
-        header: 'Start',
-        accessorKey: 'startTime',
-      },
-      {
-        header: 'TraceID',
-        accessorKey: 'traceId',
-      },
-      {
-        header: 'Duration',
-        accessorKey: 'duration',
-      },
-      {
-        header: 'Size',
-        accessorKey: 'contentLength',
+        header: 'Endpoint',
+        accessorKey: 'endPoint',
       },
       {
         header: 'Status',
         accessorKey: 'statusCode',
       },
       {
-        header: 'Endpoint',
-        accessorKey: 'endPoint',
+        header: 'Type',
+        accessorKey: 'requestType',
       },
       {
-        header: 'Request',
-        accessorKey: 'requestType',
+        header: 'Method',
+        accessorKey: 'requestMethod',
+      },
+      {
+        header: 'Size (B)',
+        accessorKey: 'contentLength',
+      },
+      {
+        header: 'Start (ms)',
+        accessorKey: 'startTime',
+      },
+      {
+        header: 'Duration (ms)',
+        accessorKey: 'duration',
+      },
+      {
+        header: 'TraceID',
+        accessorKey: 'traceId',
       },
       {
         header: 'Waterfall',

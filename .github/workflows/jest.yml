@@ -1,8 +1,6 @@
 name: NextJS CI
 
 on:
-  push:
-    branches: [dev]
   pull_request:
     branches: [dev]
 
@@ -18,5 +16,5 @@ jobs:
           node-version: 18
 
       - name: install packages
-        run: npm install
+        run: npm ci
       - run: npm test
