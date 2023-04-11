@@ -7,6 +7,7 @@ import { DataType } from "../types";
 import { errColor } from "../errColor";
 import { useEffect, useRef } from 'react';
 import { width } from "@mui/system";
+import { DataThresholding } from "@mui/icons-material";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,6 +15,7 @@ export default function MainWaterfall(props: any) {
 
   const svgRef: any = useRef(null); 
   let svgWidth: any, svgHeight: any;
+  const maxBarHeight = 20;
 
   useEffect(() => {
     if (svgRef.current) {
@@ -39,17 +41,19 @@ export default function MainWaterfall(props: any) {
             y: data => data.traceId,
             rx: 1,
             fill: data => errColor(data.contentLength, data.statusCode),
+            stroke: "#212529",
+            strokeWidth: 1,
           }),
           Plot.gridX({ stroke: '#ced4da', strokeOpacity: .2})
         ],
-        x: { label: null },
-        y: { axis: null },
+        x: { label: 'ms', tickFormat: e => `${e} ms` },
+        y: { axis: null, paddingOuter: 10},
       });
   
   d3.select(svgRef.current).selectAll("*").remove();
 
   if (p){
-   d3.select(svgRef.current).append(() => p);
+  d3.select(svgRef.current).append(() => p);
   }
 }
 

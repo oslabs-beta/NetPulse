@@ -141,7 +141,7 @@ export default function Home() {
                 backgroundColor:
                   errColor(row.original["contentLength"]!, row.original['statusCode']),
                 borderRadius: "0.1rem",
-                color: 'white',
+                color: 'transparent',
                 // Proof of concept for the displays - these still must be tied to state.  We first select the
                 // cell, then determine the left and right portions and make it a percentage
                 marginLeft: (() => {
@@ -177,7 +177,6 @@ export default function Home() {
   function errColor ( contentLength: number, statusCode: number ): string  {
     if (!statusCode) return 'red'; 
     const strStatus: string = statusCode.toString();
-    console.log(strStatus[0]);
     if (contentLength > 1 && strStatus[0] === '2') return 'green';
     if (strStatus[0] === '3' ) return '#34dbeb'
     if (strStatus[0] === '4' ) return 'red';

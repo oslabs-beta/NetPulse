@@ -103,7 +103,6 @@ app.use("/", (req, res) => {
       }
     }
   });
-  console.log(clientData);
   if (clientData.length > 0) io.emit("message", JSON.stringify(clientData));
   res.status(200).end();
 });
