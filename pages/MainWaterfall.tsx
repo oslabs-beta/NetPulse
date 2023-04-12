@@ -16,6 +16,7 @@ export default function MainWaterfall(props: any) {
   const svgRef: any = useRef(null); 
   let svgWidth: any, svgHeight: any;
   const maxBarHeight = 20;
+  let pOld;
 
   useEffect(() => {
     if (svgRef.current) {
@@ -26,10 +27,10 @@ export default function MainWaterfall(props: any) {
     make_gantt_chart(props.data); 
   }, [props.data])
 
-  function make_gantt_chart(data: any) {
+  function make_gantt_chart(data: DataType[]) {
 
     if (data.length === 0) {return};
-
+    
     let p: any = Plot.plot({
         width: svgWidth,
         height: svgHeight,
@@ -47,13 +48,13 @@ export default function MainWaterfall(props: any) {
           Plot.gridX({ stroke: '#ced4da', strokeOpacity: .2})
         ],
         x: { label: 'ms', tickFormat: e => `${e} ms` },
-        y: { axis: null, paddingOuter: 10},
+        y: { axis: null, paddingOuter: 5}, // 10 is a good base, but if there are large numbers of traces it gets too small
       });
   
-  d3.select(svgRef.current).selectAll("*").remove();
 
   if (p){
-  d3.select(svgRef.current).append(() => p);
+    d3.select(svgRef.current).selectAll("*").remove();
+    d3.select(svgRef.current).append(() => p);
   }
 }
 
