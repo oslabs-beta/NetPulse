@@ -1,4 +1,4 @@
-export function errColor ( contentLength: number, statusCode: number ): string  {
+export default function errColor ( contentLength: number, statusCode: number ): string  {
     if (!statusCode) return 'red'; 
     const strStatus: string = statusCode.toString();
     if (contentLength > 1 && strStatus[0] === '2') return 'green';
