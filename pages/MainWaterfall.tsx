@@ -17,7 +17,7 @@ export default function MainWaterfall(props: any) {
   let svgWidth: any; let svgHeight: any;
 
   // Function to create gantt chart - takes in the data passed down from state
-  function make_gantt_chart(data: DataType[]) {
+  function makeGanttChart(data: DataType[]) {
 
     if (data.length === 0) {return};
 
@@ -51,13 +51,14 @@ export default function MainWaterfall(props: any) {
   }
   // Bases size of svg from observable on the current div size
   useEffect(() => {
+    const {data} = props
     if (svgRef.current) {
       const dimensions = svgRef.current.getBoundingClientRect();
       svgWidth = dimensions.width;
       svgHeight = dimensions.height
     }
-    make_gantt_chart(props.data); 
-  }, [props.data])
+    makeGanttChart(data); 
+  }, [props?.data])
 
   return (
     <svg className = {styles.chart} ref = {svgRef}  />
