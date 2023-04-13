@@ -5,5 +5,5 @@ export function errColor ( contentLength: number, statusCode: number ): string  
     if (strStatus[0] === '3' ) return '#34dbeb'
     if (strStatus[0] === '4' ) return 'red';
     if (strStatus[0] === '5' ) return 'red';
-    else return 'red'; 
+    return 'red'; 
   }

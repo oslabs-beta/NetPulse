@@ -1,11 +1,12 @@
 "use client";
+
 import styles from "@/styles/MainWaterfall.module.css";
 import { Inter } from "next/font/google";
 import * as d3 from 'd3';
 import * as Plot from "@observablehq/plot";
+import { useEffect, useRef } from 'react';
 import { DataType } from "../types";
 import { errColor } from "./functions/errColor";
-import { useEffect, useRef } from 'react';
 import { tooltips } from "./functions/tooltip";
 
 // Component renders the main timeline chart
@@ -13,17 +14,7 @@ export default function MainWaterfall(props: any) {
 
   const svgRef: any = useRef(null); 
 
-  let svgWidth: any, svgHeight: any;
-
-  // Bases size of svg from observable on the current div size
-  useEffect(() => {
-    if (svgRef.current) {
-      const dimensions = svgRef.current.getBoundingClientRect();
-      svgWidth = dimensions.width;
-      svgHeight = dimensions.height
-    }
-    make_gantt_chart(props.data); 
-  }, [props.data])
+  let svgWidth: any; let svgHeight: any;
 
   // Function to create gantt chart - takes in the data passed down from state
   function make_gantt_chart(data: DataType[]) {
@@ -31,7 +22,7 @@ export default function MainWaterfall(props: any) {
     if (data.length === 0) {return};
 
     // p Creates the plot object - is wrapped in another function that creates tooltip behavior based on info in 'title'
-    let p: any = tooltips(Plot.plot({
+    const p: any = tooltips(Plot.plot({
         width: svgWidth,
         height: svgHeight,
         marks: [
@@ -58,9 +49,18 @@ export default function MainWaterfall(props: any) {
       d3.select(svgRef.current).append(() => p);
     }
   }
+  // Bases size of svg from observable on the current div size
+  useEffect(() => {
+    if (svgRef.current) {
+      const dimensions = svgRef.current.getBoundingClientRect();
+      svgWidth = dimensions.width;
+      svgHeight = dimensions.height
+    }
+    make_gantt_chart(props.data); 
+  }, [props.data])
 
   return (
-    <svg className = {styles.chart} ref = {svgRef} ></svg>
+    <svg className = {styles.chart} ref = {svgRef}  />
     );
 }
 
