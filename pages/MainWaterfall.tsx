@@ -6,7 +6,7 @@ import * as Plot from "@observablehq/plot";
 import { DataType } from "../types";
 import { errColor } from "../errColor";
 import { useEffect, useRef } from 'react';
-import de from "date-fns/esm/locale/de/index.js";
+import { tooltips } from "@/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,7 +31,7 @@ export default function MainWaterfall(props: any) {
 
     if (data.length === 0) {return};
 
-    let p: any = Plot.plot({
+    let p: any = tooltips(Plot.plot({
         width: svgWidth,
         height: svgHeight,
         marks: [
@@ -42,7 +42,7 @@ export default function MainWaterfall(props: any) {
             y: data => data.spanId,
             rx: 1,
             fill: data => errColor(data.contentLength, data.statusCode),
-            title: (d) => `${d.endPoint}`,
+            title: (d) => `${d.endPoint} | ${d.duration}ms`,
             stroke: "#212529",
             strokeWidth: 1,
           }),
@@ -50,9 +50,9 @@ export default function MainWaterfall(props: any) {
         ],
         x: { label: 'ms', tickFormat: e => `${e} ms` },
         y: { axis: null, paddingOuter: 5}, // 10 is as large as you should go for the padding base - if there are large numbers of the bars gets too small
-      });
+      }));
   
-
+      
       d3.select(svgRef.current).selectAll("*").remove();
     if (p){
       d3.select(svgRef.current).append(() => p);
