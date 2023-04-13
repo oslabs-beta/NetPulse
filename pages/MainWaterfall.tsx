@@ -4,20 +4,18 @@ import { Inter } from "next/font/google";
 import * as d3 from 'd3';
 import * as Plot from "@observablehq/plot";
 import { DataType } from "../types";
-import { errColor } from "../errColor";
+import { errColor } from "./functions/errColor";
 import { useEffect, useRef } from 'react';
-import { tooltips } from "@/tooltip";
+import { tooltips } from "./functions/tooltip";
 
-const inter = Inter({ subsets: ["latin"] });
-
+// Component renders the main timeline chart
 export default function MainWaterfall(props: any) {
 
   const svgRef: any = useRef(null); 
-  const tooltipRef: any = useRef(null);
 
   let svgWidth: any, svgHeight: any;
-  const maxBarHeight = 20;
 
+  // Bases size of svg from observable on the current div size
   useEffect(() => {
     if (svgRef.current) {
       const dimensions = svgRef.current.getBoundingClientRect();
@@ -27,10 +25,12 @@ export default function MainWaterfall(props: any) {
     make_gantt_chart(props.data); 
   }, [props.data])
 
+  // Function to create gantt chart - takes in the data passed down from state
   function make_gantt_chart(data: DataType[]) {
 
     if (data.length === 0) {return};
 
+    // p Creates the plot object - is wrapped in another function that creates tooltip behavior based on info in 'title'
     let p: any = tooltips(Plot.plot({
         width: svgWidth,
         height: svgHeight,
@@ -52,7 +52,7 @@ export default function MainWaterfall(props: any) {
         y: { axis: null, paddingOuter: 5}, // 10 is as large as you should go for the padding base - if there are large numbers of the bars gets too small
       }));
   
-      
+      // Selects current timeline, removes it, then adds the newly created one on state updates
       d3.select(svgRef.current).selectAll("*").remove();
     if (p){
       d3.select(svgRef.current).append(() => p);
