@@ -1,7 +1,6 @@
 "use client";
 
 import styles from "@/styles/MainWaterfall.module.css";
-import { Inter } from "next/font/google";
 import * as d3 from 'd3';
 import * as Plot from "@observablehq/plot";
 import { useEffect, useRef } from 'react';
@@ -28,11 +27,11 @@ export default function MainWaterfall(props: any) {
         marks: [
           Plot.axisX({color: '#ced4da', anchor: 'top'}),
           Plot.barX(data, {
-            x1: data => data.startTime,
-            x2: data => data.startTime + data.duration,
-            y: data => data.spanId,
+            x1: d => d.startTime,
+            x2: d => d.startTime + d.duration,
+            y: d => d.spanId,
             rx: 1,
-            fill: data => errColor(data.contentLength, data.statusCode),
+            fill: d => errColor(d.contentLength, d.statusCode),
             title: (d) => `${d.endPoint} | ${d.duration}ms`,
             stroke: "#212529",
             strokeWidth: 1,
