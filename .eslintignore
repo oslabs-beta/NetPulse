@@ -1,0 +1,8 @@
+__tests__/**/*
+next.config.js
+README.md
+*.babelrc
+*jest.config*
+package-lock.json
+package.json
+server.js
