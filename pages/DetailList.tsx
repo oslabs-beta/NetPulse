@@ -18,6 +18,7 @@ export default function DetailList({ columns, data }: any) {
           maxSize: 300, // allow columns to get larger than default
           size: 70, // make columns wider by default
         }}
+        initialState={{ columnVisibility: { traceId: false }, density: 'compact' }}
         // enableRowSelection
         // enablePinning
         // initialState={{columnPinning:{right:['waterfall']}}}
