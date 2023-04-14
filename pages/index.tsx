@@ -24,7 +24,7 @@ import DetailList from './DetailList';
 import { DataType } from '../types';
 
 // import functions
-import {errColor} from './functions/errColor'
+import errColor from './functions/errColor'
 
 // const inter = Inter({ subsets: ['latin'] });
 
@@ -81,12 +81,6 @@ export default function Home() {
       borderColor: ['limegreen'],
     });
   }
-
-  // final data for Bar chartjs component
-  const barData = {
-    labels: ['trace1'],
-    datasets: barDataSet,
-  };
 
   // Create columns -> later on, we can dynamically declare this based
   // on user options using a config file or object or state and only

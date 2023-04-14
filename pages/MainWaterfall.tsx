@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 import * as Plot from "@observablehq/plot";
 import { useEffect, useRef } from 'react';
 import { DataType } from "../types";
-import { errColor } from "./functions/errColor";
+import errColor from "./functions/errColor";
 import { tooltips } from "./functions/tooltip";
 
 // Component renders the main timeline chart
