@@ -8,10 +8,7 @@ import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import type { MRT_ColumnDef } from 'material-react-table';
 
 // Material-UI Imports
-// import { CellTower } from '@mui/icons-material';
 import { Box } from '@mui/material';
-import { Chart, registerables } from 'chart.js'; // import chart.js & react-chartjs components
-import 'chartjs-adapter-date-fns'; // register chart.js elements due to webpack tree-shaking, else error
 
 // import socket client
 import { io } from 'socket.io-client';
@@ -23,10 +20,12 @@ import Sidebar from './Sidebar';
 import MainWaterfall from './MainWaterfall';
 import DetailList from './DetailList';
 
-// import fonts
+// import type
 import { DataType } from '../types';
 
-Chart.register(...registerables);
+// import functions
+import errColor from './functions/errColor';
+
 // const inter = Inter({ subsets: ['latin'] });
 
 // Main Component - Home
@@ -82,12 +81,6 @@ export default function Home() {
       borderColor: ['limegreen'],
     });
   }
-
-  // final data for Bar chartjs component
-  const barData = {
-    labels: ['trace1'],
-    datasets: barDataSet,
-  };
 
   // Create columns -> later on, we can dynamically declare this based
   // on user options using a config file or object or state and only
@@ -146,9 +139,9 @@ export default function Home() {
               // eslint-disable-next-line
               backgroundColor: errColor(row.original.contentLength!, row.original.statusCode),
               borderRadius: '0.1rem',
-              color: 'white',
-              // Proof of concept for the displays - these still must be tied to state.  We first select the
-              // cell, then determine the left and right portions and make it a percentage
+              color: 'transparent',
+              // We first select the cell, then determine the left and right portions and make it a percentage
+              //
               marginLeft: (() => {
                 const cellStartTime = row.original.startTime;
                 const totalTime = data.length
@@ -167,24 +160,13 @@ export default function Home() {
               })(),
             })}
           >
-            {/* below is the duration in seconds displayed as text in the waterfall bar */}
-            {/* {row.original["duration"] / 1000} */}|
+            {/* The | mark is required to mount & render the boxes  */}|
           </Box>
         ),
       },
     ],
     [data]
   );
-
-  function errColor(contentLength: number, statusCode: number): string {
-    if (!statusCode) return 'red';
-    const strStatus: string = statusCode.toString();
-    if (contentLength > 1 && strStatus[0] === '2') return 'green';
-    if (strStatus[0] === '3') return '#34dbeb';
-    if (strStatus[0] === '4') return 'red';
-    if (strStatus[0] === '5') return 'red';
-    return 'red';
-  }
 
   return (
     <>
@@ -198,7 +180,7 @@ export default function Home() {
       <main className={styles.main}>
         <Sidebar />
         <div className={styles.networkContainer}>
-          <MainWaterfall barData={barData} />
+          <MainWaterfall data={data} />
           <DetailList data={data} columns={columns} />
         </div>
       </main>

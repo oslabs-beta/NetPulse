@@ -7,6 +7,7 @@
   background-color: #212529;
   width: 10%;
   min-width: 120px;
+
   border: solid 1px #495057;
   color: #ced4da;
 }
@@ -30,9 +31,6 @@
   height: 2rem;
 } */
 
-.textLinks {
-}
-
 .sbLogo {
   margin-top: 0.5rem;
   width: 90%;
@@ -47,6 +45,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  height: 100%;
+  margin: 10%;
 }
 
 .mediumLogo {
@@ -76,11 +76,6 @@
   font-weight: bold;
   color: #495057;
   margin: 0.4rem;
-}
-
-.sbContent {
-  height: 100%;
-  margin: 10%;
 }
 
 .sidebarButtons {
