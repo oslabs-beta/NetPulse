@@ -24,7 +24,7 @@ import DetailList from './DetailList';
 import { DataType } from '../types';
 
 // import functions
-import errColor from './functions/errColor'
+import errColor from './functions/errColor';
 
 // const inter = Inter({ subsets: ['latin'] });
 
@@ -160,7 +160,7 @@ export default function Home() {
               })(),
             })}
           >
-            {/* The | mark is required to mount & render the boxes  */}| 
+            {/* The | mark is required to mount & render the boxes  */}|
           </Box>
         ),
       },
@@ -180,7 +180,7 @@ export default function Home() {
       <main className={styles.main}>
         <Sidebar />
         <div className={styles.networkContainer}>
-          <MainWaterfall data={data}/>
+          <MainWaterfall data={data} />
           <DetailList data={data} columns={columns} />
         </div>
       </main>
