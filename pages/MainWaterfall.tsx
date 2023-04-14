@@ -6,7 +6,7 @@ import * as Plot from "@observablehq/plot";
 import { useEffect, useRef } from 'react';
 import { DataType } from "../types";
 import errColor from "./functions/errColor";
-import { tooltips } from "./functions/tooltip";
+import tooltips from "./functions/tooltip";
 
 // Component renders the main timeline chart
 export default function MainWaterfall(props: any) {
