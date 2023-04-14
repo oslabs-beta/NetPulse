@@ -1,11 +1,11 @@
-import * as d3 from 'd3';
+const {d3} = require ('d3');
 // Exported as function -> if waterfall chart is refactored into observable, can easily wrap Plot.plot() with this function to activate tooltips
 // NOTE - When observable native tooltip functionality is added, remove this and use the native functionality instead.   
 
-export const tooltips = (chart) => {  
+export default function tooltips (chart) {  
 
     // selects the whole chart
-    let wrap = d3.select(chart);
+    const wrap = d3.select(chart);
     // creates a tooltip element, assigns it a hover class, joins it to a group of hover
     const tooltip = wrap
       .selectAll(".hover")

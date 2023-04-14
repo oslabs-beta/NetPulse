@@ -18,6 +18,10 @@ module.exports = {
       env: {
         es6: true,
       },
+      loader: 'eslint-loader', // add loader configuration
+      options: {
+        emitWarning: true // add emitWarning configuration
+      }
     },
   ],
 };
