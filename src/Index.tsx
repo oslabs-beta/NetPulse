@@ -10,26 +10,23 @@ import { Box } from '@mui/material';
 // import socket client
 import { io } from 'socket.io-client';
 
-//@ts-ignore
 import styles from './styles/Home.module.css';
 
 // import child components
-// import { Inter } from 'next/font/google';
-
 import Sidebar from './Sidebar';
 import MainWaterfall from './MainWaterfall';
 import DetailList from './DetailList';
 
 // import type
-import { DataType } from './types';
+import { DataType, BarData } from './types';
 
 // import functions
 import errColor from './functions/errColor';
 
-// const inter = Inter({ subsets: ['latin'] });
 
 // Main Component - Home
 export default function Home() {
+
   // Hook for updating overall time and tying it to state
   // Time is determined by the difference between the final index's start+duration minus the initial index's start
   let initialStartTime: number;
@@ -64,12 +61,11 @@ export default function Home() {
   }, []);
 
   // an empty array that collects barData objects in the below for loop
-  const barDataSet = [];
+  const barDataSet: BarData[] = [];
 
   // generates barData object for each sample data from data array with label being the endpoint
   // data takes in the exact start-time and total time
   for (let i = 0; i < data.length; i++) {
-    //@ts-ignore
     barDataSet.push({
       label: [data[i].endPoint],
       data: [

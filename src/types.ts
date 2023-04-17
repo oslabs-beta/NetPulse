@@ -8,5 +8,11 @@ export interface DataType {
     endPoint: string;
     requestType: string;
     requestMethod: string;
-  }
+}
   
+export interface BarData {
+  label: string[],
+  data: {x: number[], y: number}[],
+  backgroundColor: string[],
+  borderColor: string[],
+}

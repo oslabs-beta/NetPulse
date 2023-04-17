@@ -1,4 +1,3 @@
-//@ts-ignore
 import styles from './styles/MainWaterfall.module.css';
 
 import * as d3 from 'd3';
@@ -6,8 +5,6 @@ import * as Plot from '@observablehq/plot';
 import { useEffect, useRef } from 'react';
 import { DataType } from './types';
 import errColor from './functions/errColor';
-
-//@ts-ignore
 import tooltips from './functions/tooltip';
 
 // Component renders the main timeline chart
