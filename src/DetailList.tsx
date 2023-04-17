@@ -1,8 +1,11 @@
 import MaterialReactTable from 'material-react-table'; // For resizing & auto sorting columns - Move to detail
 
+//@ts-ignore
+import styles from './styles/DetailList.module.css';
+
 export default function DetailList({ columns, data }: any) {
   return (
-    <div /*className={styles.detailList}*/ >
+    <div className={styles.detailList}>
       {/* Data is passed via data, column info passed via columns */}
       <MaterialReactTable
         columns={columns}

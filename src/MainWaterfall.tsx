@@ -1,4 +1,6 @@
-// import styles from '@/styles/MainWaterfall.module.css';
+//@ts-ignore
+import styles from './styles/MainWaterfall.module.css';
+
 import * as d3 from 'd3';
 import * as Plot from '@observablehq/plot';
 import { useEffect, useRef } from 'react';
@@ -62,5 +64,5 @@ export default function MainWaterfall(props: any) {
     makeGanttChart(data);
   }, [props?.data]);
 
-  return <svg /*className={styles.chart}*/ ref={svgRef} />;
+  return <svg className={styles.chart} ref={svgRef} />;
 }
