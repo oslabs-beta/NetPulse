@@ -19,11 +19,11 @@ module.exports = {
       },
       //Note - css is not currently being included
       //uncomment this loader to add it to the project
-      // {
-      //   test: /\.(css|scss)$/,
-      //   exclude: /node_modules/,
-      //   use: ['style-loader', 'css-loader'],
-      // }
+      {
+        test: /\.(css|scss)$/,
+        exclude: /node_modules/,
+        use: ['style-loader', 'css-loader'],
+      }
     ],
   },
   resolve: {

@@ -1,6 +1,6 @@
 {
   "name": "@netpulse/dashboard",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "dist/bundle.js",
   "scripts": {
@@ -36,6 +36,8 @@
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
     "babel-loader": "^9.1.2",
+    "css-loader": "^6.7.3",
+    "style-loader": "^3.3.2",
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.4",
     "webpack": "^5.79.0",

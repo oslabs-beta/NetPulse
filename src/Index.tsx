@@ -10,7 +10,8 @@ import { Box } from '@mui/material';
 // import socket client
 import { io } from 'socket.io-client';
 
-// import styles from '@/styles/Home.module.css';
+//@ts-ignore
+import styles from './styles/Home.module.css';
 
 // import child components
 // import { Inter } from 'next/font/google';
@@ -170,9 +171,9 @@ export default function Home() {
 
   return (
     <>
-      <main /*className={styles.main}*/   >
+      <main className={styles.main}   >
         {/* <Sidebar /> */}
-        <div /*className={styles.networkContainer}*/ >
+        <div className={styles.networkContainer} >
           <MainWaterfall data={data} />
           <DetailList data={data} columns={columns} /> 
         </div>
