@@ -172,7 +172,7 @@ export default function Home() {
   return (
     <>
       <main className={styles.main}   >
-        {/* <Sidebar /> */}
+        <Sidebar />
         <div className={styles.networkContainer} >
           <MainWaterfall data={data} />
           <DetailList data={data} columns={columns} /> 
