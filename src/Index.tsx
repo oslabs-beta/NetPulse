@@ -1,7 +1,4 @@
-'use client';
-
 // import react and nextjs packages
-import Head from 'next/head';
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 
 // import types
@@ -12,16 +9,18 @@ import { Box } from '@mui/material';
 
 // import socket client
 import { io } from 'socket.io-client';
-import styles from '@/styles/Home.module.css';
+
+// import styles from '@/styles/Home.module.css';
 
 // import child components
 // import { Inter } from 'next/font/google';
+
 import Sidebar from './Sidebar';
 import MainWaterfall from './MainWaterfall';
 import DetailList from './DetailList';
 
 // import type
-import { DataType } from '../types';
+import { DataType } from './types';
 
 // import functions
 import errColor from './functions/errColor';
@@ -69,6 +68,7 @@ export default function Home() {
   // generates barData object for each sample data from data array with label being the endpoint
   // data takes in the exact start-time and total time
   for (let i = 0; i < data.length; i++) {
+    //@ts-ignore
     barDataSet.push({
       label: [data[i].endPoint],
       data: [
@@ -170,18 +170,11 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>DataTrace Dashboard</title>
-        <meta name="description" content="DataTrace Dashboard" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        {/* REMEMBER TO CHANGE ICON AND FAVICON LTER */}
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className={styles.main}>
-        <Sidebar />
-        <div className={styles.networkContainer}>
+      <main /*className={styles.main}*/   >
+        {/* <Sidebar /> */}
+        <div /*className={styles.networkContainer}*/ >
           <MainWaterfall data={data} />
-          <DetailList data={data} columns={columns} />
+          <DetailList data={data} columns={columns} /> 
         </div>
       </main>
     </>
