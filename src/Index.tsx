@@ -16,7 +16,7 @@ import DetailList from './DetailList';
 // import type
 import { DataType, BarData } from './types';
 
-// import tooltip functions
+// import tooltip fxns
 import errColor from './functions/errColor';
 
 // Main Component - Home
