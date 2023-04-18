@@ -1,6 +1,6 @@
 {
   "name": "@netpulse/dashboard",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "A frontend react component to visualize trace data",
   "main": "dist/bundle.js",
   "scripts": {
@@ -9,6 +9,7 @@
   },
   "author": "",
   "license": "ISC",
+  "files": ["dist/bundle.js"],
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
