@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 
 module.exports = {
   mode: 'production',
@@ -17,8 +16,6 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
-      //Note - css is not currently being included
-      //uncomment this loader to add it to the project
       {
         test: /\.(css|scss)$/,
         exclude: /node_modules/,
@@ -30,10 +27,10 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
   },
   externals: {
-    react: 'react',
+    'react': 'react',
     'react-dom': 'react-dom',
     'material-react-table': 'material-react-table',
     'd3': 'd3',
     '@observablehq/plot': '@observablehq/plot'
-  },
+  }
 }
