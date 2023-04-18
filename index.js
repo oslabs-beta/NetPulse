@@ -1,7 +1,8 @@
 //start monitoring 
-function startOtel(options){
-    const clientPort = options?.clientPort || 3000;
-    const serverPort = options?.serverPort || 4000;
+function startOtel(){
+
+    const clientPort = 3000;
+    const serverPort = 4000;
 
     //open telemetry packages
     const { NodeTracerProvider, SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-node');

@@ -1,13 +1,14 @@
 {
   "name": "@netpulse/tracing",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend tracing",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
+  "files": ["index.js","otelController.js"],
   "dependencies": {
     "@opentelemetry/exporter-trace-otlp-http": "^0.38.0",
     "@opentelemetry/instrumentation": "^0.38.0",
