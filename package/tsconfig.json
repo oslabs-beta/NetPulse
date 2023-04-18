@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "package/dist",
+    "target": "ES5",
+    "experimentalDecorators": true,
+    "module": "commonJS",
+    "strictNullChecks": true,
+    "removeComments": true,
+    "declaration": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "typeRoots": ["index.d.ts", "node_modules/@types"]
+  },
+  "include": ["src/**/*.tsx", "src/**/*.ts"],
+  "exclude": ["node_modules"]
+}

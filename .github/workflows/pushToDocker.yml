@@ -1,0 +1,26 @@
+name: Docker Image CI
+on:
+  pull_request:
+    branches:
+      - push-to-docker
+    types:
+      - closed
+jobs:
+  Push-to-Docker:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Docker Login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Setup docker buildx builder
+        run: docker buildx create --name prod-builder && docker buildx use prod-builder
+
+      - name: Build and push Docker Images
+        run: docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t netpulsedev/prod:latest --push .
