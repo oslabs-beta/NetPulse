@@ -4,12 +4,8 @@ import React, { useCallback, useMemo, useState, useEffect } from 'react';
 // import types
 import type { MRT_ColumnDef } from 'material-react-table';
 
-// Material-UI Imports
 import { Box } from '@mui/material';
-
-// import socket client
 import { io } from 'socket.io-client';
-
 import styles from './styles/Home.module.css';
 
 // import child components
@@ -20,9 +16,8 @@ import DetailList from './DetailList';
 // import type
 import { DataType, BarData } from './types';
 
-// import functions
+// import tooltip functions
 import errColor from './functions/errColor';
-
 
 // Main Component - Home
 export default function Home() {
@@ -167,11 +162,11 @@ export default function Home() {
 
   return (
     <>
-      <main className={styles.main}   >
+      <main className={styles.main}>
         <Sidebar />
-        <div className={styles.networkContainer} >
-          <MainWaterfall data={data} />
-          <DetailList data={data} columns={columns} /> 
+        <div className={styles.networkContainer}>
+          <MainWaterfall data={data}/>
+          <DetailList data={data} columns={columns}/> 
         </div>
       </main>
     </>

@@ -8,10 +8,10 @@ export default function Sidebar() {
         <div className={styles.sbContent}>
           <div className={styles.mainLogo}>
             <div>
-              <span className={styles.Data}>Data</span>
-              <span>Trace</span>
+              <span className={styles.Data}>Net</span>
+              <span>Pulse</span>
             </div>
-            <img
+            <img 
               src="/images/black.png"
               className={styles.sbLogo} 
               alt="DataTrace Logo"
@@ -50,7 +50,7 @@ export default function Sidebar() {
                 alt="github icon"
                 src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngarts.com%2Ffiles%2F8%2FBlack-Github-Logo-PNG-Image.png&f=1&nofb=1&ipt=5c5906974e2cddb181d36fd5edbce6b3ae5528f9e5ee595828a539ded9f52efb&ipo=images"
                 className={styles.githubLogo}
-              />
+            />
             </a>
           </div>
         </div>

@@ -2,15 +2,17 @@ import styles from './styles/MainWaterfall.module.css';
 
 import * as d3 from 'd3';
 import * as Plot from '@observablehq/plot';
+
 import { useEffect, useRef } from 'react';
 import { DataType } from './types';
+
 import errColor from './functions/errColor';
 import tooltips from './functions/tooltip';
 
 // Component renders the main timeline chart
 export default function MainWaterfall(props: any) {
-  const svgRef: any = useRef(null);
 
+  const svgRef: any = useRef(null);
   let svgWidth: any;
   let svgHeight: any;
 
@@ -60,6 +62,6 @@ export default function MainWaterfall(props: any) {
     }
     makeGanttChart(data);
   }, [props?.data]);
-
+  
   return <svg className={styles.chart} ref={svgRef} />;
 }

@@ -1,7 +1,7 @@
 {
   "name": "@netpulse/dashboard",
   "version": "1.0.5",
-  "description": "",
+  "description": "A frontend react component to visualize trace data",
   "main": "dist/bundle.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
