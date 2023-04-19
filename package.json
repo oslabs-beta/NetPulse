@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "description": "Backend monitoring to generate Next.js trace data for server side api and database calls ",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
