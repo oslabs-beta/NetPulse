@@ -13,7 +13,7 @@ npm install @netpulse/tracing @netpulse/dashboard
 3. Add the following code to `tracing.js`:
 
 ```bash
-const tracing = require('@netpulse/dashboard');
+const tracing = require('@netpulse/tracing');
 tracing();
 ```
 
@@ -46,12 +46,16 @@ Open [http://localhost:3000/Dashboard](http://localhost:3000/Dashboard) in the b
 
 API Compatibility:
 
-- Node Fetch
+- node-fetch
+- xmlHttpRequest
+- Node HTTP
+
+_Note: The current version of Next.js (13.2.4) uses an older version of node-fetch. As such, node-fetch (>=3.3.1) must be manually installed and imported into components that require monitoring of fetch calls_
 
 Database Compatibility:
 
-- MongoDB(Mongoose): >= 5.9.7 <7
-- Postgresql(Pg): >= 8 <9
+- MongoDB(Mongoose): >=5.9.7 <7
+- Postgresql(Pg): >=8 <9
 
 ## Going forward
 
