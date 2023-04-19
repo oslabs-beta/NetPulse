@@ -1,6 +1,5 @@
 //start monitoring
 function startOtel() {
-  const clientPort = 3000;
   const serverPort = 4000;
 
   //open telemetry packages
