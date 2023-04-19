@@ -100,46 +100,47 @@ const io = require('socket.io')(server, {
   },
 });
 
-// --- MONGOOSE SETUP (FOR TESTING) --- //
-const myURI = process.env.mongoURI;
+// // -- TESTING -- //
+// // --- MONGOOSE SETUP (FOR TESTING) --- //
+// const myURI = process.env.mongoURI;
 
-// using older version of mongoose, so need to set strictQuery or else get warning
-mongoose.set('strictQuery', true);
+// // using older version of mongoose, so need to set strictQuery or else get warning
+// mongoose.set('strictQuery', true);
 
-// TODO: Remove the below mongoose test code for production build
-// connection to mongoDB using mongoose + test schema
-mongoose
-  .connect(myURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    dbName: 'Movies',
-  })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.log('Error connecting to DB: ', err));
+// // TODO: Remove the below mongoose test code for production build
+// // connection to mongoDB using mongoose + test schema
+// mongoose
+//   .connect(myURI, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//     dbName: 'Movies',
+//   })
+//   .then(() => console.log('Connected to MongoDB'))
+//   .catch((err) => console.log('Error connecting to DB: ', err));
 
-mongoose.models = {};
+// mongoose.models = {};
 
-// deconstructed mongoose.Schema and mongoose.model
-const { Schema, model } = mongoose;
+// // deconstructed mongoose.Schema and mongoose.model
+// const { Schema, model } = mongoose;
 
-// schema for movies
-const movieSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  watched: {
-    type: Boolean,
-    required: true,
-  },
-});
+// // schema for movies
+// const movieSchema = new Schema({
+//   title: {
+//     type: String,
+//     required: true,
+//   },
+//   watched: {
+//     type: Boolean,
+//     required: true,
+//   },
+// });
 
-// model for movies using movieSchema
-const Movie = model('Movies', movieSchema, 'Movies');
+// // model for movies using movieSchema
+// const Movie = model('Movies', movieSchema, 'Movies');
 
-// --- PG SETUP (FOR TESTING) --- //
-const pool = new Pool({
-  connectionString: process.env.pgURI,
-});
+// // --- PG SETUP (FOR TESTING) --- //
+// const pool = new Pool({
+//   connectionString: process.env.pgURI,
+// });
 
-module.exports = { Movie, pool };
+// module.exports = { Movie, pool };
