@@ -13,7 +13,7 @@ npm install @netpulse/tracing @netpulse/dashboard
 3. Add the following code to `tracing.js`:
 
 ```bash
-const tracing = require('@netpulse/dashboard');
+const tracing = require('@netpulse/tracing');
 tracing();
 ```
 
@@ -22,7 +22,7 @@ tracing();
 ```bash
 'use client';
 import dynamic from 'next/dynamic';
-const DashboardUI = dynamic(() => import('@netpulse/tracing'), { ssr: false });
+const DashboardUI = dynamic(() => import('@netpulse/dashboard'), { ssr: false });
 export default function Home() {
     return <DashboardUI/>;
 }
