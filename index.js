@@ -97,7 +97,7 @@ function startOtel() {
   //create socket running on top of express server + enable cors
   const io = require("socket.io")(server, {
     cors: {
-      origin: `http://localhost:8080`,
+      origin: `http://localhost:3000`,
       credentials: true,
     },
   });
