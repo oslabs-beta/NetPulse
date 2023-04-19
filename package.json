@@ -19,6 +19,7 @@
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.15",
+    "@next/swc-darwin-x64": "^13.3.0",
     "@observablehq/plot": "^0.6.5",
     "@opentelemetry/exporter-trace-otlp-http": "^0.37.0",
     "@opentelemetry/instrumentation": "^0.37.0",
