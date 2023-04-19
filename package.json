@@ -1,6 +1,6 @@
 {
   "name": "@netpulse/tracing",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Backend monitoring to generate Next.js trace data for server side api and database calls ",
   "main": "index.js",
   "scripts": {
