@@ -31,13 +31,13 @@ export default function Home() {
 Finally, in your package.json add the following start script:
 
 ```bash
-"instrument": "node --require ./instrument.js ./node_modules/.bin/next dev"
+"tracing": "node --require ./tracing.js ./node_modules/.bin/next dev"
 ```
 
 You can now run your Next.js application:
 
 ```bash
-npm run instrument
+npm run tracing
 ```
 
 Open [http://localhost:3000/Dashboard](http://localhost:3000/Dashboard) in the browser to view traces related to server side api calls and NoSQL / SQL database calls.
