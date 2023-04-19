@@ -57,13 +57,13 @@ Database Compatibility:
 - MongoDB(Mongoose): >=5.9.7 <7
 - Postgresql(Pg): >=8 <9
 
-## Going forward
+## Comimg soon
 
 As an open source project we are open to pull requests or feature requests from the developer community!
 
-Planned Features:
+Currently prioritized features:
 
 - Dashboard containerization through DockerHub
-- Compatiblity with more databases / drivers
+- Compatiblity with additional databases / drivers
 - Compatability with native [Next.js fetch](https://beta.nextjs.org/docs/data-fetching/fundamentals)
-- Non dynamic package imports
+- Build tool update for better compatibility with ES modules (Non-dynamic import of Dashboard)
