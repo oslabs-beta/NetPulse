@@ -3,7 +3,7 @@ module.exports = {
     {
       files: ['**/*.ts', '**/*.tsx'],
       parser: '@typescript-eslint/parser',
-      extends: ['next/core-web-vitals', 'airbnb', 'airbnb-typescript', 'next', 'prettier'],
+      extends: ['next/core-web-vitals', 'next/babel','airbnb', 'airbnb-typescript', 'next', 'prettier'],
       parserOptions: {
         project: './tsconfig.json',
         sourceType: 'module',

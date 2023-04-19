@@ -45,9 +45,11 @@ You can now open [http://localhost:3000/Dashboard](http://localhost:3000/Dashboa
 ## Note
 
 Api Call Compatibility:
+
 - Node Fetch
 
 Database Version Compatibility:
+
 - MongoDB(Mongoose): >= 5.9.7 <7
 - Postgresql(Pg): >= 8 <9
 
@@ -56,6 +58,7 @@ Database Version Compatibility:
 As an open source software we are open to pull requests.
 
 Planned Features:
+
 - Dashboard Containerization: DockerHub
 - Compatiblity with more databases / drivers
 - Compatability with native [Next.js fetch](https://beta.nextjs.org/docs/data-fetching/fundamentals)
