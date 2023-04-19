@@ -8,9 +8,9 @@
 npm install @netpulse/tracing @netpulse/dashboard
 ```
 
-2. Create an `instrument.js` file in the root directory of your project.
+2. Create a `tracing.js` file in the root directory of your project.
 
-3. Add the following code to `instrument.js`:
+3. Add the following code to `tracing.js`:
 
 ```bash
 const tracing = require('@netpulse/dashboard');
