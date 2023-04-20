@@ -25,16 +25,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const data3 = await response3.json();
   const data4 = await response4.json();
   const data5 = await response5.json();
-  const data6 = await response5.json();
-  const data7 = await response5.json();
-  const data8 = await response5.json();
-  const data9 = await response5.json();
-  const data10 = await response5.json();
-  const data11 = await response5.json();
-  const data12 = await response5.json();
-  const data13 = await response5.json();
-  const data14 = await response5.json();
-  const data15 = await response5.json();
+  const data6 = await response6.json();
+  const data7 = await response7.json();
+  const data8 = await response8.json();
+  const data9 = await response9.json();
+  const data10 = await response10.json();
+  const data11 = await response11.json();
+  const data12 = await response12.json();
+  const data13 = await response13.json();
+  const data14 = await response14.json();
+  const data15 = await response15.json();
 
   const data: any[] = [
     data1,
