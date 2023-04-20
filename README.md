@@ -1,38 +1,69 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NetPulse: Next.js Server Side Observability
 
 ## Getting Started
 
-First, run the development server:
+1. Install the following two NetPulse npm packages:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+npm install @netpulse/tracing @netpulse/dashboard
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Create a `tracing.js` file in the root directory of your project.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+3. Add the following code to `tracing.js`:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```bash
+const tracing = require('@netpulse/tracing');
+tracing();
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+4. Inside the app or pages directory (depending on if you are using beta) create a file `Dashboard.tsx` and add the following code:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+'use client';
+import dynamic from 'next/dynamic';
+const DashboardUI = dynamic(() => import('@netpulse/dashboard'), { ssr: false });
+export default function Home() {
+    return <DashboardUI/>;
+}
+```
 
-## Learn More
+5. Finally, in your package.json add the following start script:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+"tracing": "node --require ./tracing.js ./node_modules/.bin/next dev"
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+You can now run your Next.js application:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```bash
+npm run tracing
+```
 
-## Deploy on Vercel
+Open [http://localhost:3000/Dashboard](http://localhost:3000/Dashboard) in the browser to view traces related to server side api calls and NoSQL / SQL database calls.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+API Compatibility:
+
+- node-fetch
+- xmlHttpRequest
+- Node HTTP
+
+_Note: The current version of Next.js (13.2.4) uses an older version of node-fetch. As such, node-fetch (>=3.3.1) must be manually installed and imported into components that require monitoring of fetch calls_
+
+Database Compatibility:
+
+- MongoDB (Mongoose): >=5.9.7 <7
+- Postgresql (Pg): >=8 <9
+
+## Coming soon
+
+As an open source project we are open to pull requests or feature requests from the developer community!
+
+Currently prioritized features:
+
+- Dashboard containerization through DockerHub
+- Compatiblity with additional databases / drivers
+- Compatability with native [Next.js fetch](https://beta.nextjs.org/docs/data-fetching/fundamentals)
+- Build tool update for better compatibility with ES modules (Non-dynamic import of Dashboard)
