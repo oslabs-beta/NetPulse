@@ -1,123 +1,187 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
+'use client';
 
-const inter = Inter({ subsets: ['latin'] })
+// import react and nextjs packages
+import Head from 'next/head';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
 
+// import types
+import type { MRT_ColumnDef } from 'material-react-table';
+
+// Material-UI Imports
+import { Box } from '@mui/material';
+
+// import socket client
+import { io } from 'socket.io-client';
+import styles from '@/styles/Home.module.css';
+
+// import child components
+// import { Inter } from 'next/font/google';
+import Sidebar from './_Sidebar';
+import MainWaterfall from './_MainWaterfall';
+import DetailList from './_DetailList';
+
+// import type
+import { DataType } from '../types';
+
+// import functions
+import errColor from './functions/errColor';
+
+// const inter = Inter({ subsets: ['latin'] });
+
+// Main Component - Home
 export default function Home() {
+  // Hook for updating overall time and tying it to state
+  // Time is determined by the difference between the final index's start+duration minus the initial index's start
+  let initialStartTime: number;
+  const [data, setData] = useState<DataType[]>([]);
+
+  // intialize socket connection
+  // when data recieved update state here
+  const socketInitializer = useCallback(async () => {
+    const socket = await io('http://localhost:4000/');
+    socket.on('connect', () => {
+      console.log('socket connected.');
+    });
+    socket.on('message', (msg) => {
+      // when data recieved concat messages state with inbound traces
+      const serverTraces: DataType[] = JSON.parse(msg);
+      serverTraces.forEach((el: DataType) => {
+        const newEl = { ...el };
+        // TODO: change the below to check for equal to 0 when we get rid of starter data
+        if (initialStartTime === undefined) {
+          initialStartTime = el.startTime;
+        }
+        if (el.contentLength === null) newEl.contentLength = 1;
+        newEl.startTime -= initialStartTime;
+        setData((prev: DataType[]) => [...prev, newEl]);
+      });
+    });
+  }, [setData]);
+
+  // when home component mounts initialize socket connection
+  useEffect(() => {
+    socketInitializer();
+  }, []);
+
+  // an empty array that collects barData objects in the below for loop
+  const barDataSet = [];
+
+  // generates barData object for each sample data from data array with label being the endpoint
+  // data takes in the exact start-time and total time
+  for (let i = 0; i < data.length; i++) {
+    barDataSet.push({
+      label: [data[i].endPoint],
+      data: [
+        {
+          x: [data[i].startTime, data[i].startTime + data[i].duration],
+          y: 1,
+        },
+      ],
+      backgroundColor: ['green'],
+      borderColor: ['limegreen'],
+    });
+  }
+
+  // Create columns -> later on, we can dynamically declare this based
+  // on user options using a config file or object or state and only
+  // rendering the things that are requested
+
+  // Column declaration requires a flat array of objects with a header
+  // which is the column's title, and an accessorKey, which is the
+  // key in the data object.
+  const columns = useMemo<MRT_ColumnDef<DataType>[]>(
+    () => [
+      {
+        header: 'Endpoint',
+        accessorKey: 'endPoint',
+      },
+      {
+        header: 'Status',
+        accessorKey: 'statusCode',
+      },
+      {
+        header: 'Type',
+        accessorKey: 'requestType',
+      },
+      {
+        header: 'Method',
+        accessorKey: 'requestMethod',
+      },
+      {
+        header: 'Size (B)',
+        accessorKey: 'contentLength',
+      },
+      {
+        header: 'Start (ms)',
+        accessorKey: 'startTime',
+      },
+      {
+        header: 'Duration (ms)',
+        accessorKey: 'duration',
+      },
+      {
+        header: 'TraceID',
+        accessorKey: 'traceId',
+      },
+      {
+        header: 'Waterfall',
+        accessorKey: 'spanId',
+        enablePinning: true,
+        minSize: 200, // min size enforced during resizing
+        maxSize: 1000, // max size enforced during resizing
+        size: 300, // medium column
+        // custom conditional format and styling
+        // eslint-disable-next-line
+        Cell: ({ cell, row }) => (
+          <Box
+            component="span"
+            sx={() => ({
+              // eslint-disable-next-line
+              backgroundColor: errColor(row.original.contentLength!, row.original.statusCode),
+              borderRadius: '0.1rem',
+              color: 'transparent',
+              // We first select the cell, then determine the left and right portions and make it a percentage
+              //
+              marginLeft: (() => {
+                const cellStartTime = row.original.startTime;
+                const totalTime = data.length
+                  ? data[data.length - 1].startTime + data[data.length - 1].duration
+                  : cellStartTime;
+                const pCellTotal = (cellStartTime / totalTime) * 100;
+                return `${pCellTotal}%`;
+              })(),
+              width: (() => {
+                const cellDuration = row.original.duration;
+                const totalTime = data.length
+                  ? data[data.length - 1].startTime + data[data.length - 1].duration
+                  : cellDuration;
+                const pCellDuration = (cellDuration / totalTime) * 100;
+                return `${pCellDuration}%`;
+              })(),
+            })}
+          >
+            {/* The | mark is required to mount & render the boxes  */}|
+          </Box>
+        ),
+      },
+    ],
+    [data]
+  );
+
   return (
     <>
       <Head>
-        <title>Create Next App</title>
-        <meta name="description" content="Generated by create next app" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <title>NetPulse Dashboard</title>
+        <meta name="description" content="DataTrace Dashboard" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <main className={styles.main}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>pages/index.tsx</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
-
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-          <div className={styles.thirteen}>
-            <Image
-              src="/thirteen.svg"
-              alt="13"
-              width={40}
-              height={31}
-              priority
-            />
-          </div>
-        </div>
-
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
+        <Sidebar />
+        <div className={styles.networkContainer}>
+          <MainWaterfall data={data} />
+          <DetailList data={data} columns={columns} />
         </div>
       </main>
     </>
-  )
+  );
 }
