@@ -1,7 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import fetch from 'node-fetch'; // coerce next.js 'fetch' to node-fetch so it is picked up by opentelemetry
+import fetch from 'node-fetch';
+ // coerce next.js 'fetch' to node-fetch so it is picked up by opentelemetry
 const { Movie } = require('../../tracing');
 const { pool } = require('../../tracing');
 
@@ -30,39 +31,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 
 
-//   const data1 = await response.json();
-//   const data2 = await response2.json();
-//   const data3 = await response3.json();
-//   const data4 = await response4.json();
-//   const data5 = await response5.json();
-//   const data6 = await response5.json();
-//   const data7 = await response5.json();
-//   const data8 = await response5.json();
-//   const data9 = await response5.json();
-//   const data10 = await response5.json();
-//   const data11 = await response5.json();
-//   const data12 = await response5.json();
-//   const data13 = await response5.json();
-//   const data14 = await response5.json();
-//   const data15 = await response5.json();
+  const data1 = await response.json();
+  const data2 = await response2.json();
+  const data3 = await response3.json();
+  const data4 = await response4.json();
+  const data5 = await response5.json();
+  const data6 = await response6.json();
+  const data7 = await response7.json();
+  const data8 = await response8.json();
+  const data9 = await response9.json();
+  const data10 = await response10.json();
+  const data11 = await response11.json();
+  const data12 = await response12.json();
+  const data13 = await response13.json();
+  const data14 = await response14.json();
+  const data15 = await response15.json();
+  const data16 = await response16.json();
 
-//   const data: any[] = [
-//     data1,
-//     data2,
-//     data3,
-//     data4,
-//     data5,
-//     data6,
-//     data7,
-//     data8,
-//     data9,
-//     data10,
-//     data11,
-//     data12,
-//     data13,
-//     data14,
-//     data15,
-//   ];
+  const data: any[] = [
+    data1,
+    data2,
+    data3,
+    data4,
+    data5,
+    data6,
+    data7,
+    data8,
+    data9,
+    data10,
+    data11,
+    data12,
+    data13,
+    data14,
+    data15,
+    data16,
+    users1,
+    users2
+  ];
 
-  res.status(200).json("");
+  res.status(200).json(data);
 }
