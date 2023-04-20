@@ -16,9 +16,9 @@ import styles from '@/styles/Home.module.css';
 
 // import child components
 // import { Inter } from 'next/font/google';
-import Sidebar from './Sidebar';
-import MainWaterfall from './MainWaterfall';
-import DetailList from './DetailList';
+import Sidebar from './_Sidebar';
+import MainWaterfall from './_MainWaterfall';
+import DetailList from './_DetailList';
 
 // import type
 import { DataType } from '../types';
