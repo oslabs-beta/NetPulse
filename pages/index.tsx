@@ -171,11 +171,9 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>DataTrace Dashboard</title>
+        <title>NetPulse Dashboard</title>
         <meta name="description" content="DataTrace Dashboard" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        {/* REMEMBER TO CHANGE ICON AND FAVICON LTER */}
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
         <Sidebar />
