@@ -31,7 +31,7 @@ export default function Home() {
 Finally, in your package.json add the following start script:
 
 ```bash
-"tracing": "node --require ./tracing.js ./node_modules/.bin/next dev"
+"tracing": "node --require ./tracing.js & ./node_modules/.bin/next dev"
 ```
 
 You can now run your Next.js application:

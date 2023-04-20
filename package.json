@@ -1,6 +1,6 @@
 {
   "name": "@netpulse/dashboard",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "description": "A frontend react component to visualize Next.js trace data",
   "main": "dist/bundle.js",
   "scripts": {
