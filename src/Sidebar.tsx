@@ -11,14 +11,15 @@ export default function Sidebar() {
               <span className={styles.Data}>Net</span>
               <span>Pulse</span>
             </div>
-            <a href="https://www.netpulse.dev"> </a>
-            <img
+            <a href="https://www.netpulse.dev"> 
+              <img
               src="/images/netpulseicon.png"
               className={styles.sbLogo}
               alt="DataTrace Logo"
               width="190"
               height="190"
-            />
+              />
+            </a>
           </div>
           <div className={styles.logoLinks}>
             <a href="https://www.medium.com">
