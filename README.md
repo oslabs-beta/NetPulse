@@ -50,7 +50,7 @@ API Compatibility:
 - xmlHttpRequest
 - Node HTTP
 
-_Note: The current version of Next.js (13.2.4) uses an older version of node-fetch. As such, node-fetch (>=3.3.1) must be manually installed and imported into components that require monitoring of fetch calls_
+_Note: The current version of Next.js (13.2.4) uses an older version of node-fetch. As such, node-fetch (>=3.3.1) must be manually installed and imported into components and api routes that require monitoring of fetch calls_
 
 Database Compatibility:
 
