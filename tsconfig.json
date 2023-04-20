@@ -18,6 +18,15 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/functions/tooltip.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.mts",
+    "pages/_Timeline/helperFunctions/tooltip.ts",
+    "tracing/instrumentation.ts",
+    "tracing/tracingServer.ts",
+    "types.ts"
+  ],
   "exclude": ["node_modules"]
 }
