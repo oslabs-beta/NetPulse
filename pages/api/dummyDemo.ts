@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import fetch from 'node-fetch';
- // coerce next.js 'fetch' to node-fetch so it is picked up by opentelemetry
+// coerce next.js 'fetch' to node-fetch so it is picked up by opentelemetry
 const { Movie } = require('../../tracing');
 const { pool } = require('../../tracing');
 
@@ -28,8 +28,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   await Movie.find({});
   const response14 = await fetch(`https://api.kraken.com/0/public/Trades?pair=ltcusd`);
   const response15 = await fetch(`https://favicongrabber.com/api/grab/github.com`);
-
-
 
   const data1 = await response.json();
   const data2 = await response2.json();
@@ -66,7 +64,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     data15,
     data16,
     users1,
-    users2
+    users2,
   ];
 
   res.status(200).json(data);
