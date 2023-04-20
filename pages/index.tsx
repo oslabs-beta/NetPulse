@@ -16,9 +16,9 @@ import styles from '@/styles/Home.module.css';
 
 // import child components
 // import { Inter } from 'next/font/google';
-import Sidebar from './Sidebar';
-import MainWaterfall from './MainWaterfall';
-import DetailList from './DetailList';
+import Sidebar from './_Sidebar';
+import MainWaterfall from './_MainWaterfall';
+import DetailList from './_DetailList';
 
 // import type
 import { DataType } from '../types';
@@ -171,11 +171,9 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>DataTrace Dashboard</title>
+        <title>NetPulse Dashboard</title>
         <meta name="description" content="DataTrace Dashboard" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        {/* REMEMBER TO CHANGE ICON AND FAVICON LTER */}
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
         <Sidebar />
