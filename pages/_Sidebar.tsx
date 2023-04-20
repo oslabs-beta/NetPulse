@@ -3,7 +3,6 @@
 import styles from '@/styles/Sidebar.module.css';
 
 export default function Sidebar() {
-
   return (
     <div id="sidebar" className={styles.sidebar}>
       <div className={styles.sbContent}>
@@ -13,13 +12,13 @@ export default function Sidebar() {
             <span>Pulse</span>
           </div>
           <a href="https://www.netpulse.dev/">
-          <img
-            src="/images/netpulseicon.png"
-            className={styles.sbLogo}
-            alt="DataTrace Logo"
-            width="190"
-            height="190"
-          />
+            <img
+              src="/images/netpulseicon.png"
+              className={styles.sbLogo}
+              alt="DataTrace Logo"
+              width="190"
+              height="190"
+            />
           </a>
         </div>
         {/* <div className={styles.logoLinks}>
