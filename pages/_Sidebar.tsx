@@ -21,8 +21,8 @@ export default function Sidebar() {
             />
           </a>
         </div>
-        {/* <div className={styles.logoLinks}>
-          <a href="https://www.medium.com">
+        <div className={styles.logoLinks}>
+          <a href="https://medium.com/@Mr-Mercury/introducing-netpulse-a-next-js-observability-developer-tool-e550a3bef74d">
             <img
               alt="medium icon"
               src="https://pluspng.com/img-png/medium-logo-vector-png-medium-icon-white-on-black-1600.png"
@@ -43,7 +43,7 @@ export default function Sidebar() {
               className={styles.githubLogo}
             />
           </a>
-        </div> */}
+        </div>
       </div>
     </div>
   );
