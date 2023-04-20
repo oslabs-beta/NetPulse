@@ -28,7 +28,7 @@ export default function Home() {
 }
 ```
 
-Finally, in your package.json add the following start script:
+5. Finally, in your package.json add the following start script:
 
 ```bash
 "tracing": "node --require ./tracing.js ./node_modules/.bin/next dev"
@@ -42,7 +42,7 @@ npm run tracing
 
 Open [http://localhost:3000/Dashboard](http://localhost:3000/Dashboard) in the browser to view traces related to server side api calls and NoSQL / SQL database calls.
 
-## Note
+## Notes
 
 API Compatibility:
 
@@ -54,10 +54,10 @@ _Note: The current version of Next.js (13.2.4) uses an older version of node-fet
 
 Database Compatibility:
 
-- MongoDB(Mongoose): >=5.9.7 <7
-- Postgresql(Pg): >=8 <9
+- MongoDB (Mongoose): >=5.9.7 <7
+- Postgresql (Pg): >=8 <9
 
-## Comimg soon
+## Coming soon
 
 As an open source project we are open to pull requests or feature requests from the developer community!
 

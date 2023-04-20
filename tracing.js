@@ -100,7 +100,8 @@ const io = require('socket.io')(server, {
   },
 });
 
-// --- MONGOOSE SETUP (FOR TESTING) --- //
+// // -- TESTING -- //
+// // --- MONGOOSE SETUP (FOR TESTING) --- //
 const myURI = process.env.mongoURI;
 
 // using older version of mongoose, so need to set strictQuery or else get warning
