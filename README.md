@@ -2,22 +2,22 @@
 
 ## Getting Started
 
-1. Install the following two NetPulse npm packages:
+Install the following two NetPulse npm packages:
 
 ```bash
 npm install @netpulse/tracing @netpulse/dashboard
 ```
 
-2. Create a `tracing.js` file in the root directory of your project.
+Create a `tracing.js` file in the root directory of your project.
 
-3. Add the following code to `tracing.js`:
+Add the following code to `tracing.js`:
 
 ```bash
 const tracing = require('@netpulse/tracing');
 tracing();
 ```
 
-4. Inside the app or pages directory (depending on if you are using beta) create a file `Dashboard.tsx` and add the following code:
+Inside the app or pages directory (depending on if you are using beta) create a file `Dashboard.tsx` and add the following code:
 
 ```bash
 'use client';
@@ -28,7 +28,7 @@ export default function Home() {
 }
 ```
 
-5. Finally, in your package.json add the following start script:
+Finally, in your package.json add the following start script:
 
 ```bash
 "tracing": "node --require ./tracing.js ./node_modules/.bin/next dev"
