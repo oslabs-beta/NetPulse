@@ -3,8 +3,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import fetch from 'node-fetch';
 // coerce next.js 'fetch' to node-fetch so it is picked up by opentelemetry
-const { Movie } = require('../../tracing');
-const { pool } = require('../../tracing');
+const { Movie } = require('../../tracing/databaseModels');
+const { pool } = require('../../tracing/databaseModels');
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // make many fetches at once

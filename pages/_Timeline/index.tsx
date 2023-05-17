@@ -1,34 +1,30 @@
 'use client';
 
-import styles from '@/styles/MainWaterfall.module.css';
+import styles from '@/styles/Timeline.module.css';
 import * as d3 from 'd3';
 import * as Plot from '@observablehq/plot';
 import { useEffect, useRef } from 'react';
-import { DataType } from '../types';
-import errColor from './functions/errColor';
-import tooltips from './functions/tooltip';
+import { DataType } from '../../types';
+import errColor from './helperFunctions/errColor';
+import tooltips from './helperFunctions/tooltip';
 
-// Component renders the main timeline chart
-export default function MainWaterfall(props: any) {
+export default function Timeline({ data }: any) {
   const svgRef: any = useRef(null);
 
   let svgWidth: any;
   let svgHeight: any;
 
-  // Function to create gantt chart - takes in the data passed down from state
-  function makeGanttChart(data: DataType[]) {
-    if (data.length === 0) {
-      return;
-    }
+  function makeTimeline(spanData: DataType[]) {
+    if (spanData.length === 0) return;
 
-    // p Creates the plot object - is wrapped in another function that creates tooltip behavior based on info in 'title'
+    // p creates the plot object, it is wrapped in another function that creates the D3 tooltip behavior based on info in 'title'
     const p: any = tooltips(
       Plot.plot({
         width: svgWidth,
         height: svgHeight,
         marks: [
           Plot.axisX({ color: '#ced4da', anchor: 'top' }),
-          Plot.barX(data, {
+          Plot.barX(spanData, {
             x1: (d) => d.startTime,
             x2: (d) => d.startTime + d.duration,
             y: (d) => d.spanId,
@@ -51,16 +47,16 @@ export default function MainWaterfall(props: any) {
       d3.select(svgRef.current).append(() => p);
     }
   }
-  // Bases size of svg from observable on the current div size
+
+  // Dynamically determine size of observable svg from current div size
   useEffect(() => {
-    const { data } = props;
     if (svgRef.current) {
       const dimensions = svgRef.current.getBoundingClientRect();
       svgWidth = dimensions.width;
       svgHeight = dimensions.height;
     }
-    makeGanttChart(data);
-  }, [props?.data]);
+    makeTimeline(data);
+  }, [data]);
 
   return <svg className={styles.chart} ref={svgRef} />;
 }
