@@ -34,18 +34,18 @@ export default function Home() {
   // Time is determined by the difference between the final index's start+duration minus the initial index's start
   const [initialStartTime, setInitialStartTime] = useState<number>(0);
   const [data, setData] = useState<DataType[]>([]);
-  
+
   // Function to be passed down as props to reset data button
   const resetData = () => {
-    setData([]); 
+    setData([]);
     setInitialStartTime(0);
-  }
+  };
 
   // intialize socket connection
   // when data recieved update state here
   const socketInitializer = useCallback(async () => {
     const socket = await io('http://localhost:4000/');
-    console.log(initialStartTime)
+    console.log(initialStartTime);
     socket.on('connect', () => {
       console.log('socket connected.');
     });

@@ -11,5 +11,5 @@ export interface DataType {
 }
 
 export interface SideBarProps {
-  resetData: () => void; 
+  resetData: () => void;
 }

@@ -4,8 +4,7 @@ import styles from '@/styles/Sidebar.module.css';
 import { SideBarProps } from '@/types';
 
 export default function Sidebar(props: SideBarProps): JSX.Element {
-  
-  const {resetData} = props
+  const { resetData } = props;
 
   return (
     <div id="sidebar" className={styles.sidebar}>
@@ -24,16 +23,12 @@ export default function Sidebar(props: SideBarProps): JSX.Element {
               height="190"
             />
           </a>
-        {/* Fix up the line breaks later? Is this more declarative? */}
-        <br />
-        <br />
-        <button
-          type="button"
-          className={styles.sidebarButton}
-          onClick={resetData}
-          >
-          Reset Data 
-        </button>
+          {/* Fix up the line breaks later? Is this more declarative? */}
+          <br />
+          <br />
+          <button type="button" className={styles.sidebarButton} onClick={resetData}>
+            Reset Data
+          </button>
         </div>
         <div className={styles.logoLinks}>
           <a href="https://medium.com/@Mr-Mercury/introducing-netpulse-a-next-js-observability-developer-tool-e550a3bef74d">
