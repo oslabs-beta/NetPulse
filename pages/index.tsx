@@ -32,18 +32,20 @@ import errColor from './functions/errColor';
 export default function Home() {
   // Hook for updating overall time and tying it to state
   // Time is determined by the difference between the final index's start+duration minus the initial index's start
-  let initialStartTime: number;
+  const [initialStartTime, setInitialStartTime] = useState<number>(0);
   const [data, setData] = useState<DataType[]>([]);
   
   // Function to be passed down as props to reset data button
   const resetData = () => {
     setData([]); 
+    setInitialStartTime(0);
   }
 
   // intialize socket connection
   // when data recieved update state here
   const socketInitializer = useCallback(async () => {
     const socket = await io('http://localhost:4000/');
+    console.log(initialStartTime)
     socket.on('connect', () => {
       console.log('socket connected.');
     });
@@ -53,15 +55,15 @@ export default function Home() {
       serverTraces.forEach((el: DataType) => {
         const newEl = { ...el };
         // TODO: change the below to check for equal to 0 when we get rid of starter data
-        if (initialStartTime === undefined) {
-          initialStartTime = el.startTime;
+        if (initialStartTime === 0) {
+          setInitialStartTime(el.startTime);
         }
         if (el.contentLength === null) newEl.contentLength = 1;
         newEl.startTime -= initialStartTime;
         setData((prev: DataType[]) => [...prev, newEl]);
       });
     });
-  }, [setData]);
+  }, [setData, setInitialStartTime, initialStartTime]);
 
   // when home component mounts initialize socket connection
   useEffect(() => {
@@ -146,7 +148,6 @@ export default function Home() {
               borderRadius: '0.1rem',
               color: 'transparent',
               // We first select the cell, then determine the left and right portions and make it a percentage
-              //
               marginLeft: (() => {
                 const cellStartTime = row.original.startTime;
                 const totalTime = data.length
