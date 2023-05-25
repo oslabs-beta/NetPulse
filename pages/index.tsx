@@ -34,6 +34,11 @@ export default function Home() {
   // Time is determined by the difference between the final index's start+duration minus the initial index's start
   let initialStartTime: number;
   const [data, setData] = useState<DataType[]>([]);
+  
+  // Function to be passed down as props to reset data button
+  const resetData = () => {
+    setData([]); 
+  }
 
   // intialize socket connection
   // when data recieved update state here
@@ -176,7 +181,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <main className={styles.main}>
-        <Sidebar />
+        <Sidebar resetData={resetData} />
         <div className={styles.networkContainer}>
           <MainWaterfall data={data} />
           <DetailList data={data} columns={columns} />
