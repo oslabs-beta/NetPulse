@@ -101,4 +101,70 @@ describe('Testing parseMongoose output.', () => {
     expect(clientObj.requestMethod).toEqual('SELECT');
     expect(clientObj.requestType).toEqual('PostgreSQL');
   });
+
+  test('Handles missing db.statement attribute.', () => {
+    const modifiedReq = JSON.parse(JSON.stringify(fakeReq)); // Deep copy
+    const attrIndex = modifiedReq.body.resourceSpans[0].scopeSpans[0].spans[0].attributes.findIndex(
+      (attr) => attr.key === 'db.statement'
+    );
+    modifiedReq.body.resourceSpans[0].scopeSpans[0].spans[0].attributes.splice(attrIndex, 1);
+
+    const clientObj = parsePg(modifiedReq)[0];
+    expect(clientObj.requestMethod).toBe(undefined);
+  });
+
+  test('Handles db.statement without space.', () => {
+    const modifiedReq = JSON.parse(JSON.stringify(fakeReq)); // Deep copy
+    modifiedReq.body.resourceSpans[0].scopeSpans[0].spans[0].attributes.find(
+      (attr) => attr.key === 'db.statement'
+    ).value.stringValue = 'UPDATE';
+
+    const clientObj = parsePg(modifiedReq)[0];
+    expect(clientObj.requestMethod).toEqual('UPDATE');
+  });
+
+  test('Handles multiple spans.', () => {
+    const modifiedReq = JSON.parse(JSON.stringify(fakeReq)); // Deep copy
+    modifiedReq.body.resourceSpans[0].scopeSpans[0].spans.push({
+      spanId: 'testSpanId2',
+      traceId: 'testTraceId2',
+      startTimeUnixNano: 4323112231,
+      endTimeUnixNano: 6323112231,
+      name: 'UPDATE',
+      attributes: [
+        { key: 'db.name', value: { stringValue: 'myDbName' } },
+        { key: 'db.statement', value: { stringValue: 'UPDATE TABLE SET VALUE=1' } },
+        { key: 'contentLength', value: { intValue: 100 } },
+      ],
+    });
+
+    const results = parsePg(modifiedReq);
+    expect(results).toHaveLength(2);
+    expect(results[1].endPoint).toEqual('myDbName');
+    expect(results[1].requestMethod).toEqual('UPDATE');
+    expect(results[1].contentLength).toEqual(100);
+  });
+
+  test('Handles missing db.name attribute.', () => {
+    const modifiedReq = JSON.parse(JSON.stringify(fakeReq)); // Deep copy
+    const attrIndex = modifiedReq.body.resourceSpans[0].scopeSpans[0].spans[0].attributes.findIndex(
+      (attr) => attr.key === 'db.name'
+    );
+    modifiedReq.body.resourceSpans[0].scopeSpans[0].spans[0].attributes.splice(attrIndex, 1);
+
+    const clientObj = parsePg(modifiedReq)[0];
+    expect(clientObj.endPoint).toBe(undefined);
+  });
+
+  test('Handles missing contentLength attribute.', () => {
+    const modifiedReq = JSON.parse(JSON.stringify(fakeReq)); // Deep copy
+    const attrIndex = modifiedReq.body.resourceSpans[0].scopeSpans[0].spans[0].attributes.findIndex(
+      (attr) => attr.key === 'contentLength'
+    );
+    modifiedReq.body.resourceSpans[0].scopeSpans[0].spans[0].attributes.splice(attrIndex, 1);
+    
+    const clientObj = parsePg(modifiedReq)[0];
+    expect(clientObj.contentLength).toEqual(0);
+    expect(clientObj.statusCode).toEqual(404);
+  });
 });
