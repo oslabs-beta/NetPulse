@@ -85,6 +85,17 @@ describe('Testing includesAny helper function.', () => {
     expect(includesAny(ignoreEndpoints, testOne)).toEqual(false);
     expect(includesAny(ignoreEndpoints, testTwo)).toEqual(true);
   });
+
+  test('Handles an empty array.', () => {
+    const emptyArray = [];
+    const testString = 'https://swapi.dev/api/people/4';
+    expect(includesAny(emptyArray, testString)).toEqual(false);
+  });
+
+  test('Handles an empty string.', () => {
+    const ignoreEndpoints = ['localhost', 'socket', 'nextjs'];
+    expect(includesAny(ignoreEndpoints, '')).toEqual(false);
+  });
 });
 
 //testing parseHTTP handler
@@ -126,5 +137,22 @@ describe('Testing parseHTTP output.', () => {
     expect(clientObj.endPoint).toEqual('https://swapi.dev/api/people/4');
     expect(clientObj.requestMethod).toEqual('GET');
     expect(clientObj.requestType).toEqual('HTTPS');
+  });
+
+  test('Handles an empty spans array.', () => {
+    const emptySpansReq = {
+      body: {
+        resourceSpans: [
+          {
+            scopeSpans: [
+              {
+                spans: [],
+              },
+            ],
+          },
+        ],
+      },
+    };
+    expect(parseHTTP(emptySpansReq)).toEqual([]);
   });
 });
