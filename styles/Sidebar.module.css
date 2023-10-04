@@ -105,3 +105,30 @@
   flex-direction: column;
   justify-self: end;
 }
+
+.resetButtonDiv {
+  padding-top: 20px;
+}
+
+.resetButton {
+  border: 3px;
+  border-style: solid;
+  border-radius: 10px;
+  background-color: #212529;
+  width: 70px;
+  height: 40px;
+}
+
+.resetButtonText {
+  color: rgb(255, 255, 255);
+  font-size: .9rem;
+}
+
+.resetButtonDiv:hover .resetButton {
+  width: 90px;
+  height: 48px;
+}
+
+.resetButtonDiv:hover .resetButtonText {
+  font-size: 1.08rem;
+}

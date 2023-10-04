@@ -16,7 +16,7 @@ export default function EndpointsTable({ data }: any) {
       {
         header: 'Endpoint',
         accessorKey: 'endPoint',
-      },
+      },    
       {
         header: 'Status',
         accessorKey: 'statusCode',

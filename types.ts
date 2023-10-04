@@ -9,3 +9,7 @@ export interface DataType {
   requestType: string;
   requestMethod: string;
 }
+
+export interface ClearTracesType {
+  clearTraces: () => void
+}

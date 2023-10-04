@@ -15,7 +15,6 @@ export default function Timeline({ data }: any) {
   let svgHeight: any;
 
   function makeTimeline(spanData: DataType[]) {
-    if (spanData.length === 0) return;
 
     // p creates the plot object, it is wrapped in another function that creates the D3 tooltip behavior based on info in 'title'
     const p: any = tooltips(
@@ -38,8 +37,7 @@ export default function Timeline({ data }: any) {
         ],
         x: { label: 'ms', tickFormat: (e) => `${e} ms` },
         y: { axis: null, paddingOuter: 5 }, // 10 is as large as you should go for the padding base - if there are large numbers of the bars gets too small
-      })
-    );
+      }));
 
     // Selects current timeline, removes it, then adds the newly created one on state updates
     d3.select(svgRef.current).selectAll('*').remove();

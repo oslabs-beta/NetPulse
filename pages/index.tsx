@@ -14,8 +14,13 @@ import { DataType } from '../types';
 
 export default function Home() {
   // Time is determined by the difference between the final index's start+duration minus the initial index's start
-  let initialStartTime: number;
+  let initialStartTime: number | undefined;
   const [data, setData] = useState<DataType[]>([]);
+
+  // Clears EndpointsTable and Timeline when "Reset" button is clicked
+  const clearTraces: () => void = async () => {
+    setData([]);
+  }
 
   // Append stream of OTEL spans to data state
   const socketInitializer = useCallback(async () => {
@@ -44,6 +49,10 @@ export default function Home() {
     socketInitializer();
   }, [socketInitializer]);
 
+  useEffect(()=>{
+    console.log("rerender")
+  },[]);
+
   return (
     <>
       <Head>
@@ -53,7 +62,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <Sidebar />
+        <Sidebar clearTraces={clearTraces}/>
         <div className={styles.networkContainer}>
           <Timeline data={data} />
           <EndpointsTable data={data} />
