@@ -11,5 +11,5 @@ export interface DataType {
 }
 
 export interface ClearTracesType {
-  clearTraces: () => void
+  clearTraces: () => void;
 }

@@ -3,7 +3,7 @@
 import styles from '@/styles/Sidebar.module.css';
 import { ClearTracesType } from '../types';
 
-export default function Sidebar({clearTraces}: ClearTracesType) {
+export default function Sidebar({ clearTraces }: ClearTracesType) {
   return (
     <div id="sidebar" className={styles.sidebar}>
       <div className={styles.sbContent}>
@@ -23,10 +23,8 @@ export default function Sidebar({clearTraces}: ClearTracesType) {
           </a>
           <div className={styles.resetButtonDiv}>
             <button type="button" className={styles.resetButton} onClick={clearTraces}>
-              <span className={styles.resetButtonText}>
-                Reset
-              </span>
-            </button> 
+              <span className={styles.resetButtonText}>Reset</span>
+            </button>
           </div>
         </div>
         <div className={styles.logoLinks}>
