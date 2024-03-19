@@ -1,8 +1,9 @@
 'use client';
 
 import styles from '@/styles/Sidebar.module.css';
+import { ClearTracesType } from '../types';
 
-export default function Sidebar() {
+export default function Sidebar({ clearTraces }: ClearTracesType) {
   return (
     <div id="sidebar" className={styles.sidebar}>
       <div className={styles.sbContent}>
@@ -20,6 +21,11 @@ export default function Sidebar() {
               height="190"
             />
           </a>
+          <div className={styles.resetButtonDiv}>
+            <button type="button" className={styles.resetButton} onClick={clearTraces}>
+              <span className={styles.resetButtonText}>Reset</span>
+            </button>
+          </div>
         </div>
         <div className={styles.logoLinks}>
           <a href="https://medium.com/@Mr-Mercury/introducing-netpulse-a-next-js-observability-developer-tool-e550a3bef74d">

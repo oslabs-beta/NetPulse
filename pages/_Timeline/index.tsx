@@ -15,8 +15,6 @@ export default function Timeline({ data }: any) {
   let svgHeight: any;
 
   function makeTimeline(spanData: DataType[]) {
-    if (spanData.length === 0) return;
-
     // p creates the plot object, it is wrapped in another function that creates the D3 tooltip behavior based on info in 'title'
     const p: any = tooltips(
       Plot.plot({

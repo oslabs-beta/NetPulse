@@ -162,7 +162,7 @@ describe('Testing parseMongoose output.', () => {
       (attr) => attr.key === 'contentLength'
     );
     modifiedReq.body.resourceSpans[0].scopeSpans[0].spans[0].attributes.splice(attrIndex, 1);
-    
+
     const clientObj = parsePg(modifiedReq)[0];
     expect(clientObj.contentLength).toEqual(0);
     expect(clientObj.statusCode).toEqual(404);
